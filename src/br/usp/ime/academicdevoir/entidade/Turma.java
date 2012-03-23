@@ -164,7 +164,12 @@ public class Turma {
 	
 	public void setPrazoDeMatricula(List<Integer> prazoDeMatricula) {
 		Calendar data = Calendar.getInstance();
+		if(prazoDeMatricula == null || prazoDeMatricula.size() != 3) {
+			System.out.println("Erro!! Parametro invalido. -- Turma.setPrazoDeMatricula.");
+			return;
+		}
 		data.set(prazoDeMatricula.get(2).intValue(), prazoDeMatricula.get(1).intValue() - 1, prazoDeMatricula.get(0).intValue());
+		this.setTemPrazo("sim");
 		this.prazoDeMatricula = new Date(data.getTimeInMillis());
 	}
 
