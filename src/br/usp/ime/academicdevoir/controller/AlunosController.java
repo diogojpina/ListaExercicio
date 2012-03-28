@@ -232,6 +232,7 @@ public class AlunosController {
 		}
 
 		if (idTurma == null || idTurma < 0) {
+			result.include("matriculaInvalida", "Matricula Inválida.");
 			result.redirectTo(AlunosController.class).matricula();
 			return;
 		}

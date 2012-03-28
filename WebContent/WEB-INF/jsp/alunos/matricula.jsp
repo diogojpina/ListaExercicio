@@ -28,6 +28,9 @@ import="java.sql.*" errorPage="" %>
     </select>
         <br /><br />        
     <input type="submit" value="Ok"/>
+    <c:forEach items="${matriculaInvalida}" var="matricula">
+    	<br><br>${matricula}
+    </c:forEach>
 	</form>
 	</div>
 	</div>
