@@ -231,7 +231,7 @@ public class AlunosController {
 			return;
 		}
 
-		if (idTurma < 0) {
+		if (idTurma == null || idTurma < 0) {
 			result.redirectTo(AlunosController.class).matricula();
 			return;
 		}
