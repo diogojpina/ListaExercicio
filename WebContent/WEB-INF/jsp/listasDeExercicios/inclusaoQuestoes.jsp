@@ -66,7 +66,10 @@ import="java.sql.*" errorPage="" %>
 			<span>Páginas: </span>
 			
 			<c:if test ="${pagina > 1}">
-				<span>&nbsp;&nbsp;</span><a href="<c:url value="inclusaoQuestoes?proxPagina=${pagina - 1}&filtro=${filtroAtual}"/>">&lt;&lt;</a>
+				<c:if test="${filtroAtual.lenght == 0} }">
+					${filtroAtual} = "VouF"
+				</c:if>
+				<span>&nbsp;&nbsp;</span><a href="<c:url value="inclusaoQuestoes?proxPagina=${pagina - 1}&filtro=VouF"/>">&lt;&lt;</a>
 			</c:if>
 			
 			<!--<c:forEach items="${listaDePaginasAnteriores }" var="numeroPagina">
@@ -80,7 +83,7 @@ import="java.sql.*" errorPage="" %>
 			</c:forEach>-->
 						
 			<c:if test ="${pagina < ultimaPagina}">
-				<span>&nbsp;&nbsp;</span><a href="<c:url value="inclusaoQuestoes?proxPagina=${pagina + 1}&filtro=${filtroAtual}"/>">&gt;&gt;</a>
+				<span>&nbsp;&nbsp;</span><a href="<c:url value="inclusaoQuestoes?proxPagina=${pagina + 1}&filtro=VouF"/>">&gt;&gt;</a>
 			</c:if>
 
 	<br/>

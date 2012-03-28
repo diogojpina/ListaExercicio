@@ -136,7 +136,9 @@ public class TurmasControllerTeste {
 	@Test
 	public void testeLista() {
 		turmasController.lista();
-		List<Turma> turmas = result.included("listaDeTurmas");		
+		List<Turma> turmas = result.included("listaDeTurmas");
+		/*Poderia verificar se todos os campos de turmas estao corretos.*/
+		//TODO Como fazer isso usando coisas de JUnit?
 		assertNotNull(turmas);
 	}
 	
