@@ -172,5 +172,14 @@ public class Turma {
 		this.setTemPrazo("sim");
 		this.prazoDeMatricula = new Date(data.getTimeInMillis());
 	}
+	
+	public boolean alunoMatriculado(Long idAluno) {
+		while(alunos.iterator().hasNext()){
+			Aluno a = alunos.iterator().next();
+			if(a.getId() == idAluno)
+				return true;
+		}
+		return false;
+	}
 
 }

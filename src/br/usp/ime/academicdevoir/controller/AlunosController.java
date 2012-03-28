@@ -208,7 +208,7 @@ public class AlunosController {
 	 * Método associado ao .jsp com formulário para matricula do aluno.
 	 */
 	public void matricula() {
-		result.include("listaDeDisciplinas", disciplinaDao.listaTudo());
+		result.include("listaDeTurmas", turmaDao.listaTurmasFiltradas(usuarioSession.getUsuario().getId()));
 	}
 
 	/**

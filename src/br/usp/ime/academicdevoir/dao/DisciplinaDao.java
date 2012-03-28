@@ -101,12 +101,5 @@ public class DisciplinaDao {
     public List<Disciplina> listaTudo() {
 		return this.session.createCriteria(Disciplina.class).list();
 	}
-    
-    public List<Disciplina> listaDasDisciplinasNaoMatriculadas(Long idAluno) {
-    	List<Disciplina> dis = listaTudo();
-    	
-    	
-    	return dis;
-    }
 
 }
