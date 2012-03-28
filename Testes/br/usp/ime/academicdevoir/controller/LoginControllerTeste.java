@@ -7,7 +7,6 @@ import org.mockito.Mockito;
 import br.com.caelum.vraptor.util.test.MockResult;
 import br.usp.ime.academicdevoir.dao.UsuarioDao;
 import br.usp.ime.academicdevoir.entidade.Usuario;
-import br.usp.ime.academicdevoir.infra.Privilegio;
 import br.usp.ime.academicdevoir.infra.UsuarioSession;
 
 public class LoginControllerTeste {
@@ -26,13 +25,9 @@ public class LoginControllerTeste {
 	public void setUp(){
 		usuarioDao = Mockito.mock(UsuarioDao.class);
 		result = Mockito.spy(new MockResult());
-		
+		usuario = new Given().novoUsuario();
 		usuarioSession = new UsuarioSession(); 
-		usuario = new Usuario();
-		usuario.setLogin("alunor");
-		usuario.setEmail("usuarior@ime.usp.br");
-		usuario.setPrivilegio(Privilegio.ALUNO);
-		usuario.setSenha("alunor");
+		
 		usuarioSession.setUsuario(usuario);
 		loginController = new LoginController(result, usuarioDao, usuarioSession);
 		
