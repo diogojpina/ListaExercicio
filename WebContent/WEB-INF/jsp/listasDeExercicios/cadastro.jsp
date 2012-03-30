@@ -20,6 +20,10 @@ import="java.sql.*" errorPage="" %>
 	<div id="menu">Cadastro de lista de exerc&iacute;cio</div>
 	<br/><br/>
 		<form style="width: 25em;" action="<c:url value="/listasDeExercicios" />" method="post" accept-charset="utf-8">
+			<c:forEach items="${mensagemDeErro}" var="msg">
+		    	<b>${msg}</b>
+		    </c:forEach>
+		    <br><br>
 			<fieldset>
 				<legend>Cadastrar lista de exerc&iacute;cios</legend>				
 				<label for="nome">Nome:</label>
@@ -29,7 +33,7 @@ import="java.sql.*" errorPage="" %>
 					<input id="enunciado" type="text" name="propriedades.enunciado" />
 					<br/>
 				<label for="visivel">Vis&iacute;vel:</label>
-					<input id="visivel" type="checkbox" name="propriedades.visivel" value="true" />
+					<input id="visivel" type="checkbox" name="propriedades.visivel" value="true" checked />
 					<br/>
 				<label for="Peso">Peso:</label>
 					<input id="peso" type="text" size="5" maxlength="3" name="propriedades.peso" />
@@ -37,15 +41,15 @@ import="java.sql.*" errorPage="" %>
 				<label for="prazoDeEntrega">Prazo de entrega:</label>
 				<br/>
 				<label for="dia">Dia:</label>
-					<input id="dia" type="text" size="2" maxlength="2" name="prazoDeEntrega[0]" />
+					<input id="dia" type="text" size="2" maxlength="2" name="prazoDeEntrega[0]"/>
 				<label for="mes">Mês:</label>
-					<input id="mes" type="text" size="2" maxlength="2" name="prazoDeEntrega[1]" />
+					<input id="mes" type="text" size="2" maxlength="2" name="prazoDeEntrega[1]"/>
 				<label for="ano">Ano:</label>
-					<input id="ano" type="text" size="2" maxlength="4" name="prazoDeEntrega[2]" />
+					<input id="ano" type="text" size="2" maxlength="4" name="prazoDeEntrega[2]"/>
 				<br/>
 				<label for="hora">Hora:</label>
-					<input id="hora" type="text" size="2" maxlength="2" name="prazoDeEntrega[3]" />:
-					<input id="minuto" type="text" size="2" maxlength="2" name="prazoDeEntrega[4]" />
+					<input id="hora" type="text" size="2" maxlength="2" name="prazoDeEntrega[3]"/>:
+					<input id="minuto" type="text" size="2" maxlength="2" name="prazoDeEntrega[4]"/>
 					<br/>
 				<label for="numeroMaximoDeEnvios">N&uacute;mero M&aacute;ximo de Envios:</label>
 					<input id="numeroMaximoDeEnvios" type="text" size="2" maxlength="2" name="propriedades.numeroMaximoDeEnvios" />

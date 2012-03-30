@@ -1,5 +1,7 @@
 package br.usp.ime.academicdevoir.dao;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import org.hibernate.Session;
@@ -10,6 +12,7 @@ import org.hibernate.criterion.Restrictions;
 import br.com.caelum.vraptor.ioc.Component;
 import br.usp.ime.academicdevoir.entidade.Turma;
 import br.usp.ime.academicdevoir.entidade.Disciplina;
+import br.usp.ime.academicdevoir.infra.UsuarioSession;
 
 @Component
 public class TurmaDao {
@@ -101,6 +104,18 @@ public class TurmaDao {
         List<Turma> listaDeTurmas = session.createCriteria(Turma.class).list();
 		return listaDeTurmas;
 	}
+    
+    public List<Turma> listaTurmasFiltradas(Long idAluno) {
+    	List<Turma> listaTudo = listaTudo();
+    	List<Turma> listaFinal = new ArrayList<Turma>();
+    	
+    	for(int i = 0; i < listaTudo.size(); i++){
+    		if(!listaTudo.get(i).alunoMatriculado(idAluno))
+    			listaFinal.add(listaTudo.get(i));
+    	}
+    	
+    	return listaFinal;
+    }
 
     /**
      * Carrega os dados da questão fornecida a partir do banco de dados.

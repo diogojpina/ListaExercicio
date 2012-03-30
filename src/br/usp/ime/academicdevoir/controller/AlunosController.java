@@ -208,7 +208,7 @@ public class AlunosController {
 	 * Método associado ao .jsp com formulário para matricula do aluno.
 	 */
 	public void matricula() {
-		result.include("listaDeDisciplinas", disciplinaDao.listaTudo());
+		result.include("listaDeTurmas", turmaDao.listaTurmasFiltradas(usuarioSession.getUsuario().getId()));
 	}
 
 	/**
@@ -231,7 +231,8 @@ public class AlunosController {
 			return;
 		}
 
-		if (idTurma < 0) {
+		if (idTurma == null || idTurma < 0) {
+			result.include("matriculaInvalida", "Matricula Inválida.");
 			result.redirectTo(AlunosController.class).matricula();
 			return;
 		}
