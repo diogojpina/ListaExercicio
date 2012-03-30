@@ -74,7 +74,7 @@ public class AlunoDao {
 	 * @return Aluno
 	 */
 	public Aluno carrega(Long id) {
-		return (Aluno) session.load(Aluno.class, id);
+		return (Aluno) session.get(Aluno.class, id);
 	}
 
 	@SuppressWarnings("unchecked")

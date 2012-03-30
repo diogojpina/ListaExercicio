@@ -244,6 +244,7 @@ public class AlunosController {
 			Collection<Turma> listaDeTurmas = aluno.getTurmas();
 			if (!listaDeTurmas.contains(turma))
 				alunoDao.inscreve(aluno, turma);
+			usuarioSession.setUsuario(aluno);
 			result.redirectTo(AlunosController.class).listaTurmas(idAluno);
 			return;
 		}
