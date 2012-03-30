@@ -22,14 +22,15 @@ import="java.sql.*" errorPage="" %>
 	<input type="hidden" name="idAluno" value="${usuarioSession.usuario.id}">
 	 Olá, ${usuarioSession.usuario.nome}, selecione a turma na qual você quer se matricular.<br/><br/>
 	<select name="idTurma">
-    <c:forEach items="${listaDeDisciplinas}" var="disciplina">
-          <c:forEach items="${disciplina.turmas}" var="turma">
-          <option value="${turma.id }">${disciplina.nome } - ${turma.nome }</option> 
-          </c:forEach>
+    <c:forEach items="${listaDeTurmas}" var="turma">
+          <option value="${turma.id }">${turma.disciplina.nome } - ${turma.nome }</option> 
     </c:forEach>
     </select>
         <br /><br />        
     <input type="submit" value="Ok"/>
+    <c:forEach items="${matriculaInvalida}" var="matricula">
+    	<br><br>${matricula}
+    </c:forEach>
 	</form>
 	</div>
 	</div>

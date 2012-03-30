@@ -84,6 +84,8 @@ public class PropriedadesDaListaDeExercicios {
 	}
 	
 	public List<Integer> getPrazoPrazoDeEntregaEmLista() {
+		if(prazoDeEntrega == null)
+			return null;
 		List<Integer> prazoDeEntrega = new ArrayList<Integer>();
 		Calendar data = Calendar.getInstance();
 		data.setTimeInMillis(this.prazoDeEntrega.getTime());
@@ -98,6 +100,8 @@ public class PropriedadesDaListaDeExercicios {
 	}
 	
 	public String getPrazoDeEntregaFormatado() {
+		if(prazoDeEntrega == null)
+			return null;
 		SimpleDateFormat prazo = new SimpleDateFormat(
 				"EEE, dd'/'MM'/'yyyy HH:mm");
 		

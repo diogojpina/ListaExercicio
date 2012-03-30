@@ -117,11 +117,19 @@ public class ListasDeExerciciosController {
 	public void cadastra(PropriedadesDaListaDeExercicios propriedades,
 			final List<Integer> prazoDeEntrega, Long idDaTurma) {
 		
+		if(propriedades.getNome() == null || propriedades.getNome() == "" || idDaTurma == null){
+			result.include("mensagemDeErro", "Valores inválidos. Por favor, preencha corretamente.");
+			result.redirectTo(this).cadastro();
+			return;
+		}
+		
 		ListaDeExercicios listaDeExercicios = new ListaDeExercicios();
 
 		Turma turma = turmaDao.carrega(idDaTurma);
 
-		propriedades.setPrazoDeEntrega(prazoDeEntrega);
+		if(prazoDeEntrega != null && prazoDeEntrega.size() == 5)
+			propriedades.setPrazoDeEntrega(prazoDeEntrega);
+	
 		
 		validator.validate(propriedades);
 		validator.onErrorUsePageOf(this).cadastro();
