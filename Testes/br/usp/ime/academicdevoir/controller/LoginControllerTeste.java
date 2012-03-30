@@ -2,8 +2,12 @@ package br.usp.ime.academicdevoir.controller;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.Mock;
 import org.mockito.Mockito;
+import org.mockito.MockitoAnnotations;
+import org.mockito.Spy;
 
+import br.com.caelum.vraptor.Result;
 import br.com.caelum.vraptor.util.test.MockResult;
 import br.usp.ime.academicdevoir.dao.UsuarioDao;
 import br.usp.ime.academicdevoir.entidade.Usuario;
@@ -14,24 +18,21 @@ public class LoginControllerTeste {
 	private LoginController loginController;
 	private Usuario usuario;
 	
-	
-	private MockResult result;
+	@Spy 
+	private Result result = new MockResult();
 
+	@Mock
 	private UsuarioDao usuarioDao;
 	private UsuarioSession usuarioSession;
 	
 	
 	@Before
 	public void setUp(){
-		usuarioDao = Mockito.mock(UsuarioDao.class);
-		result = Mockito.spy(new MockResult());
-		usuario = new Given().novoUsuario();
+		MockitoAnnotations.initMocks(this);
+		usuario = Given.novoUsuario();
 		usuarioSession = new UsuarioSession(); 
-		
 		usuarioSession.setUsuario(usuario);
 		loginController = new LoginController(result, usuarioDao, usuarioSession);
-		
-	
 	}
 	
 	@Test

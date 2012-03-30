@@ -4,7 +4,7 @@ import br.usp.ime.academicdevoir.infra.Privilegio;
 
 public class Given {
 
-	public Usuario novoUsuario() {
+	public static Usuario novoUsuario() {
 		Usuario usuario = new Usuario();
 		usuario.setLogin("alunor");
 		usuario.setEmail("usuarior@ime.usp.br");
