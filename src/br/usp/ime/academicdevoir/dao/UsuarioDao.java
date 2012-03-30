@@ -1,8 +1,5 @@
 package br.usp.ime.academicdevoir.dao;
 
-import java.util.List;
-
-import org.apache.commons.lang.StringUtils;
 import org.hibernate.Session;
 import org.hibernate.criterion.Restrictions;
 
@@ -23,25 +20,15 @@ public class UsuarioDao {
 		this.session = session;
 	}
  
-    @SuppressWarnings("unchecked")
     public Usuario fazLogin(String login, String senha){
     	try{
-	        List<Usuario> user = session.createCriteria(Usuario.class)
-	                .add(Restrictions.like("login", login))
-	                .list();
 
-            if (user == null) return null;
-	        if (user.size() == 0) return null;
-	        
-	        if(StringUtils.isBlank(login) || StringUtils.isBlank(senha))
-	        	return null;
-	        
-	        // Gerando a senha criptografada para comparar
-	        String senhaCripto = new Criptografia().geraMd5(senha);
-	        
-	        if(user.get(0).getSenha().equals(senhaCripto)) return user.get(0);
-	        
-	        return null;
+    		Usuario usuario = (Usuario) session.createCriteria(Usuario.class)
+	                .add(Restrictions.eq("login", login))
+	                .add(Restrictions.eq("senha", new Criptografia().geraMd5(senha)))
+	                .uniqueResult();
+
+	        return usuario;
     	} catch (Exception e) { 
     		return null;
     	}
