@@ -6,10 +6,10 @@ public class Given {
 
 	public static Usuario novoUsuario() {
 		Usuario usuario = new Usuario();
-		usuario.setLogin("alunor");
+		usuario.setLogin("login-1");
 		usuario.setEmail("usuarior@ime.usp.br");
 		usuario.setPrivilegio(Privilegio.ALUNO);
-		usuario.setSenha("alunor");
+		usuario.setSenha("senha-1");
 		return usuario;
 	}
 
