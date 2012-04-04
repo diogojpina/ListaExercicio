@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -174,12 +175,33 @@ public class Turma {
 	}
 	
 	public boolean alunoMatriculado(Long idAluno) {
-		for(int i = 0; i < alunos.size(); i++){
-			Aluno a = alunos.iterator().next();
+		Iterator<Aluno> it = alunos.iterator(); 
+		while(it.hasNext()){
+			Aluno a = it.next();
 			if(a.getId() == idAluno)
 				return true;
 		}
 		return false;
 	}
 
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 }
