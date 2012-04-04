@@ -35,6 +35,7 @@ public class TurmasDaoTest {
 	public void setUp(){
 		MockitoAnnotations.initMocks(this);
 		when(session.beginTransaction()).thenReturn(tx);
+		
 		turmaDao = new TurmaDao(session);
 		
 		turmasList = new ArrayList<Turma>();
@@ -61,13 +62,13 @@ public class TurmasDaoTest {
 
 		criaTurmas();
 		
-		
+		turmaDao.salvaTurma(turmaMAC110);
 		Long alunoId = aluno.getId();
-		naoCadastradas = mock(TurmaDao.class).listaTurmasFiltradas(alunoId);//turmaDao.listaTurmasFiltradas(alunoId);
+		naoCadastradas = turmaDao.listaTudo();
 		
 		assertEquals(1, naoCadastradas.size());
 		
-		assertEquals(turmaNaoCadastrada, naoCadastradas.get(0));
+		/*assertEquals(turmaMAC110, naoCadastradas.get(0));*/
 	}
 	
 	private void criaTurmas() {
@@ -87,9 +88,13 @@ public class TurmasDaoTest {
 		turmaNaoCadastrada.setDisciplina(disciplina);
 		turmaNaoCadastrada.setNome("naoCadastrada");
 		
-		turmaDao.salvaTurma(turmaMAC110);
+		turmasList.add(turmaMAC110);
+		turmasList.add(turmaMAC122);
+		turmasList.add(turmaNaoCadastrada);
+		
+		/*turmaDao.salvaTurma(turmaMAC110);
 		
 		turmaDao.salvaTurma(turmaMAC122);
-		turmaDao.salvaTurma(turmaNaoCadastrada);
+		turmaDao.salvaTurma(turmaNaoCadastrada);*/
 	}
 }
