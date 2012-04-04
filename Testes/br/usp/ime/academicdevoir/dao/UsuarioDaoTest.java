@@ -35,14 +35,14 @@ public class UsuarioDaoTest {
 	@Test
 	public void naoDeveFazerLogin() {
 		Usuario aluno = usuarioDao.fazLogin("aluno", "aluno");
-		Assert.assertNull("Aluno não encontrado na base de dados", aluno);
+		Assert.assertNull("Aluno encontrado na base de dados", aluno);
 	}
 	
 	@Test
 	public void deveFazerLogin() {
 		Usuario usuario = Given.novoUsuario();
 		Usuario aluno = usuarioDao.fazLogin(usuario.getLogin(), usuario.getSenha());
-		Assert.assertNotNull("Aluno encontrado na base de dados", aluno);
+		Assert.assertNotNull("Aluno não encontrado na base de dados", aluno);
 	}
 	
 	
