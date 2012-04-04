@@ -42,7 +42,7 @@ public class QuestaoDao {
 	 */
 	private Criteria listaFiltrada(String filtro) {
 		Criteria criteria = this.session.createCriteria(Questao.class);
-		if (filtro != null && filtro != "")
+		if (filtro != null)
 			criteria.createCriteria("tags").add(Restrictions.ilike("nome", filtro, MatchMode.ANYWHERE));		
 		return criteria;
 	}

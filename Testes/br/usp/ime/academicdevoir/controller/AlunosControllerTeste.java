@@ -1,6 +1,7 @@
 package br.usp.ime.academicdevoir.controller;
 
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.verify;
@@ -21,10 +22,9 @@ import br.usp.ime.academicdevoir.dao.DisciplinaDao;
 import br.usp.ime.academicdevoir.dao.TurmaDao;
 import br.usp.ime.academicdevoir.entidade.Aluno;
 import br.usp.ime.academicdevoir.entidade.Disciplina;
-import br.usp.ime.academicdevoir.entidade.Professor;
 import br.usp.ime.academicdevoir.entidade.Turma;
-import br.usp.ime.academicdevoir.infra.Privilegio;
 import br.usp.ime.academicdevoir.infra.UsuarioSession;
+import br.usp.ime.academicdevoir.util.Given;
 
 public class AlunosControllerTeste {
     /**
@@ -63,27 +63,20 @@ public class AlunosControllerTeste {
     
     @Before
     public void SetUp() {		
-		Professor professor = new Professor();
-		professor.setPrivilegio(Privilegio.ADMINISTRADOR);
-		
-		usuarioSession = new UsuarioSession();
-		usuarioSession.setUsuario(professor);
 
     	result = spy(new MockResult());
     	validator = spy(new JSR303MockValidator());;
         alunoDao = mock(AlunoDao.class);
         disciplinaDao = mock(DisciplinaDao.class);
         turmaDao = mock(TurmaDao.class);
+        usuarioSession = new UsuarioSession();
+        usuarioSession.setUsuario(Given.novoUsuario());
         alunoC = new AlunosController(result, validator, alunoDao, disciplinaDao, turmaDao, usuarioSession);
         
-        aluno = new Aluno();
-        aluno.setId(0L);
-        aluno.setId(0L);
-        aluno.setNome("aluno");
-        aluno.setLogin("aluno");
-        aluno.setEmail("aluno@usp.br");
-        aluno.setSenha("senha");
         
+        
+        aluno = Given.novoAluno();
+ 
         turma = new Turma();
         turma.setId(0L);
         
@@ -94,52 +87,52 @@ public class AlunosControllerTeste {
     }
 
     @Test
-    public void testeLista() {
+    public void listaDeAlunos() {
     	alunoC.lista();
     	List<Aluno> lista = result.included("listaDeAlunos");
     	assertNotNull(lista);
     }
     
     @Test
-    public void testeListaTurmas() {
+    public void listaTurmas() {
     	alunoC.listaTurmas(this.aluno.getId());
     	Aluno aluno = result.included("aluno");
     	assertNotNull(aluno);
     }
     
     @Test
-    public void testeCadastra() {        
+    public void cadastraAluno() {        
         alunoC.cadastra(aluno);
         verify(alunoDao).salvaAluno(aluno);
         verify(result).redirectTo(AlunosController.class);
     }
 
     @Test
-    public void testeAlteracao() {
-    	alunoC.alteracao(this.aluno.getId());
+    public void alteracaoAluno() {
+    	alunoC.alteracao(1l);
     	Aluno aluno = result.included("aluno");
     	assertNotNull(aluno);
     }
     
     @Test
-    public void testeAtualiza() {
+    public void atualizaAluno() {
         alunoC.altera(aluno.getId(), "novo nome", "novoemail@usp.br", "nova senha");
         verify(alunoDao).atualizaAluno(aluno);
         verify(result).redirectTo(AlunosController.class);
     }
     
     @Test
-    public void testeRemove() {
-        alunoC.remove(0L);
+    public void removeAluno() {
+        alunoC.remove(1L);
         verify(alunoDao).removeAluno(aluno);
         verify(result).redirectTo(AlunosController.class);
     }
     
     @Test    
-    public void testeMatricula() {
+    public void naoDevematricular() {
     	alunoC.matricula();
     	List<Disciplina> lista = result.included("listaDeDisciplinas");
-    	assertNotNull(lista);
+    	assertNull(lista);
     }
     
     @Test

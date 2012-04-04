@@ -1,5 +1,7 @@
 package br.usp.ime.academicdevoir.dao;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import org.hibernate.Session;
@@ -10,6 +12,7 @@ import org.hibernate.criterion.Restrictions;
 import br.com.caelum.vraptor.ioc.Component;
 import br.usp.ime.academicdevoir.entidade.Turma;
 import br.usp.ime.academicdevoir.entidade.Disciplina;
+import br.usp.ime.academicdevoir.infra.UsuarioSession;
 
 @Component
 public class TurmaDao {
@@ -29,9 +32,8 @@ public class TurmaDao {
 	 * 
 	 * @param turma
 	 */
-	@SuppressWarnings("unchecked")
 	public void salvaTurma(Turma turma) {
-		String nome = turma.getNome();
+		/*String nome = turma.getNome();
 		Disciplina disciplina = turma.getDisciplina();
 	    List<Turma> listaDeTurmas = session.createCriteria(Turma.class)
                 .add(Restrictions.like("nome", nome, MatchMode.EXACT))
@@ -39,7 +41,7 @@ public class TurmaDao {
                 .list();
         
 	    if (listaDeTurmas.size() != 0) return;
-	    
+	    */
 		Transaction tx = session.beginTransaction();
 		session.save(turma);
 		tx.commit();
@@ -98,9 +100,21 @@ public class TurmaDao {
 	 * @return List<Turma>
 	 */
 	public List<Turma> listaTudo() {
-        List<Turma> listaDeTurmas = session.createCriteria(Turma.class).list();
-		return listaDeTurmas;
+        return (ArrayList<Turma>)session.createCriteria(Turma.class).list();
+		
 	}
+    
+    public List<Turma> listaTurmasFiltradas(Long idAluno) {
+    	List<Turma> listaTudo = listaTudo();
+    	List<Turma> listaFinal = new ArrayList<Turma>();
+    	
+    	for(int i = 0; i < listaTudo.size(); i++){
+    		if(!listaTudo.get(i).alunoMatriculado(idAluno))
+    			listaFinal.add(listaTudo.get(i));
+    	}
+    	
+    	return listaFinal;
+    }
 
     /**
      * Carrega os dados da questão fornecida a partir do banco de dados.
