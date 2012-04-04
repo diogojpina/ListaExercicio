@@ -8,8 +8,8 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-import br.usp.ime.academicdevoir.controller.Given;
 import br.usp.ime.academicdevoir.entidade.Usuario;
+import br.usp.ime.academicdevoir.util.Given;
 
 public class UsuarioDaoTest {
 

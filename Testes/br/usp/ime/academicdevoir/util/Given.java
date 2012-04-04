@@ -1,4 +1,5 @@
-package br.usp.ime.academicdevoir.controller;
+package br.usp.ime.academicdevoir.util;
+
 import br.usp.ime.academicdevoir.entidade.Usuario;
 import br.usp.ime.academicdevoir.infra.Privilegio;
 
