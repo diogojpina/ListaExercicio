@@ -1,6 +1,6 @@
 package br.usp.ime.academicdevoir.controller;
 
-import br.com.caelum.vraptor.Get; 
+import br.com.caelum.vraptor.Get;
 import br.com.caelum.vraptor.Path;
 import br.com.caelum.vraptor.Post;
 import br.com.caelum.vraptor.Resource;
@@ -17,20 +17,20 @@ import br.usp.ime.academicdevoir.infra.UsuarioSession;
  * Controlador de login.
  */
 public class LoginController {
-	
+
 	/**
-	 * @uml.property  name="result"
-	 * @uml.associationEnd  multiplicity="(1 1)"
+	 * @uml.property name="result"
+	 * @uml.associationEnd multiplicity="(1 1)"
 	 */
 	private final Result result;
 	/**
-	 * @uml.property  name="usuarioSession"
-	 * @uml.associationEnd  multiplicity="(1 1)"
+	 * @uml.property name="usuarioSession"
+	 * @uml.associationEnd multiplicity="(1 1)"
 	 */
 	private UsuarioSession usuarioSession;
 	/**
-	 * @uml.property  name="usuarioDao"
-	 * @uml.associationEnd  multiplicity="(1 1)"
+	 * @uml.property name="usuarioDao"
+	 * @uml.associationEnd multiplicity="(1 1)"
 	 */
 	private UsuarioDao usuarioDao;
 
@@ -45,7 +45,7 @@ public class LoginController {
 	public void index() {
 		result.redirectTo(LoginController.class).login();
 	}
-		
+
 	@Get
 	@Path("/login")
 	public void login() {
@@ -59,9 +59,10 @@ public class LoginController {
 		if (user != null) {
 			usuarioSession.setUsuario(user);
 			Privilegio pr = user.getPrivilegio();
-			if (pr.equals(Privilegio.PROFESSOR)
-					|| pr.equals(Privilegio.ADMINISTRADOR)) {
+			if (pr.equals(Privilegio.PROFESSOR)) {
 				result.redirectTo(ProfessoresController.class).home();
+			} else if (pr.equals(Privilegio.ADMINISTRADOR)) {
+				result.redirectTo(AdministradorController.class).home();
 			} else {
 				result.redirectTo(AlunosController.class).home();
 			}
@@ -77,10 +78,9 @@ public class LoginController {
 		usuarioSession.logout();
 		result.redirectTo(this).login();
 	}
-	
-	
-	public void acessoNegado(){
-		
+
+	public void acessoNegado() {
+
 	}
 
 }
