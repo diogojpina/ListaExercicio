@@ -1,100 +1,73 @@
 package br.usp.ime.academicdevoir.dao;
 
-import static org.junit.Assert.assertEquals;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import junit.framework.Assert;
+
 import org.hibernate.Session;
-import org.hibernate.Transaction;
+import org.jstryker.database.DBUnitHelper;
+import org.jstryker.database.HibernateHelper;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import org.mockito.Mock;
-import static org.mockito.Mockito.*;
-import org.mockito.MockitoAnnotations;
 
 import br.usp.ime.academicdevoir.entidade.Aluno;
-import br.usp.ime.academicdevoir.entidade.Disciplina;
 import br.usp.ime.academicdevoir.entidade.Turma;
+import br.usp.ime.academicdevoir.entidade.Usuario;
 
-public class TurmasDaoTest {
 
-	List<Turma> turmasList;
-	Turma turmaMAC110;
-	Turma turmaMAC122;
-	Turma turmaNaoCadastrada;
-	Aluno aluno;
-	Disciplina disciplina;
-	TurmaDao turmaDao;
-	private @Mock Session session;
-	private @Mock Transaction tx;
+
+public class TurmasDaoTest{
+	private static final String DATASET_TURMA = "/br/usp/ime/academicdevoir/xml/Turma.xml";
+	private static final String DATASET_USUARIO = "/br/usp/ime/academicdevoir/xml/Usuario.xml";
+	private static final String DATASET_TURMA_ALUNO = "/br/usp/ime/academicdevoir/xml/turma_aluno.xml";
+	private static final String DATASET_DISCIPLINA = "/br/usp/ime/academicdevoir/xml/Disciplina.xml";
+
+	private TurmaDao turmaDao;
+	private UsuarioDao usuarioDao;
+	private Session session;
+	
+	private DBUnitHelper dbUnitHelper = new DBUnitHelper();
 	
 	@Before
-	public void setUp(){
-		MockitoAnnotations.initMocks(this);
-		when(session.beginTransaction()).thenReturn(tx);
-		
+	public void setUp() {
+		dbUnitHelper.insert(DATASET_DISCIPLINA);
+		dbUnitHelper.insert(DATASET_USUARIO);
+		dbUnitHelper.insert(DATASET_TURMA);
+		dbUnitHelper.insert(DATASET_TURMA_ALUNO);
+		session = HibernateHelper.currentSession();
 		turmaDao = new TurmaDao(session);
-		
-		turmasList = new ArrayList<Turma>();
-		turmaMAC110 = new Turma();
-		turmaMAC122 = new Turma();
-		turmaNaoCadastrada = new Turma();
-		disciplina = new Disciplina();
-		aluno = new Aluno();
-		aluno.setId(666L);
 	}
 	
-	public void shouldSaveTurma(){
-		criaTurmas();
-		turmaDao.salvaTurma(turmaMAC110);
-		
-		/*turmaDao.salvaTurma(turmaMAC122);
-		turmaDao.salvaTurma(turmaNaoCadastrada);
-		*/
-		verify(session).save(turmaMAC110);
+	@After
+	public void tearDown() {
+		dbUnitHelper.disableMysqlForeignKeyChecks(session.connection());
+		dbUnitHelper.deleteAll(DATASET_TURMA_ALUNO, session.connection());
+		dbUnitHelper.deleteAll(DATASET_TURMA, session.connection());
+		dbUnitHelper.deleteAll(DATASET_USUARIO, session.connection());
+		dbUnitHelper.delete(DATASET_DISCIPLINA);
 	}
+	
+	
 	@Test
 	public void listaFiltrada(){
-		List<Turma> naoCadastradas = new ArrayList<Turma>();
-
-		criaTurmas();
+		/*Turma Acadastrada = turmaDao.carrega(100L);
+		Turma Bcadastrada = turmaDao.carrega(101L);
+		Turma CNaocadastrada = turmaDao.carrega(102L);
+		Usuario aluno = usuarioDao.fazLogin("alunow", "alunow");
+		Collection<Aluno> alunos = new ArrayList<Aluno>();
+		alunos.add((Aluno) aluno);
+		Acadastrada.setAlunos(alunos);
+		Bcadastrada.setAlunos(alunos);
 		
-		turmaDao.salvaTurma(turmaMAC110);
-		Long alunoId = aluno.getId();
-		naoCadastradas = turmaDao.listaTudo();
+		List<Turma> turmas = new ArrayList<Turma>();
+		turmas = turmaDao.listaTurmasFiltradas(3L);
 		
-		assertEquals(1, naoCadastradas.size());
-		
-		/*assertEquals(turmaMAC110, naoCadastradas.get(0));*/
+		Assert.assertEquals(1, turmas.size());*/
 	}
 	
-	private void criaTurmas() {
-		Collection<Aluno> alunos = new ArrayList<Aluno>();
-		alunos.add(aluno);
-		disciplina.setId(2L);
-		
-		turmaMAC110.setId(110L);
-		turmaMAC110.setAlunos(alunos);
-		turmaMAC110.setDisciplina(disciplina);
-		turmaMAC110.setNome("MAC110");
-		turmaMAC122.setId(122L);
-		turmaMAC122.setAlunos(alunos);
-		turmaMAC122.setDisciplina(disciplina);
-		turmaMAC122.setNome("MAC122");
-		turmaNaoCadastrada.setId(1L);
-		turmaNaoCadastrada.setDisciplina(disciplina);
-		turmaNaoCadastrada.setNome("naoCadastrada");
-		
-		turmasList.add(turmaMAC110);
-		turmasList.add(turmaMAC122);
-		turmasList.add(turmaNaoCadastrada);
-		
-		/*turmaDao.salvaTurma(turmaMAC110);
-		
-		turmaDao.salvaTurma(turmaMAC122);
-		turmaDao.salvaTurma(turmaNaoCadastrada);*/
-	}
 }

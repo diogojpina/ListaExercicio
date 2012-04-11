@@ -175,33 +175,12 @@ public class Turma {
 	}
 	
 	public boolean alunoMatriculado(Long idAluno) {
-		Iterator<Aluno> it = alunos.iterator(); 
+		/*Iterator<Aluno> it = alunos.iterator(); 
 		while(it.hasNext()){
 			Aluno a = it.next();
 			if(a.getId() == idAluno)
 				return true;
-		}
+		}*/
 		return false;
 	}
-
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
 }
