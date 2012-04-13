@@ -83,6 +83,7 @@ public class TurmasControllerTeste {
 		
 		aluno = new Aluno();
 		aluno.setId(0L);
+		aluno.setPrivilegio(Privilegio.ALUNO);
 
 		usuarioSession = new UsuarioSession();
 		usuarioSession.setUsuario(admin);
@@ -181,11 +182,20 @@ public class TurmasControllerTeste {
 	}
 	
 	@Test
-	public void testeRemoveMatricula() {
+	public void testeRemoveMatriculaPorAdministrador() {
 		turmasController.removeMatricula(aluno.getId(), turma.getId());
 		
 		verify(alunoDao).removeMatricula(aluno, turma);
 		verify(result).redirectTo(TurmasController.class);
+	}
+	
+	@Test
+	public void testeRemoveMatriculaPorAluno() {
+		usuarioSession.setUsuario(aluno);
+		turmasController.removeMatricula(aluno.getId(), turma.getId());
+		
+		verify(alunoDao).removeMatricula(aluno, turma);
+		verify(result).redirectTo(AlunosController.class);
 	}
 	
 }

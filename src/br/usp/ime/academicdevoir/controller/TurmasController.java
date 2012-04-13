@@ -251,7 +251,8 @@ public class TurmasController {
 		}
         
         alunoDao.removeMatricula(aluno, turma);
-        usuarioSession.setUsuario(aluno);
+        if(u.getPrivilegio() == Privilegio.ALUNO)
+        	usuarioSession.setUsuario(aluno);
         if(usuarioSession.getUsuario().getPrivilegio() == Privilegio.ALUNO)
         	result.redirectTo(AlunosController.class).listaTurmas(idAluno);
         else
