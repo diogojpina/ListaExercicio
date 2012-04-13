@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <dataset>
-	<Usuario id="100" email="email_1@gmail.com" DTYPE="Aluno" nome="nome-1" login="login-1" senha="6a4ccc79b37ce6277b84b7d4d53a711" />
-	<Usuario id="101" email="email_2@gmail.com" DTYPE="Aluno" nome="nome-2" login="login-2" senha="senha-2" />
-	<Usuario id="102" email="email_3@gmail.com" DTYPE="Aluno" nome="nome-3" login="login-3" senha="senha-3" />
+	<Usuario id="102" email="email_1@gmail.com" DTYPE="Professor" nome="nome-1" login="login-1" senha="6a4ccc79b37ce6277b84b7d4d53a711" />
+	<Usuario id="10701" email="email_2@gmail.com" DTYPE="Aluno" nome="nome-2" login="login-2" senha="senha-2" />
+	<Usuario id="10801" email="email_3@gmail.com" DTYPE="Aluno" nome="nome-3" login="login-3" senha="senha-3" />
+	<Usuario id="300" email="email_2@gmail.com" DTYPE="Aluno" nome="nome-2" login="alunow" senha="ec924f2b64b764b1738e7854789a1bd3" />
 </dataset>
