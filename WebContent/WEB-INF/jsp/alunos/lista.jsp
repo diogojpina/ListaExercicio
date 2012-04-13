@@ -23,17 +23,7 @@ import="java.sql.*" errorPage="" %>
         	<!-- input type="submit" value="Inserir"/-->
         	<a href="<c:url value='/alunos/cadastro'/>">Inserir</a><br/>
         </form>
-<!--        <form action='alteracao'>
-        	<input type="submit" value="Alterar"/>
-        </form>
-        <form action='remocao'>
-        	
-        	<a href="<c:url value='/alunos/remocao'/>">Excluir</a><br/>
-        </form>
-        <form action='home'>
-        	
-		</form>
--->
+
     
 	<table>
     <thead>

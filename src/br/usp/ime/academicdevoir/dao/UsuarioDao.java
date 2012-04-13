@@ -21,6 +21,9 @@ public class UsuarioDao {
 	}
  
     public Usuario fazLogin(String login, String senha){
+    	System.out.println(login + " / " + senha);
+    	System.out.println(new Criptografia().geraMd5(senha));
+    	
     	try{
 
     		Usuario usuario = (Usuario) session.createCriteria(Usuario.class)
@@ -28,6 +31,8 @@ public class UsuarioDao {
 	                .add(Restrictions.eq("senha", new Criptografia().geraMd5(senha)))
 	                .uniqueResult();
 
+    		System.out.println(usuario + " aqui o usuario");
+    		
 	        return usuario;
     	} catch (Exception e) { 
     		return null;

@@ -16,7 +16,7 @@ import="java.sql.*" errorPage="" %>
 	<h2>Grupo 1 - Engenharia de Software</h2>
 	<div align="center">
 	     <a href="<c:url value='/administrador/alteracao?id=${usuarioSession.usuario.id}'/>">Alterar dados pessoais</a><br/><br/>
-	    <a href="#">Listar disciplinas</a><br/><br/>
+	    <a href="<c:url value='/administrador/listaDisciplinas'/>">Listar disciplinas</a><br/><br/>
 	    <a href="#">Cadastrar disciplina</a><br/><br/>
 	    <a href="#">Listar Turmas</a><br/><br/>
     </div>
