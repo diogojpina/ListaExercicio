@@ -32,9 +32,8 @@ public class TurmaDao {
 	 * 
 	 * @param turma
 	 */
-	@SuppressWarnings("unchecked")
 	public void salvaTurma(Turma turma) {
-		String nome = turma.getNome();
+		/*String nome = turma.getNome();
 		Disciplina disciplina = turma.getDisciplina();
 	    List<Turma> listaDeTurmas = session.createCriteria(Turma.class)
                 .add(Restrictions.like("nome", nome, MatchMode.EXACT))
@@ -42,7 +41,7 @@ public class TurmaDao {
                 .list();
         
 	    if (listaDeTurmas.size() != 0) return;
-	    
+	    */
 		Transaction tx = session.beginTransaction();
 		session.save(turma);
 		tx.commit();
@@ -101,8 +100,8 @@ public class TurmaDao {
 	 * @return List<Turma>
 	 */
 	public List<Turma> listaTudo() {
-        List<Turma> listaDeTurmas = session.createCriteria(Turma.class).list();
-		return listaDeTurmas;
+        return (ArrayList<Turma>)session.createCriteria(Turma.class).list();
+		
 	}
     
     public List<Turma> listaTurmasFiltradas(Long idAluno) {
