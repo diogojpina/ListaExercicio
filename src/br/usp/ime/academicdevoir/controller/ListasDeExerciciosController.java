@@ -1,5 +1,7 @@
 package br.usp.ime.academicdevoir.controller;
 
+import static org.hamcrest.Matchers.*;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -11,6 +13,7 @@ import br.com.caelum.vraptor.Put;
 import br.com.caelum.vraptor.Resource;
 import br.com.caelum.vraptor.Result;
 import br.com.caelum.vraptor.Validator;
+import br.com.caelum.vraptor.validator.Validations;
 import br.usp.ime.academicdevoir.dao.ListaDeExerciciosDao;
 import br.usp.ime.academicdevoir.dao.ListaDeRespostasDao;
 import br.usp.ime.academicdevoir.dao.ProfessorDao;
@@ -114,26 +117,21 @@ public class ListasDeExerciciosController {
 	 * @param prazoDeEntrega
 	 * @param idDasTurmas
 	 */
-	public void cadastra(PropriedadesDaListaDeExercicios propriedades,
-			final List<Integer> prazoDeEntrega, Long idDaTurma) {
+	public void cadastra(final PropriedadesDaListaDeExercicios propriedades,
+			final List<Integer> prazoDeEntrega, final Long idDaTurma) {
 		
-		if(propriedades.getNome() == null || propriedades.getNome() == "" || idDaTurma == null){
-			result.include("mensagemDeErro", "Valores inválidos. Por favor, preencha corretamente.");
-			result.redirectTo(this).cadastro();
-			return;
-		}
+		validator.checking(new Validations() {{
+			that(!propriedades.getNome().isEmpty(), "propriedade.nome", "propriedade.nome.notEmpty");
+			that(idDaTurma, is(notNullValue()), "turma.id", "turma.id.notNull");
+		}});
 		
-		ListaDeExercicios listaDeExercicios = new ListaDeExercicios();
-
-		Turma turma = turmaDao.carrega(idDaTurma);
-
-		if(prazoDeEntrega != null && prazoDeEntrega.size() == 5)
-			propriedades.setPrazoDeEntrega(prazoDeEntrega);
-	
+		propriedades.comPrazoDeEntrega(prazoDeEntrega);
 		
 		validator.validate(propriedades);
-		validator.onErrorUsePageOf(this).cadastro();
+		validator.onErrorForwardTo(this).cadastro();
 		
+		ListaDeExercicios listaDeExercicios = new ListaDeExercicios();
+		Turma turma = turmaDao.carrega(idDaTurma);
 		listaDeExercicios.setTurma(turma);
 		listaDeExercicios.setPropriedades(propriedades);
 

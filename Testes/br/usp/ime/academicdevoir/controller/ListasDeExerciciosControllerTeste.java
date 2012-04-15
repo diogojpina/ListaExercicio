@@ -138,6 +138,7 @@ public class ListasDeExerciciosControllerTeste {
 		listaDeExercicios.setId(0L);
 		
 		propriedadesDaListaDeExercicios = new PropriedadesDaListaDeExercicios();
+		propriedadesDaListaDeExercicios.setNome("nome");
 		
 		Calendar prazoProvisorio = Calendar.getInstance();
 		prazoProvisorio.setTimeInMillis(System.currentTimeMillis());
@@ -183,14 +184,27 @@ public class ListasDeExerciciosControllerTeste {
 	}
 
 	@Test
-	public void testeCadastra() {
+	public void deveCadastrarUmaListaDeExercicios() {
 		prazoFuturo(prazoDeEntrega);
 
 		listasDeExerciciosController.cadastra(propriedadesDaListaDeExercicios,
 				prazoDeEntrega, turma.getId());
 
 		verify(validator).validate(propriedadesDaListaDeExercicios);
-		verify(validator).onErrorUsePageOf(listasDeExerciciosController);
+		verify(validator).onErrorForwardTo(listasDeExerciciosController);
+		verify(dao).salva(any(ListaDeExercicios.class));
+		verify(result).redirectTo(listasDeExerciciosController);
+	}
+
+	@Test(expected=ValidationException.class)
+	public void naoDeveCadastrarListaDeExerciciosSemNome() {
+		prazoFuturo(prazoDeEntrega);
+		propriedadesDaListaDeExercicios.setNome("");
+		listasDeExerciciosController.cadastra(propriedadesDaListaDeExercicios,
+				prazoDeEntrega, turma.getId());
+
+		verify(validator).validate(propriedadesDaListaDeExercicios);
+		verify(validator).onErrorRedirectTo(listasDeExerciciosController);
 		verify(dao).salva(any(ListaDeExercicios.class));
 		verify(result).redirectTo(listasDeExerciciosController);
 	}

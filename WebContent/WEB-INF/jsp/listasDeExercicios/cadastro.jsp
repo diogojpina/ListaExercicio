@@ -20,14 +20,14 @@ import="java.sql.*" errorPage="" %>
 	<div id="menu">Cadastro de lista de exerc&iacute;cio</div>
 	<br/><br/>
 		<form style="width: 25em;" action="<c:url value="/listasDeExercicios" />" method="post" accept-charset="utf-8">
-			<c:forEach items="${mensagemDeErro}" var="msg">
-		    	<b>${msg}</b>
+			<c:forEach items="${errors}" var="msg">
+		    	<b>${msg.message}</b><br/>
 		    </c:forEach>
 		    <br><br>
 			<fieldset>
 				<legend>Cadastrar lista de exerc&iacute;cios</legend>				
 				<label for="nome">Nome:</label>
-					<input id="nome" type="text" name="propriedades.nome" />
+					<input id="nome" type="text" name="propriedades.nome" value="${propriedades.nome}"/>
 					<br/>
 				<label for="enunciado">Enunciado:</label>
 					<input id="enunciado" type="text" name="propriedades.enunciado" />
