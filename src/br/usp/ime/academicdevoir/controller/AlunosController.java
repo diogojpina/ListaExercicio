@@ -276,7 +276,9 @@ public class AlunosController {
 
 		aluno = alunoDao.carrega(idAluno);
 		turma = turmaDao.carrega(idTurma);
+		
 		alunoDao.removeMatricula(aluno, turma);
+		usuarioSession.setUsuario(aluno);
 		result.redirectTo(AlunosController.class).listaTurmas(idAluno);
 	}
 }

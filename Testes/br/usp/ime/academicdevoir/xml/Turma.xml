@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<dataset>
+	<Turma id="10600" nome="A(C)" disciplina_id="100" professor_id="101" temPrazo="nao"/>
+	<Turma id="10700" nome="B(C)" disciplina_id="100" professor_id="101" temPrazo="nao"/>
+	<Turma id="10800" nome="C(NC)" disciplina_id="100" professor_id="101" temPrazo="nao"/>
+</dataset>
+<!-- 
+<dataset>
+	<Disciplina id="1" nome="MAC110"/>
+	<Usuario id="1" email="prof@gmail.com" DTYPE="Professor" nome="prof" login="prof" senha="ec924f2b64b764b1738e7854789a1bd3" />
+	<Usuario id="2" email="email_2@gmail.com" DTYPE="Aluno" nome="nome-2" login="alunow" senha="ec924f2b64b764b1738e7854789a1bd3" />
+	
+</dataset>
+-->

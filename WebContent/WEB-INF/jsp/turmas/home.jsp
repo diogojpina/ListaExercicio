@@ -28,6 +28,13 @@ import="java.sql.*" errorPage="" %>
         </c:forEach>
 	</table>
     
+    <c:if test="${usuarioSession.usuario.privilegio == 'ALUNO'}">
+    <form action='../removeMatricula'>
+        <input type="hidden" name="idAluno" value="${usuarioSession.usuario.id}">
+        <input type="hidden" name="idTurma" value="${turma.id}">
+        <p class="submit"><input type="submit" value="Sair da turma"/></p>
+     </form>
+     </c:if>
     
     <form action='../../listasDeExercicios/cadastro' method="get">
         <c:if test ="${usuarioSession.usuario.privilegio != 'ALUNO' && usuarioSession.usuario.privilegio != 'MONITOR'}">

@@ -18,6 +18,7 @@ import br.com.caelum.vraptor.validator.ValidationException;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.internal.matchers.Not;
 
 import br.com.caelum.vraptor.util.test.JSR303MockValidator;
 import br.com.caelum.vraptor.util.test.MockResult;
@@ -208,6 +209,31 @@ public class ListasDeExerciciosControllerTeste {
 		verify(dao).salva(any(ListaDeExercicios.class));
 		verify(result).redirectTo(listasDeExerciciosController);
 	}
+	
+	@Test
+	public void cadastraFalhaDeNome(){
+		propriedadesDaListaDeExercicios.setNome(null);
+		propriedadesDaListaDeExercicios.setEnunciado("Lista que deve falhar");
+		propriedadesDaListaDeExercicios.setPeso(1);
+		
+		listasDeExerciciosController.cadastra(propriedadesDaListaDeExercicios, prazoDeEntrega, turma.getId());
+		
+		//Verificar se deu erro!
+		verify(result).include("mensagemDeErro", "Valores inválidos. Por favor, preencha corretamente.");
+	}
+	
+	@Test
+	public void cadastraFalhaDeTurmaId(){
+		propriedadesDaListaDeExercicios.setNome("Teste");
+		propriedadesDaListaDeExercicios.setEnunciado("Lista que deve falhar");
+		propriedadesDaListaDeExercicios.setPeso(1);
+		
+		listasDeExerciciosController.cadastra(propriedadesDaListaDeExercicios, prazoDeEntrega, null);
+		
+		//Verificar se deu erro!
+		verify(result).include("mensagemDeErro", "Valores inválidos. Por favor, preencha corretamente.");
+	}
+	
 
 	@Test(expected = ValidationException.class)
 	public void testeNaoDeveCadastrarQuestaoComPrazoPassado() {
