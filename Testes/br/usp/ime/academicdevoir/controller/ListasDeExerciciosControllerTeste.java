@@ -210,19 +210,7 @@ public class ListasDeExerciciosControllerTeste {
 		verify(result).redirectTo(listasDeExerciciosController);
 	}
 	
-	@Test
-	public void cadastraFalhaDeNome(){
-		propriedadesDaListaDeExercicios.setNome(null);
-		propriedadesDaListaDeExercicios.setEnunciado("Lista que deve falhar");
-		propriedadesDaListaDeExercicios.setPeso(1);
-		
-		listasDeExerciciosController.cadastra(propriedadesDaListaDeExercicios, prazoDeEntrega, turma.getId());
-		
-		//Verificar se deu erro!
-		verify(result).include("mensagemDeErro", "Valores inválidos. Por favor, preencha corretamente.");
-	}
-	
-	@Test
+	@Test(expected=ValidationException.class)
 	public void cadastraFalhaDeTurmaId(){
 		propriedadesDaListaDeExercicios.setNome("Teste");
 		propriedadesDaListaDeExercicios.setEnunciado("Lista que deve falhar");
@@ -230,8 +218,6 @@ public class ListasDeExerciciosControllerTeste {
 		
 		listasDeExerciciosController.cadastra(propriedadesDaListaDeExercicios, prazoDeEntrega, null);
 		
-		//Verificar se deu erro!
-		verify(result).include("mensagemDeErro", "Valores inválidos. Por favor, preencha corretamente.");
 	}
 	
 
