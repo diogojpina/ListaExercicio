@@ -4,23 +4,23 @@
 import="java.sql.*" errorPage="" %>
 
 <html>
+
 <head>
 <style type="text/css">
-
+<%@ include file="/css/form2.css" %>
 </style>
 <title>Academic Devoir</title>
 </head>
 
 <body>
-	<h1>Academic Devoir</h1>
-	<h2>Grupo 1 - Engenharia de Software</h2>
-	<div align="center">
-	     <a href="<c:url value='/administrador/alteracao?id=${usuarioSession.usuario.id}'/>">Alterar dados pessoais</a><br/><br/>
-	    <a href="<c:url value='/administrador/listaDisciplinas'/>">Listar disciplinas</a><br/><br/>
-	    <a href="#">Cadastrar disciplina</a><br/><br/>
-	    <a href="#">Listar Turmas</a><br/><br/>
+	<div id="wrapper"> 
+	<div id="header"> <%@ include file="/css/header.jsp" %></div> <br/>
+	<div id="left"><fieldset><%@ include file="/css/menu.jsp" %></fieldset></div>
+	<div id="right">
+	<div id="menu">Meus Cursos</div>
+	<br/><br/>
+	<br/><br/>
     </div>
-    <a href="#">Sair</a>
-    
+    </div>
 </body>
 </html>

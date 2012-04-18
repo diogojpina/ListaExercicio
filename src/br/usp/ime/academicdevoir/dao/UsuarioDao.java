@@ -1,5 +1,7 @@
 package br.usp.ime.academicdevoir.dao;
 
+import org.hibernate.HibernateException;
+import org.hibernate.NonUniqueObjectException;
 import org.hibernate.Session;
 import org.hibernate.criterion.Restrictions;
 
@@ -34,8 +36,10 @@ public class UsuarioDao {
     		System.out.println(usuario + " aqui o usuario");
     		
 	        return usuario;
-    	} catch (Exception e) { 
+    	} catch(HibernateException ex){
     		return null;
+    	} catch (Exception e) {
+    		throw new RuntimeException(e);
     	}
     }
 }

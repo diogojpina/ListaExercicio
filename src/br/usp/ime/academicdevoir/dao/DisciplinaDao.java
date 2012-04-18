@@ -31,7 +31,7 @@ public class DisciplinaDao {
 	public void salvaDisciplina(Disciplina disciplina) {
 		String nome = disciplina.getNome();
 	    List<Disciplina> listaDeDisciplinas = session.createCriteria(Disciplina.class)
-                .add(Restrictions.like("nome", nome, MatchMode.EXACT))
+                .add(Restrictions.eq("nome", nome))
                 .list();
         
 	    if (listaDeDisciplinas.size() != 0) return;

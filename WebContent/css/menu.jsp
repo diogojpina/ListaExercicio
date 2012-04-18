@@ -28,11 +28,13 @@ import="java.sql.*" errorPage="" %>
 	<br/>
 	<div id="menu">Menu</div>
 	<br/>
-	<c:if test ="${usuarioSession.usuario.privilegio == 'PROFESSOR' || usuarioSession.usuario.privilegio == 'ADMINISTRADOR'}">
+	<c:if test ="${usuarioSession.usuario.privilegio == 'ADMINISTRADOR'}">
+		<a href="<c:url value='/disciplinas/cadastro'/>">Cadastrar disciplina</a><br/><br/>
+	</c:if>
+	<c:if test ="${usuarioSession.usuario.privilegio == 'PROFESSOR'}">
 		<a href="<c:url value='/professores/alteracao?id=${usuarioSession.usuario.id}'/>">Alterar meus dados</a><br/><br/>
 		<a href="<c:url value='/professores/listaTurmas?idProfessor=${usuarioSession.usuario.id}'/>">Meus cursos</a><br/><br/>
 		<a href="<c:url value='/disciplinas/lista'/>">Listar disciplinas</a><br/><br/>
-		<a href="<c:url value='/disciplinas/cadastro'/>">Cadastrar disciplina</a><br/><br/>
 		<a href="<c:url value='/questoes/cadastro'/>">Cadastrar quest&atilde;o</a><br/><br/>
 		<br/><br/>
 		Links temporarios:<br/><br/>
