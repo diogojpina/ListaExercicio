@@ -7,7 +7,6 @@ import="java.sql.*" errorPage="" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <head>
 <style type="text/css">
-<%@ include file="/css/form.css" %>
 </style>
 <title>Academic Devoir</title>
 </head>
@@ -23,17 +22,7 @@ import="java.sql.*" errorPage="" %>
         	<!-- input type="submit" value="Inserir"/-->
         	<a href="<c:url value='/alunos/cadastro'/>">Inserir</a><br/>
         </form>
-<!--        <form action='alteracao'>
-        	<input type="submit" value="Alterar"/>
-        </form>
-        <form action='remocao'>
-        	
-        	<a href="<c:url value='/alunos/remocao'/>">Excluir</a><br/>
-        </form>
-        <form action='home'>
-        	
-		</form>
--->
+
     
 	<table>
     <thead>
