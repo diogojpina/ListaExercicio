@@ -139,6 +139,7 @@ public class ListasDeExerciciosControllerTeste {
 		listaDeExercicios.setId(0L);
 		
 		propriedadesDaListaDeExercicios = new PropriedadesDaListaDeExercicios();
+		propriedadesDaListaDeExercicios.setNome("nome");
 		
 		Calendar prazoProvisorio = Calendar.getInstance();
 		prazoProvisorio.setTimeInMillis(System.currentTimeMillis());
@@ -184,31 +185,32 @@ public class ListasDeExerciciosControllerTeste {
 	}
 
 	@Test
-	public void testeCadastra() {
+	public void deveCadastrarUmaListaDeExercicios() {
 		prazoFuturo(prazoDeEntrega);
 
 		listasDeExerciciosController.cadastra(propriedadesDaListaDeExercicios,
 				prazoDeEntrega, turma.getId());
 
 		verify(validator).validate(propriedadesDaListaDeExercicios);
-		verify(validator).onErrorUsePageOf(listasDeExerciciosController);
+		verify(validator).onErrorForwardTo(listasDeExerciciosController);
+		verify(dao).salva(any(ListaDeExercicios.class));
+		verify(result).redirectTo(listasDeExerciciosController);
+	}
+
+	@Test(expected=ValidationException.class)
+	public void naoDeveCadastrarListaDeExerciciosSemNome() {
+		prazoFuturo(prazoDeEntrega);
+		propriedadesDaListaDeExercicios.setNome("");
+		listasDeExerciciosController.cadastra(propriedadesDaListaDeExercicios,
+				prazoDeEntrega, turma.getId());
+
+		verify(validator).validate(propriedadesDaListaDeExercicios);
+		verify(validator).onErrorRedirectTo(listasDeExerciciosController);
 		verify(dao).salva(any(ListaDeExercicios.class));
 		verify(result).redirectTo(listasDeExerciciosController);
 	}
 	
-	@Test
-	public void cadastraFalhaDeNome(){
-		propriedadesDaListaDeExercicios.setNome(null);
-		propriedadesDaListaDeExercicios.setEnunciado("Lista que deve falhar");
-		propriedadesDaListaDeExercicios.setPeso(1);
-		
-		listasDeExerciciosController.cadastra(propriedadesDaListaDeExercicios, prazoDeEntrega, turma.getId());
-		
-		//Verificar se deu erro!
-		verify(result).include("mensagemDeErro", "Valores inválidos. Por favor, preencha corretamente.");
-	}
-	
-	@Test
+	@Test(expected=ValidationException.class)
 	public void cadastraFalhaDeTurmaId(){
 		propriedadesDaListaDeExercicios.setNome("Teste");
 		propriedadesDaListaDeExercicios.setEnunciado("Lista que deve falhar");
@@ -216,8 +218,6 @@ public class ListasDeExerciciosControllerTeste {
 		
 		listasDeExerciciosController.cadastra(propriedadesDaListaDeExercicios, prazoDeEntrega, null);
 		
-		//Verificar se deu erro!
-		verify(result).include("mensagemDeErro", "Valores inválidos. Por favor, preencha corretamente.");
 	}
 	
 

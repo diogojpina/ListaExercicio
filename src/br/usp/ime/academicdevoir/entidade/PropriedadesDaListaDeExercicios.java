@@ -112,6 +112,11 @@ public class PropriedadesDaListaDeExercicios {
 		this.prazoDeEntrega = prazoDeEntrega;
 	}	
 	
+	public void comPrazoDeEntrega(List<Integer> prazoDeEntrega) {
+		if(prazoDeEntrega != null && prazoDeEntrega.size() == 5)
+			setPrazoDeEntrega(prazoDeEntrega);
+	}
+
 	public void setPrazoDeEntrega(List<Integer> prazoDeEntrega) {
 		Calendar data = Calendar.getInstance();
 		data.set(prazoDeEntrega.get(2).intValue(), prazoDeEntrega.get(1).intValue() - 1, prazoDeEntrega.get(0).intValue(), prazoDeEntrega
