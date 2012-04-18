@@ -5,6 +5,9 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import junit.framework.Assert;
+
+import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.junit.Before;
@@ -29,10 +32,12 @@ public class TurmasDaoTest{
 	Aluno aluno;
 	Collection<Aluno> alunos;
 	Turma turmaMatriculada;
+	Turma turmaNaoMatriculada;
 	List<Turma> turmas;
 	
 	private @Mock Session session;
 	private @Mock Transaction tx;
+	private @Mock Criteria criteria;
 	
 	@Before
 	public void setUp(){
@@ -56,11 +61,33 @@ public class TurmasDaoTest{
 		turmaMatriculada.setDisciplina(disciplina);
 		turmaMatriculada.setAlunos(alunos);
 		
+		turmaNaoMatriculada = new Turma();
+		turmaNaoMatriculada.setId(1L);
+		turmaNaoMatriculada.setNome("MAC110");
+		turmaNaoMatriculada.setDisciplina(disciplina);
+		
 		turmas = new ArrayList<Turma>();
 		turmas.add(turmaMatriculada);
+		turmas.add(turmaNaoMatriculada);
+		
+		when(session.createCriteria(Turma.class)).thenReturn(criteria);
+		when(criteria.list()).thenReturn(turmas);
 		
 	}
 	
+	@Test
+	public void listaTurmasFiltradas(){
+		List<Turma> t = turmaDao.listaTurmasFiltradas(aluno.getId());
+		Assert.assertEquals(1, t.size());
+	}
+	
+	@Test
+	public void listaTudo(){
+		List<Turma> t = turmaDao.listaTudo();
+		Assert.assertEquals(turmas, t);
+		verify(session).createCriteria(Turma.class);
+		verify(criteria).list();
+	}
 	@Test
 	public void salvaTurma(){
 		turmaDao.salvaTurma(turmaMatriculada);
