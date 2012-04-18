@@ -6,7 +6,7 @@ import="java.sql.*" errorPage="" %>
 <html>
 <head>
 <style type="text/css">
-<%@ include file="../css/formatacao.css" %>
+
 </style>
 <title>Academic Devoir</title>
 </head>
