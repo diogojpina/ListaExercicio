@@ -208,6 +208,7 @@ public class TurmasController {
      * turma.
      */
     public void remocao() {
+    	
     }
 
     @Permission({ Privilegio.ADMINISTRADOR, Privilegio.PROFESSOR })
