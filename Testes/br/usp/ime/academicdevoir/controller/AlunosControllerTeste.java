@@ -109,6 +109,16 @@ public class AlunosControllerTeste {
         verify(alunoDao).salvaAluno(aluno);
         verify(result).redirectTo(AlunosController.class);
     }
+    
+    @Test
+    public void cadastraAlunoJaExistente() {        
+        when(alunoDao.temDuplicidade(aluno.getLogin())).thenReturn(true);
+    	alunoC.cadastra(aluno);
+    	verify(result).include("ErrorDuplicidade", "Este login ja existe.");
+        verify(alunoDao, never()).salvaAluno(aluno);
+        verify(result).redirectTo(AlunosController.class);
+        
+    }
 
     @Test
     public void alteracaoAluno() {

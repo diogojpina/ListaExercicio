@@ -86,6 +86,7 @@ $().ready(function() {
 		<p> 
 		    <label style="display:block;float:left;width:100px;text-align:right;margin:0px 5px 0px 0px;" for="novo.login">Login:</label>
 		    <input  name="novo.login" type="text"     size="30" value="${novo.login }" />
+		    ${ErrorDuplicidade}
 		</p>
 		<p>
 		    <label style="display:block;float:left;width:100px;text-align:right;margin:0px 5px 0px 0px;" for="novo.senha">Senha:</label>

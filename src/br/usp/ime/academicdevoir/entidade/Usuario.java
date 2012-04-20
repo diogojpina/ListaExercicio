@@ -1,6 +1,7 @@
 package br.usp.ime.academicdevoir.entidade;
 
-import javax.persistence.Entity; 
+import javax.persistence.Column;
+import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Inheritance;
@@ -29,6 +30,7 @@ public class Usuario {
 	 * @uml.property  name="login"
 	 */
 	@Length(min = 2, max = 30)
+	@Column(unique=true)
 	private String login;
 	/**
 	 * @uml.property  name="senha"

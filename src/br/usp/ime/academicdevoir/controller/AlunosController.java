@@ -118,6 +118,13 @@ public class AlunosController {
 	 */
 	@Public
 	public void cadastra(final Aluno novo) {
+		if (alunoDao.temDuplicidade(novo.getLogin())) {
+			result.include("novo", novo);
+			result.include("ErrorDuplicidade", "Este login ja existe.");
+			result.redirectTo(AlunosController.class).cadastro();
+			return;
+		}
+		
 		validator.validate(novo);
 		validator.onErrorUsePageOf(AlunosController.class).cadastro();
 

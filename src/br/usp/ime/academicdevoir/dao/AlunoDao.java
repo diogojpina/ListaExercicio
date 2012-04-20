@@ -26,20 +26,24 @@ public class AlunoDao {
 		this.session = session;
 	}
 
+	@SuppressWarnings("unchecked")
+	public boolean temDuplicidade(String login) {
+		List<Usuario> listaDeUsuarios = session.createCriteria(Usuario.class)
+                .add(Restrictions.like("login", login, MatchMode.EXACT))
+                .list();
+        
+	    if (listaDeUsuarios.size() == 0) 
+	    	return false;
+	    
+	    return true;
+	}
+	
 	/**
 	 * Cadastra o aluno fornecido no banco de dados.
 	 * 
 	 * @param aluno
 	 */
-	@SuppressWarnings("unchecked")
-	public void salvaAluno(Aluno aluno) {
-	    String login = aluno.getLogin();
-	    List<Usuario> listaDeUsuarios = session.createCriteria(Usuario.class)
-                .add(Restrictions.like("login", login, MatchMode.EXACT))
-                .list();
-        
-	    if (listaDeUsuarios.size() != 0) return;
-	        
+	public void salvaAluno(Aluno aluno) {    
 	    Transaction tx = session.beginTransaction();
 		session.save(aluno);
 		tx.commit();
