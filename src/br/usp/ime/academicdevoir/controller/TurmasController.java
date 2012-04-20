@@ -146,10 +146,7 @@ public class TurmasController {
     	}});
     	validator.onErrorRedirectTo(this).cadastro();
     	
-		if(nova.getDisciplina() == null) {
-			result.redirectTo(DisciplinasController.class).cadastro();
-			return;
-		}
+		
 		nova.setPrazoDeMatricula(prazoDeMatricula);
         turmaDao.salvaTurma(nova);
         result.redirectTo(ProfessoresController.class).listaTurmas(nova.getProfessor().getId());
