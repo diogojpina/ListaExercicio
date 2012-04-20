@@ -1,20 +1,21 @@
 package br.usp.ime.academicdevoir.controller;
 
+import static org.junit.Assert.assertNotNull;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import static org.mockito.Mockito.spy;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import org.hibernate.mapping.Array;
 import org.junit.Before;
 import org.junit.Test;
 
-import static org.junit.Assert.*;
-
+import br.com.caelum.vraptor.Validator;
+import br.com.caelum.vraptor.util.test.JSR303MockValidator;
 import br.com.caelum.vraptor.util.test.MockResult;
+import br.com.caelum.vraptor.validator.ValidationException;
 import br.usp.ime.academicdevoir.dao.AlunoDao;
 import br.usp.ime.academicdevoir.dao.DisciplinaDao;
 import br.usp.ime.academicdevoir.dao.ListaDeExerciciosDao;
@@ -26,6 +27,7 @@ import br.usp.ime.academicdevoir.entidade.Professor;
 import br.usp.ime.academicdevoir.entidade.Turma;
 import br.usp.ime.academicdevoir.infra.Privilegio;
 import br.usp.ime.academicdevoir.infra.UsuarioSession;
+import br.usp.ime.academicdevoir.util.Given;
 
 public class TurmasControllerTeste {
 	
@@ -75,6 +77,8 @@ public class TurmasControllerTeste {
 	private Aluno aluno;
 	private Disciplina disciplina;
 	
+	private Validator validator;
+	
 	@Before
 	public void SetUp() {
 		admin = new Professor();
@@ -87,13 +91,15 @@ public class TurmasControllerTeste {
 
 		usuarioSession = new UsuarioSession();
 		usuarioSession.setUsuario(admin);
+		validator = spy(new JSR303MockValidator());
 
 		turmaDao = mock(TurmaDao.class);
 		disciplinaDao = mock(DisciplinaDao.class);
 		alunoDao = mock(AlunoDao.class);
 		result = spy(new MockResult());
 		
-		turmasController = new TurmasController(result, turmaDao, disciplinaDao, alunoDao, listaDeExerciciosDao, usuarioSession);
+		
+		turmasController = new TurmasController(result, validator, turmaDao, disciplinaDao, alunoDao, listaDeExerciciosDao, usuarioSession);
 		turma = new Turma();
 		List<Integer> data = new ArrayList<Integer>();
 		data.add(2);
@@ -145,17 +151,23 @@ public class TurmasControllerTeste {
 	
 
 	@Test
-	public void testCadastro() {
-		turmasController.cadastro(disciplina.getId());
-		Long idDisciplina = result.included("idDisciplina");		
-		assertNotNull(idDisciplina);
+	public void deveRedirecionarParaPaginaDeCadastroComUmaListaDeDisciplinas() {
+		turmasController.cadastro();
+		verify(disciplinaDao).listaTudo();
 	}
 	
-//	@Test
-//	public void testeCadastra() {
-//		turmasController.cadastra(turma);		
-//		verify(result).redirectTo(ProfessoresController.class);
-//	}
+	@Test
+	public void deveCadastrar() {
+		turmasController.cadastra(turma, Given.prazoDeMatricula());		
+		verify(result).redirectTo(ProfessoresController.class);
+	}
+	
+	@Test(expected=ValidationException.class)
+	public void naoDeveCadastrarTurmaSemDisciplina() {
+		turma.setDisciplina(null);
+		turmasController.cadastra(turma, Given.prazoDeMatricula());		
+
+	}
 	
 	@Test
 	public void testeAlteracao() {		

@@ -1,11 +1,17 @@
 package br.usp.ime.academicdevoir.controller;
 
+import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.notNullValue;
+
 import java.util.Calendar;
 import java.util.List;
 
+import br.com.caelum.vraptor.Get;
 import br.com.caelum.vraptor.Path;
 import br.com.caelum.vraptor.Resource;
 import br.com.caelum.vraptor.Result;
+import br.com.caelum.vraptor.Validator;
+import br.com.caelum.vraptor.validator.Validations;
 import br.usp.ime.academicdevoir.dao.AlunoDao;
 import br.usp.ime.academicdevoir.dao.DisciplinaDao;
 import br.usp.ime.academicdevoir.dao.ListaDeExerciciosDao;
@@ -24,11 +30,10 @@ import br.usp.ime.academicdevoir.infra.UsuarioSession;
  * Controlador de turmas.
  */
 public class TurmasController {
-    /**
-     * @uml.property name="result"
-     * @uml.associationEnd multiplicity="(1 1)"
-     */
     private final Result result;
+    
+    private final Validator validator;
+    
     /**
      * @uml.property name="turmaDao"
      * @uml.associationEnd multiplicity="(1 1)"
@@ -61,10 +66,11 @@ public class TurmasController {
      * @param alunoDao
      *            para interação com o banco de dados
      */
-    public TurmasController(Result result, TurmaDao turmaDao,
+    public TurmasController(Result result, Validator validator, TurmaDao turmaDao,
             DisciplinaDao disciplinaDao, AlunoDao alunoDao, ListaDeExerciciosDao listaDeExerciciosDao,
             UsuarioSession usuarioSession) {
         this.result = result;
+        this.validator = validator;
         this.turmaDao = turmaDao;
         this.disciplinaDao = disciplinaDao;
         this.alunoDao = alunoDao;
@@ -120,19 +126,11 @@ public class TurmasController {
     }
 
     @Permission({ Privilegio.ADMINISTRADOR, Privilegio.PROFESSOR })
-    /**
-     * Método está associado ao .jsp do formulário de cadastro de uma turma no
-     * sistema.
-     */
-    public void cadastro(long idDisciplina) {    	
-		List<Disciplina> listaDeDisciplinas = disciplinaDao.listaTudo();
-		if(listaDeDisciplinas.isEmpty()) {
-			result.redirectTo(DisciplinasController.class).cadastro();
-			return;
-		}
+    @Get("/turmas/nova")
+    public void cadastro() {    	
+		List<Disciplina> disciplinas = disciplinaDao.listaTudo();
 		
-        //result.include("listaDeDisciplinas", listaDeDisciplinas);
-		result.include("idDisciplina", idDisciplina);
+        result.include("disciplinas", disciplinas);
         
         Calendar dataDeHoje = Calendar.getInstance();
         result.include("diaAtual", dataDeHoje.get(Calendar.DAY_OF_MONTH));
@@ -141,12 +139,13 @@ public class TurmasController {
     }
 
     @Permission({ Privilegio.ADMINISTRADOR, Privilegio.PROFESSOR })
-    /**
-     * Cadastra uma turma nova no sistema.
-     * 
-     * @param nova
-     */
-    public void cadastra(Turma nova, final List<Integer> prazoDeMatricula) {		
+    public void cadastra(final Turma nova, final List<Integer> prazoDeMatricula) {	
+    	
+    	validator.checking(new Validations() {{
+    		that(nova.getDisciplina().getId(), is(notNullValue()), "disciplina", "disciplina.notNull");
+    	}});
+    	validator.onErrorRedirectTo(this).cadastro();
+    	
 		if(nova.getDisciplina() == null) {
 			result.redirectTo(DisciplinasController.class).cadastro();
 			return;

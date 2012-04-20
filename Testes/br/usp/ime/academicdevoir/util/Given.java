@@ -1,5 +1,7 @@
 package br.usp.ime.academicdevoir.util;
 
+import java.util.List;
+
 import br.usp.ime.academicdevoir.entidade.Aluno;
 import br.usp.ime.academicdevoir.entidade.Usuario;
 import br.usp.ime.academicdevoir.infra.Privilegio;
@@ -27,5 +29,10 @@ public class Given {
 		return aluno;
 
 	}
-
+	
+	public static  List<Integer>  prazoDeMatricula() {
+		
+		return null;
+	}
+	
 }
