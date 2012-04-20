@@ -164,14 +164,17 @@ public class AlunosController {
 		a = alunoDao.carrega(id);
 		a.setNome(novoNome);
 		a.setEmail(novoEmail);
-		a.setSenha(novaSenha);
+		if(!novaSenha.trim().equals(""))
+			a.setSenha(novaSenha);
 
 		validator.validate(a);
 		validator.onErrorUsePageOf(AlunosController.class).alteracao(id);
 
-		a.setSenha(new Criptografia().geraMd5(novaSenha));
+		if(!novaSenha.trim().equals(""))
+			a.setSenha(new Criptografia().geraMd5(novaSenha));
 
 		alunoDao.atualizaAluno(a);
+		usuarioSession.setUsuario(a);
 		result.redirectTo(AlunosController.class).home();
 	}
 
