@@ -74,14 +74,6 @@ import="java.sql.*" errorPage="" %>
 		</c:forEach>
 		<button id="enviaRespostas" type="button">Salvar</button>
 	</div>
-	
-    <a href="<c:url value='/login'/>">Sair</a>
-        <c:if test ="${usuarioSession.usuario.privilegio == 'ALUNO' || usuarioSession.usuario.privilegio == 'MONITOR'}">
-    	<a href="<c:url value='/alunos/home'/>">Página Principal</a><br/>
- 	</c:if>
-    <c:if test ="${usuarioSession.usuario.privilegio == 'PROFESSOR' || usuarioSession.usuario.privilegio == 'ADMINISTRADOR'}">
-    	<a href="<c:url value='/professores/home'/>">Página Principal</a><br/>    		         
- 	</c:if>
  	</div>
  	</div>	
 </body>

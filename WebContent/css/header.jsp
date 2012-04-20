@@ -46,7 +46,7 @@ margin-right: 3px;
 <c:otherwise>
 <div id="dir"> 
 <br/>
-Voc&ecirc; acessou como ${usuarioSession.usuario.nome } (<a href="<c:url value='/login'/>">Sair</a>) 
+Voc&ecirc; acessou como ${usuarioSession.usuario.nome } (<a href="<c:url value='/logout'/>">Sair</a>) 
 </div>
 </c:otherwise>
 </c:choose>
