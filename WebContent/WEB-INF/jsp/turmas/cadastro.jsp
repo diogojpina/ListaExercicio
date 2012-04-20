@@ -21,9 +21,24 @@ import="java.sql.*" errorPage="" %>
 	<div id="menu">Cadastro de Turma</div>
 	<br/><br/>
 	<form action='cadastra' method="post" accept-charset="utf-8">
+		<c:forEach items="${errors}" var="msg">
+		    	<b>${msg.message}</b><br/>
+		    </c:forEach>
 	<fieldset>
 		<input type="hidden" name="nova.professor.id" value="${usuarioSession.usuario.id }"/>
-		<input type="hidden" name="nova.disciplina.id" value="${idDisciplina }"/>
+	
+		<p>	
+			<label>Disciplinas:</label>
+			<select name="nova.disciplina.id">
+				<option value="">Selecione uma disciplina</option>
+				<c:forEach items="${disciplinas}" var="disciplina">
+					
+					<option value="${disciplina.id}">${disciplina.nome }</option>
+				</c:forEach>
+			</select>
+		</p>
+		
+		
 		<p><label>Nome: </label><input type="text" size="30" name="nova.nome"/></p>
 		<p><label>Bloquear novas matriculas após data limite?</label>
 			<input type="radio" name="nova.temPrazo" value="sim" checked/>Sim
