@@ -25,7 +25,7 @@ $().ready(function() {
         		minlength: 5
         	},
             "novaSenha": {
-                required: true,
+                required: false,
                 minlength: 5
             },
             "novoEmail": {
@@ -33,7 +33,7 @@ $().ready(function() {
                 email: true
             },
             "confirmaSenha": {
-            	required: true,
+            	required: false,
             	equalTo: '#senha'
             }
         },

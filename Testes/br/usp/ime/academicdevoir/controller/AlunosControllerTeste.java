@@ -5,11 +5,13 @@ import static org.junit.Assert.assertNull;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+
+import junit.framework.Assert;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -23,6 +25,7 @@ import br.usp.ime.academicdevoir.dao.TurmaDao;
 import br.usp.ime.academicdevoir.entidade.Aluno;
 import br.usp.ime.academicdevoir.entidade.Disciplina;
 import br.usp.ime.academicdevoir.entidade.Turma;
+import br.usp.ime.academicdevoir.infra.Criptografia;
 import br.usp.ime.academicdevoir.infra.UsuarioSession;
 import br.usp.ime.academicdevoir.util.Given;
 
@@ -116,7 +119,19 @@ public class AlunosControllerTeste {
     
     @Test
     public void atualizaAluno() {
+    	String senhaCripto = new Criptografia().geraMd5("nova senha");
         alunoC.altera(aluno.getId(), "novo nome", "novoemail@usp.br", "nova senha");
+        Assert.assertEquals(senhaCripto, aluno.getSenha());
+        verify(alunoDao).atualizaAluno(aluno);
+        verify(result).redirectTo(AlunosController.class);
+    }
+    
+    @Test
+    public void atualizaAlunoSemMexerNaSenha() {
+    	String senhaCripto = new Criptografia().geraMd5("senha");
+    	aluno.setSenha(senhaCripto);
+    	alunoC.altera(aluno.getId(), "novo nome", "novoemail@usp.br", "");
+    	Assert.assertEquals(senhaCripto, aluno.getSenha());
         verify(alunoDao).atualizaAluno(aluno);
         verify(result).redirectTo(AlunosController.class);
     }
