@@ -32,6 +32,7 @@ import="java.sql.*" errorPage="" %>
 		<a href="<c:url value='/disciplinas/cadastro'/>">Cadastrar disciplina</a><br/><br/>
 	</c:if>
 	<c:if test ="${usuarioSession.usuario.privilegio == 'PROFESSOR'}">
+		<a href="<c:url value='/professores/home'/>">Página Principal</a><br/><br/>
 		<a href="<c:url value='/professores/alteracao?id=${usuarioSession.usuario.id}'/>">Alterar meus dados</a><br/><br/>
 		<a href="<c:url value='/professores/listaTurmas?idProfessor=${usuarioSession.usuario.id}'/>">Meus cursos</a><br/><br/>
 		<a href="<c:url value='/disciplinas/lista'/>">Listar disciplinas</a><br/><br/>
@@ -41,13 +42,14 @@ import="java.sql.*" errorPage="" %>
 		<a href="<c:url value='/listasDeExercicios/cadastro'/>">Cadastrar Lista</a><br/><br/>
 		<br/><br/>		
 
-		<a href="<c:url value='/login'/>">Sair</a>
+		<a href="<c:url value='/logout'/>">Sair</a>
 	</c:if>
 	<c:if test ="${usuarioSession.usuario.privilegio == 'ALUNO' || usuarioSession.usuario.privilegio == 'MONITOR'}">
+		<a href="<c:url value='/alunos/home'/>">Página Principal</a><br/><br/>
 		<a href="<c:url value='/alunos/alteracao?id=${usuarioSession.usuario.id}'/>">Alterar meus dados</a><br/><br/>
 		<a href="<c:url value='/alunos/listaTurmas?idAluno=${usuarioSession.usuario.id}'/>">Meus cursos</a><br/><br/>
 		<a href="<c:url value='/alunos/matricula'/>">Matrícula</a><br/><br/>
-		<a href="<c:url value='/login'/>">Sair</a>
+		<a href="<c:url value='/logout'/>">Sair</a>
 	</c:if>        
 </body>
 </html>

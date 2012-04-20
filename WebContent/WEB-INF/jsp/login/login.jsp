@@ -21,9 +21,7 @@ width: 20em;
 	<div id="container">
 		<c:forEach var="error" items="${errors}">
 			<li style="color:red"> ${error.category} - ${error.message}</li>
-		</c:forEach>	
-		<c:choose>
-			<c:when test="${empty usuarioSession.usuario.nome}">
+		</c:forEach>
 				<form id="form_login" action="autenticar" method="post">   
 		                <fieldset> 
 				<legend>Fa&ccedil;a o login:</legend><br/>
@@ -47,21 +45,6 @@ width: 20em;
 	                	</fieldset>
 		                <c:out value="${error}"></c:out>
 				</form> 
-			</c:when>
-
-			<c:otherwise>
-				Tem certeza ${usuarioSession.usuario.nome}?
-				<div>    
-				<a href="logout">Sair</a>
-				<c:if test ="${usuarioSession.usuario.privilegio == 'PROFESSOR' || usuarioSession.usuario.privilegio == 'ADMINISTRADOR'}">
-        				<a href="<c:url value='/professores/home'/>">Página Principal</a><br/>              
-				</c:if>
-				<c:if test ="${usuarioSession.usuario.privilegio == 'ALUNO' || usuarioSession.usuario.privilegio == 'MONITOR'}">
-        				<a href="<c:url value='/alunos/home'/>">Página Principal</a><br/>              
-				</c:if>
-				</div> 
-			</c:otherwise>
-	     </c:choose>
 	</div>    
 </div>
 </body>
