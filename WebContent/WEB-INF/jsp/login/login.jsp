@@ -42,7 +42,7 @@ width: 20em;
 		                </div>
 		                <div>    
 	                        <div id="link"><a href="alunos/cadastro">Criar Conta</a></div>
-	                        <div id="link"><a href="#">Esqueci minha senha xD</a></div>
+	                        <div id="link"><a href="#">Esqueci minha senha</a></div>
 	                    </div> 
 	                	</fieldset>
 		                <c:out value="${error}"></c:out>
