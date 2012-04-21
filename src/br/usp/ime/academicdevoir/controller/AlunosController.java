@@ -260,7 +260,9 @@ public class AlunosController {
 		}
 
 		else {
-			result.redirectTo(AlunosController.class).listaTurmas(idAluno);
+			//O prazo está vencido!
+			result.include("prazoMaximoAtingido", "Nao foi possivel cadastrar pois o prazo maximo foi atingido.");
+			result.redirectTo(AlunosController.class).matricula();
 			return;
 		} 
 	}

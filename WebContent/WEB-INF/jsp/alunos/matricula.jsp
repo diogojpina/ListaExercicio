@@ -31,6 +31,7 @@ import="java.sql.*" errorPage="" %>
     <c:forEach items="${matriculaInvalida}" var="matricula">
     	<br><br>${matricula}
     </c:forEach>
+    <br><br>${prazoMaximoAtingido}</br></br>
 	</form>
 	</div>
 	</div>
