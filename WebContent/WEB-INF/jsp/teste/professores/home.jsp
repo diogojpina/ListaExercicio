@@ -15,7 +15,7 @@
 <body>
 	<div id="menu">Menu</div>
     <a href="<c:url value='/professores/alteracao?id=${usuarioSession.usuario.id}'/>">Alterar dados pessoais</a><br/><br/>
-	<a href="<c:url value='/professores/listaTurmas?idProfessor=${usuarioSession.usuario.id}'/>">Meus cursos</a><br/><br/>
+	<a href="<c:url value='/professores/listaTurmas?idProfessor=${usuarioSession.usuario.id}'/>">Minhas Turmas</a><br/><br/>
 	<a href="<c:url value='/disciplinas/lista'/>">Listar disciplinas</a><br/><br/>
 	<a href="<c:url value='/questoes/cadastro'/>">Cadastrar quest&atilde;o</a><br/><br/>
 	<a href="<c:url value='/turmas/cadastro'/>">Cadastrar Turma</a><br/><br/>

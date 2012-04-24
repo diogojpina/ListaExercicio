@@ -24,7 +24,7 @@ width: 20em;
 		</c:forEach>
 				<form id="form_login" action="autenticar" method="post">   
 		                <fieldset> 
-				<legend>Fa&ccedil;a o login:</legend><br/>
+				<legend>Acesso</legend><br/>
 						<table cellspacing="5" cellpadding="2">
 						<tr>
 		                    <td><label for="usuario.login">Login:</label></td> 

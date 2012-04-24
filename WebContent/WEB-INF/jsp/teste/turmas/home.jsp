@@ -41,7 +41,7 @@
         <a href="<c:url value='../../listasDeExercicios?idTurma=${turma.id}'/>">Resolver lista</a><br/>
     </form>
     
-    <!-- a href="<c:url value='/professores/listaTurmas?idProfessor=${usuarioSession.usuario.id}'/>">Meus cursos</a-->
+    <!-- a href="<c:url value='/professores/listaTurmas?idProfessor=${usuarioSession.usuario.id}'/>">Minhas Turmas</a-->
     
     <div id="link"><a href="<c:url value='/login'/>">Sair</a></div>
     

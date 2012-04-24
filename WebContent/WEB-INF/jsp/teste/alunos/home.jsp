@@ -20,7 +20,7 @@
     </form>	
     <form action='listaTurmas' method="get">
         <input type = "hidden" name="idAluno" value="${usuarioSession.usuario.id}" />
-        <a href="<c:url value='/alunos/listaTurmas?idAluno=${usuarioSession.usuario.id}'/>" target="frame">Meus cursos</a>
+        <a href="<c:url value='/alunos/listaTurmas?idAluno=${usuarioSession.usuario.id}'/>" target="frame">Minhas Turmas</a>
     </form>
     <a href="<c:url value='/login'/>">Sair</a>
 

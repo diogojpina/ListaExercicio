@@ -12,7 +12,7 @@ import="java.sql.*" errorPage="" %>
 </head>
 
 <body>
-	<div id="menu"> Meus Cursos </div>
+	<div id="menu"> Minhas Turmas </div>
 	<br/>
 	<table>
         <c:forEach items="${usuarioSession.usuario.turmas}" var="t">
@@ -48,7 +48,7 @@ import="java.sql.*" errorPage="" %>
 	<c:if test ="${usuarioSession.usuario.privilegio == 'ALUNO' || usuarioSession.usuario.privilegio == 'MONITOR'}">
 		<a href="<c:url value='/alunos/home'/>">Página Principal</a><br/><br/>
 		<a href="<c:url value='/alunos/alteracao?id=${usuarioSession.usuario.id}'/>">Alterar meus dados</a><br/><br/>
-		<a href="<c:url value='/alunos/listaTurmas?idAluno=${usuarioSession.usuario.id}'/>">Meus cursos</a><br/><br/>
+		<a href="<c:url value='/alunos/listaTurmas?idAluno=${usuarioSession.usuario.id}'/>">Minhas Turmas</a><br/><br/>
 		<a href="<c:url value='/alunos/matricula'/>">Matrícula</a><br/><br/>
 		<a href="<c:url value='/logout'/>">Sair</a>
 	</c:if>        
