@@ -210,11 +210,13 @@ public class ListasDeExerciciosController {
 		listaDeRespostas.setRespostas(new ArrayList<Resposta>());
         listaDeRespostasDao.salva(listaDeRespostas);
 		
-		result.include("prazo", listaDeExercicios.getPropriedades()
-				.getPrazoDeEntregaFormatado());
+        if(listaDeExercicios.getPropriedades() != null)
+        	result.include("prazo", listaDeExercicios.getPropriedades()
+        			.getPrazoDeEntregaFormatado());
 		result.include("listaDeExercicios", listaDeExercicios);
-		result.include("numeroDeQuestoes", listaDeExercicios.getQuestoes()
-				.size());
+		if(listaDeExercicios.getQuestoes() != null)
+			result.include("numeroDeQuestoes", listaDeExercicios.getQuestoes()
+					.size());
 		result.include("listaDeRespostas", listaDeRespostas);
 	}
 

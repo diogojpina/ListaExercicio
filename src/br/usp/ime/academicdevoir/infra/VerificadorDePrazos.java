@@ -4,7 +4,9 @@ import java.util.Date;
 
 public class VerificadorDePrazos {
     public static Boolean estaNoPrazo(Date prazo) {
-        Date atual = new Date();
+        if(prazo == null)
+        	return true;
+    	Date atual = new Date();
         return prazo.after(atual);
     }
 }
