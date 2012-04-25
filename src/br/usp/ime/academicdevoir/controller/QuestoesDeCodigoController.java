@@ -119,7 +119,6 @@ public class QuestoesDeCodigoController {
 
     @Get
     @Path("/questoes/codigo")
-    @Permission(Privilegio.ADMINISTRADOR)
     /**
      * Devolve uma lista com todas as questões de texto cadastradas no banco de dados.
      */

@@ -2,6 +2,9 @@ package br.usp.ime.academicdevoir.entidade;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.validation.constraints.NotNull;
+
+import org.hibernate.validator.constraints.NotEmpty;
 
 import br.usp.ime.academicdevoir.dao.TagDao;
 import br.usp.ime.academicdevoir.infra.Constantes;
@@ -14,7 +17,10 @@ public class QuestaoDeCodigo extends Questao {
      * @uml.property name="resposta"
      */
     @Column(length = Constantes.MAX_TAM_CAMPO)
+    @NotEmpty
+    @NotNull
     private String codigoDeTeste;
+    
     private String linguagem;
 
     public QuestaoDeCodigo() {

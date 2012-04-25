@@ -14,9 +14,11 @@ import javax.persistence.InheritanceType;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.validation.constraints.NotNull;
 
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
+import org.hibernate.validator.constraints.NotEmpty;
 
 import br.usp.ime.academicdevoir.dao.TagDao;
 import br.usp.ime.academicdevoir.infra.Constantes;
@@ -35,7 +37,9 @@ public abstract class Questao {
 	private Long id;
 
     @Column(length = Constantes.MAX_TAM_CAMPO)
-	protected String enunciado;
+    @NotEmpty
+    @NotNull
+    protected String enunciado;
 	
 	@ManyToMany(fetch = FetchType.LAZY)
 	@JoinTable(name = "tags_questoes", joinColumns = { @JoinColumn(name = "id_questao") }, inverseJoinColumns = { @JoinColumn(name = "id_tag") })
@@ -91,7 +95,8 @@ public abstract class Questao {
 	}
 	
 	public void setTags(String stringTags, TagDao dao) {
-		if (stringTags == null) return;
+		if (stringTags == null || stringTags.equals("")) 
+			return;
 		
 		List<String> tags = Arrays.asList( stringTags.split(",[ ]*") );
 		for (String nome : tags) {
