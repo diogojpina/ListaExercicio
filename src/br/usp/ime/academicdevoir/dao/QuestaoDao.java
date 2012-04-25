@@ -1,5 +1,6 @@
 package br.usp.ime.academicdevoir.dao;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.hibernate.Criteria;
@@ -10,6 +11,7 @@ import org.hibernate.criterion.Restrictions;
 
 import br.com.caelum.vraptor.ioc.Component;
 import br.usp.ime.academicdevoir.entidade.Questao;
+import br.usp.ime.academicdevoir.entidade.Tag;
 
 @Component
 public class QuestaoDao {
@@ -20,6 +22,7 @@ public class QuestaoDao {
 	 *                     elementType="br.usp.ime.academicdevoir.entidade.Questao"
 	 */
 	private final Session session;
+	
 
 	public QuestaoDao(Session session) {
 		this.session = session;
@@ -32,7 +35,7 @@ public class QuestaoDao {
 	 * @return List<Questao>
 	 */
 	public List<Questao> listaTudo() {
-		return this.session.createCriteria(Questao.class).list();
+		return this.session.createQuery("from Questao").list();
 	}
 	
 	/**
@@ -42,8 +45,8 @@ public class QuestaoDao {
 	 */
 	private Criteria listaFiltrada(String filtro) {
 		Criteria criteria = this.session.createCriteria(Questao.class);
-		if (filtro != null)
-			criteria.createCriteria("tags").add(Restrictions.ilike("nome", filtro, MatchMode.ANYWHERE));		
+		if (filtro != null && !filtro.equals(""))
+			criteria.createCriteria("tags").add(Restrictions.ilike("nome", filtro, MatchMode.ANYWHERE));
 		return criteria;
 	}
 
