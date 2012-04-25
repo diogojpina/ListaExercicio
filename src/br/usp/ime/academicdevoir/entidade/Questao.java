@@ -18,6 +18,7 @@ import javax.validation.constraints.NotNull;
 
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
+import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import br.usp.ime.academicdevoir.dao.TagDao;
@@ -30,24 +31,27 @@ import br.usp.ime.academicdevoir.infra.TipoDeQuestao;
 public abstract class Questao {
 
 	/**
-	 * @uml.property  name="id"
+	 * @uml.property name="id"
 	 */
 	@Id
 	@GeneratedValue
 	private Long id;
 
-    @Column(length = Constantes.MAX_TAM_CAMPO)
-    @NotEmpty
-    @NotNull
-    protected String enunciado;
-	
+	@Column(length = Constantes.MAX_TAM_CAMPO)
+	protected String comentario;
+
+	@Column(length = Constantes.MAX_TAM_CAMPO)
+	@NotEmpty
+	@NotNull
+	protected String enunciado;
+
 	@ManyToMany(fetch = FetchType.LAZY)
 	@JoinTable(name = "tags_questoes", joinColumns = { @JoinColumn(name = "id_questao") }, inverseJoinColumns = { @JoinColumn(name = "id_tag") })
 	protected List<Tag> tags = new ArrayList<Tag>();
 
 	/**
 	 * @return
-	 * @uml.property  name="id"
+	 * @uml.property name="id"
 	 */
 	public Long getId() {
 		return id;
@@ -55,15 +59,15 @@ public abstract class Questao {
 
 	/**
 	 * @param id
-	 * @uml.property  name="id"
+	 * @uml.property name="id"
 	 */
 	public void setId(Long id) {
 		this.id = id;
 	}
-	
+
 	/**
 	 * @return
-	 * @uml.property  name="enunciado"
+	 * @uml.property name="enunciado"
 	 */
 	public String getEnunciado() {
 		return enunciado;
@@ -71,7 +75,7 @@ public abstract class Questao {
 
 	/**
 	 * @param enunciado
-	 * @uml.property  name="enunciado"
+	 * @uml.property name="enunciado"
 	 */
 	public void setEnunciado(String enunciado) {
 		this.enunciado = enunciado;
@@ -80,7 +84,7 @@ public abstract class Questao {
 	public List<Tag> getTags() {
 		return tags;
 	}
-	
+
 	public String getTagsEmString() {
 		StringBuffer buffer = new StringBuffer();
 		for (Tag tag : this.tags) {
@@ -93,12 +97,12 @@ public abstract class Questao {
 	public void setTags(List<Tag> tags) {
 		this.tags = tags;
 	}
-	
+
 	public void setTags(String stringTags, TagDao dao) {
-		if (stringTags == null || stringTags.equals("")) 
+		if (stringTags == null || stringTags.equals(""))
 			return;
-		
-		List<String> tags = Arrays.asList( stringTags.split(",[ ]*") );
+
+		List<String> tags = Arrays.asList(stringTags.split(",[ ]*"));
 		for (String nome : tags) {
 			Tag tag = dao.buscaPeloNome(nome);
 			if (tag == null) {
@@ -106,41 +110,50 @@ public abstract class Questao {
 				dao.salva(tag);
 			}
 			this.tags.add(tag);
-		}		
+		}
 	}
-	
+
+	public String getComentario() {
+		return comentario;
+	}
+
+	public void setComentario(String comentario) {
+		this.comentario = comentario;
+	}
+
 	public abstract TipoDeQuestao getTipo();
-	
+
 	public abstract String getRenderizacao();
-	
+
 	public abstract String getRenderAlteracao(Resposta resposta);
-	
-	public String getRenderCorrecao (Resposta resposta) {
-        if (resposta == null)
-            resposta = new Resposta();
-        
-        String htmlResult = "";
-        StringBuffer buffer = new StringBuffer();
 
-        buffer.append("<p>");
-        if (resposta.getValor() != null)
-            buffer.append(resposta.getValor());
-        buffer.append("</p>");
-        buffer.append("<p> Comentários: ");
-        if (resposta.getComentario() != null)
-            buffer.append(resposta.getComentario());
-        buffer.append("</p>");
-        buffer.append("<p> Nota: ");
-        if (resposta.getNota() != null)
-            buffer.append(resposta.getNota());
-        buffer.append("</p>");
+	public String getRenderCorrecao(Resposta resposta) {
+		if (resposta == null)
+			resposta = new Resposta();
 
-        htmlResult = buffer.toString();
+		String htmlResult = "";
+		StringBuffer buffer = new StringBuffer();
 
-        return htmlResult;
-        
-    }
+		buffer.append("<p>");
+		if (resposta.getValor() != null)
+			buffer.append(resposta.getValor());
+		buffer.append("</p>");
+		buffer.append("<p> Comentários:<br/> ");
+		if (resposta.getComentario() != null)
+			buffer.append(resposta.getQuestao().getComentario());
+		buffer.append("</p>");
+		buffer.append("<p> Nota: ");
+		if (resposta.getNota() != null)
+			buffer.append(resposta.getNota());
+		buffer.append("</p>");
+
+		htmlResult = buffer.toString();
+
+		return htmlResult;
+
+	}
+
 	public abstract Boolean respostaDoAlunoEhCorreta(Resposta respostaAluno);
-	
+
 	public abstract Questao copia(TagDao tagDao);
 }
