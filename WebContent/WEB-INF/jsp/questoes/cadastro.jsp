@@ -288,8 +288,9 @@ import="java.sql.*" errorPage="" %>
                 <div id="questaoDeVouFContainer">
                     <br/>
                     <label for="resposta">Resposta:</label>
-                    <input id="respostaVouFVerdadeiro" class="respostaVouF" type="radio" name="questao.resposta" value="true" disabled="disabled"/><p>Verdadeiro</p>
-                    <input id="respostaVouFFalso" class="respostaVouF" type="radio" name="questao.resposta" value="false" disabled="disabled"/><p>Falso</p>
+                    <br/>
+                    <p><input id="respostaVouFVerdadeiro" class="respostaVouF" type="radio" name="questao.resposta" value="true" disabled="disabled"/>Verdadeiro</p>
+                    <p><input id="respostaVouFFalso" class="respostaVouF" type="radio" name="questao.resposta" value="false" disabled="disabled"/>Falso</p>
                 </div>
                
                 <br/><br/>
