@@ -40,9 +40,19 @@ import="java.sql.*" errorPage="" %>
         });     
        </c:forEach>
 		
-		$('#enviaRespostas').click(function() {
-			$(this).attr("disabled", "disabled").empty().append("Enviando");
+       $('#salvaRespostas').click(function() {
+			$(this).attr("disabled", "disabled").empty().append("Salvando...");
+			$('#enviaRespostas').hide();
 			$('#questao0').submit();
+			$('#acao0').val(1);
+		});
+       
+		$('#enviaRespostas').click(function() {
+			$(this).attr("disabled", "disabled").empty().append("Enviando...");
+			$('#salvaRespostas').hide();
+			$('#salvaRespostas').
+			$('#questao0').submit();
+			$('#acao0').val(2);
 		});
 	});
 </script>
@@ -75,6 +85,7 @@ import="java.sql.*" errorPage="" %>
 	<div>
 		<c:forEach items="${listaDeExercicios.questoes}" var="questaoDaLista" varStatus="iteracao">
 			<form id="questao${iteracao.index }" class="respostaForm" action="<c:url value="/respostas/${listaDeRespostas.id }/cadastra"/>" method="post" accept-charset="utf-8" enctype="multipart/form-data">
+				<input type="hidden" name="acao" id="acao${iteracao.index}" />
 				<fieldset>
 						<p>${iteracao.index + 1} )
 								${questaoDaLista.questao.enunciado}</p>
@@ -82,7 +93,8 @@ import="java.sql.*" errorPage="" %>
 				</fieldset>
 			</form>
 		</c:forEach>
-		<button id="enviaRespostas" type="button">Salvar</button>
+		<button id="salvaRespostas" type="button">Salvar</button>
+		<button id="enviaRespostas" type="button">Salvar e Enviar</button>
 	</div>
 	
 

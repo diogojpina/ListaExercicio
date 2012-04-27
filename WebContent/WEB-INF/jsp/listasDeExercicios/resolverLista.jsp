@@ -65,6 +65,7 @@ import="java.sql.*" errorPage="" %>
 	<div>
 		<c:forEach items="${listaDeExercicios.questoes}" var="questaoDaLista" varStatus="iteracao">
 			<form id="questao${iteracao.index }" class="respostaForm" action="<c:url value="/respostas/${listaDeRespostas.id }/cadastra"/>" method="post" accept-charset="utf-8" enctype="multipart/form-data">
+				teste
 				<fieldset>
 						<p>${iteracao.index + 1} )
 								${questaoDaLista.questao.enunciado}</p>
