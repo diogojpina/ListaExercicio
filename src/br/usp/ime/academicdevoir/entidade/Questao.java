@@ -28,7 +28,7 @@ import br.usp.ime.academicdevoir.infra.TipoDeQuestao;
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
 @OnDelete(action = OnDeleteAction.CASCADE)
-public abstract class Questao {
+public class Questao {
 
 	/**
 	 * @uml.property name="id"
@@ -121,13 +121,23 @@ public abstract class Questao {
 		this.comentario = comentario;
 	}
 
-	public abstract TipoDeQuestao getTipo();
+	public TipoDeQuestao getTipo() {
+		return null;
+	}
 
-	public abstract String getRenderizacao();
+	public String getRenderizacao() {
+		return null;
+	}
 
-	public abstract String getRenderAlteracao(Resposta resposta);
+	public String getRenderAlteracao(Resposta resposta) {
+		return null;
+	}
 
 	public String getRenderCorrecao(Resposta resposta) {
+		
+		System.out.println(resposta.getQuestao() + " / aqui a questao");
+		
+		
 		if (resposta == null)
 			resposta = new Resposta();
 
@@ -153,7 +163,11 @@ public abstract class Questao {
 
 	}
 
-	public abstract Boolean respostaDoAlunoEhCorreta(Resposta respostaAluno);
+	public Boolean respostaDoAlunoEhCorreta(Resposta respostaAluno) {
+		return true;
+	}
 
-	public abstract Questao copia(TagDao tagDao);
+	public Questao copia(TagDao tagDao) {
+		return null;
+	}
 }
