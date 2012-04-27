@@ -73,7 +73,8 @@ import="java.sql.*" errorPage="" %>
 				</fieldset>
 			</form>
 		</c:forEach>
-		<button id="enviaRespostas" type="button">Salvar</button>
+		<button id="enviaRespostas" type="button">Salvar, mas não finalizar</button><br></br>
+		<button id="finalizaRespostas" type="button">Finalizar</button>
 	</div>
  	</div>
  	</div>	

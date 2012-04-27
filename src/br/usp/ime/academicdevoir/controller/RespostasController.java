@@ -58,7 +58,8 @@ public class RespostasController {
 	public void salvaResposta(ListaDeRespostas listaDeRespostas, Resposta resposta, Long idDaQuestao, UploadedFile arquivo) {
 	    String caminho;
 	    int nenvios, nmaxenvios;
-	    if (resposta == null) resposta = new Resposta();
+	    if (resposta == null) 
+	    	resposta = new Resposta();
 		
 	    dao.recarrega(listaDeRespostas);
 	    
@@ -91,8 +92,7 @@ public class RespostasController {
         
 		if (listaDeRespostas.getListaDeExercicios().getPropriedades().
 		        getNumeroMaximoDeEnvios() != null) {
-	        nmaxenvios =  listaDeRespostas.getListaDeExercicios().getPropriedades().
-	        getNumeroMaximoDeEnvios();
+	        nmaxenvios =  listaDeRespostas.getListaDeExercicios().getPropriedades().getNumeroMaximoDeEnvios();
 		    nenvios = listaDeRespostas.getPropriedades().getNumeroDeEnvios();
 		    if (listaDeRespostas.getRespostas().isEmpty())
 		        listaDeRespostas.getPropriedades().setNumeroDeEnvios(nenvios + 1);

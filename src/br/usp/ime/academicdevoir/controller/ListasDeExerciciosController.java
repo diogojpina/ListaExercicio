@@ -275,8 +275,7 @@ public class ListasDeExerciciosController {
 		result.include("renderizacao", renders);
 		result.include("listaDeRespostas", listaDeRespostas);
 		result.include("listaDeExercicios", listaDeExercicios);
-		result.include("numeroDeQuestoes", questoes
-				.size());
+		result.include("numeroDeQuestoes", questoes.size());
 	    result.include("VerificadorDePrazos", VerificadorDePrazos.class);
 
 	}

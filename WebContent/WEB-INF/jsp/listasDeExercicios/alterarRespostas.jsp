@@ -93,8 +93,10 @@ import="java.sql.*" errorPage="" %>
 				</fieldset>
 			</form>
 		</c:forEach>
+
 		<button id="salvaRespostas" type="button">Salvar</button>
 		<button id="enviaRespostas" type="button">Salvar e Enviar</button>
+
 	</div>
 	
 

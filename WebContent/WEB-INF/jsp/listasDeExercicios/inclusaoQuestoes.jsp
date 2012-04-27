@@ -44,7 +44,7 @@ import="java.sql.*" errorPage="" %>
 				</tr>
 			</thead>
 			<tbody>
-				<c:forEach items="${listaDeQuestoes }" var="questao">
+				<c:forEach items="${listaDeQuestoes}" var="questao">
 					<tr>
 						<td>${questao.id }</td>
 						<td>${questao.enunciado }</td>
