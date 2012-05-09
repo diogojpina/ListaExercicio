@@ -87,7 +87,14 @@ import="java.sql.*" errorPage="" %>
 				<label for="tags">Tags: </label><br/>
 					<input id="tags" type="text" name="tags" value="${tags }"></input>
 				<br/><br/>
-				<button type="submit" name="_method" value="put">Salvar Alterações</button>
+
+					<div id="comentario">
+						<br /> <br /> <label for="comentario">Comentário (
+							feedback para o aluno ):</label> <br />
+						<textarea id="comentario" rows="5" cols="80"
+							name="questao.comentario"></textarea>
+					</div>
+					<button type="submit" name="_method" value="put">Salvar Alterações</button>
 		</form>
 		<br/>
 	</div>
