@@ -55,7 +55,7 @@ public class RespostasController {
 	 */
 	@Post
 	@Path("/respostas/{listaDeRespostas.id}/cadastra")
-	public void salvaResposta(ListaDeRespostas listaDeRespostas, Resposta resposta, Long idDaQuestao, UploadedFile arquivo) {
+	public void salvaResposta(ListaDeRespostas listaDeRespostas, Resposta resposta, String[] resposta2, Long idDaQuestao, UploadedFile arquivo) {
 	    String caminho;
 	    int nenvios, nmaxenvios;
 	    if (resposta == null) 
@@ -87,7 +87,12 @@ public class RespostasController {
 		    caminho = arquivos.getPastaDaQuestao(questao.getId()).getAbsolutePath();
 		    resposta.setCaminhoParaDiretorioDeTeste(caminho);
 		}
-		
+		if(questao.getTipo() == TipoDeQuestao.MULTIPLAESCOLHA){
+			Integer valor = 0;
+			for(int i = 0; i < resposta2.length; i++)
+				valor += Integer.parseInt(resposta2[i]);
+			resposta.setValor(valor.toString());
+		}
         resposta.setQuestao(questao);
         
 		if (listaDeRespostas.getListaDeExercicios().getPropriedades().

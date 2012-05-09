@@ -82,13 +82,17 @@ public class QuestaoDeMultiplaEscolha extends Questao {
 
 		buffer.append("<table>");
 		for (int i = 0, valorResposta = 1; i < alternativas.size(); i++, valorResposta *= 2) {
-			buffer.append("<tr><td><input type=\"radio\" name=\"resposta.valor\" value=\"");
+			if (this.getRespostaUnica())
+				buffer.append("<tr><td><input type=\"radio\" name=\"resposta.valor\" value=\"");
+			else
+				buffer.append("<tr><td><input type=\"checkbox\" name=\"resposta2\" value=\"");
 			buffer.append(valorResposta);
 			buffer.append("\" /></td><td>");
 			buffer.append(alternativas.get(i));
 			buffer.append("</td></tr>");
 		}
 
+		
 		buffer.append("<input type=\"hidden\" name=\"idDaQuestao\" value=\"");
 		buffer.append(this.getId());
 		buffer.append("\" />");
@@ -108,10 +112,17 @@ public class QuestaoDeMultiplaEscolha extends Questao {
 
 		buffer.append("<table>");
 		for (int i = 0, valorResposta = 1; i < alternativas.size(); i++, valorResposta *= 2) {
-			buffer.append("<tr><td><input type=\"radio\"");
+			
+			if (this.getRespostaUnica())
+				buffer.append("<tr><td><input type=\"radio\"");
+			else
+				buffer.append("<tr><td><input type=\"checkbox\"");
 			if (Integer.parseInt(resposta.getValor()) == valorResposta)
 				buffer.append(" checked=\"checked\"");
-			buffer.append(" name=\"resposta.valor\" value=\"");
+			if(this.getRespostaUnica())
+				buffer.append(" name=\"resposta.valor\" value=\"");
+			else
+				buffer.append(" name=\"resposta2\" value=\"");
 			buffer.append(valorResposta);
 			buffer.append("\" /></td><td>");
 			buffer.append(alternativas.get(i));

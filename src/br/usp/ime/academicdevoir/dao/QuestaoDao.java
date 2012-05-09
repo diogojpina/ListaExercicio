@@ -81,7 +81,7 @@ public class QuestaoDao {
 	 * @return Questao
 	 */
 	public Questao carrega(Long id) {
-		return (Questao) this.session.load(Questao.class, id);
+		return (Questao) this.session.get(Questao.class, id);
 	}
 
 	/**

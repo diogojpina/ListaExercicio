@@ -126,8 +126,8 @@ public class TurmasController {
     }
 
     @Permission({ Privilegio.ADMINISTRADOR, Privilegio.PROFESSOR })
-    @Get("/turmas/nova")
-    public void cadastro() {    	
+    @Get({"/turmas/nova", "/turmas/nova/{disciplina.id}"})    
+    public void cadastro(Disciplina disciplina) {    	
 		List<Disciplina> disciplinas = disciplinaDao.listaTudo();
 		
         result.include("disciplinas", disciplinas);
@@ -136,6 +136,13 @@ public class TurmasController {
         result.include("diaAtual", dataDeHoje.get(Calendar.DAY_OF_MONTH));
         result.include("mesAtual", dataDeHoje.get(Calendar.MONTH) + 1);
         result.include("anoAtual", dataDeHoje.get(Calendar.YEAR));
+        
+        if (disciplina == null)
+        	result.include("disciplina_id", 0);
+        else
+        	result.include("disciplina_id", disciplina.getId());
+        
+
     }
 
     @Permission({ Privilegio.ADMINISTRADOR, Privilegio.PROFESSOR })
@@ -144,7 +151,7 @@ public class TurmasController {
     	validator.checking(new Validations() {{
     		that(nova.getDisciplina().getId(), is(notNullValue()), "disciplina", "disciplina.notNull");
     	}});
-    	validator.onErrorRedirectTo(this).cadastro();
+    	validator.onErrorRedirectTo(this).cadastro(nova.getDisciplina());
     	
 		
 		nova.setPrazoDeMatricula(prazoDeMatricula);
@@ -193,7 +200,8 @@ public class TurmasController {
         if (!novoNome.equals(""))
             turma.setNome(novoNome);
         turma.setTemPrazo(novoTemPrazo);
-        turma.setPrazoDeMatricula(prazoDeMatricula);
+        if (novoTemPrazo.equals("sim"))
+        	turma.setPrazoDeMatricula(prazoDeMatricula);
         turmaDao.atualizaTurma(turma);
         result.redirectTo(TurmasController.class).home(turma.getId());
     }

@@ -79,7 +79,7 @@ public class TurmaDao {
 	 * @return Turma
 	 */
 	public Turma carrega(Long id) {
-		return (Turma) session.load(Turma.class, id);
+		return (Turma) session.get(Turma.class, id);
 	}
 	
     @SuppressWarnings("unchecked")
