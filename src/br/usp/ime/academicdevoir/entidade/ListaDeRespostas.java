@@ -5,6 +5,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import javax.persistence.CollectionTable;
+import javax.persistence.Column;
 import javax.persistence.ElementCollection;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
@@ -44,7 +45,9 @@ public class ListaDeRespostas {
 	@CollectionTable(name = "respostasDaLista")
 	private List<Resposta> respostas;
 	
+	@Column(columnDefinition="Decimal(10,2)")
 	private Double notaFinal;
+
 	
 	@Embedded
 	private PropriedadesDaListaDeRespostas propriedades;
@@ -110,7 +113,7 @@ public class ListaDeRespostas {
 			}
 		}
 		notaFinal /= somaDosPesos;
-		this.notaFinal = notaFinal;
+		this.notaFinal =notaFinal;
 	}
 
 	public int adiciona(Resposta novaResposta) {
@@ -132,7 +135,7 @@ public class ListaDeRespostas {
 		else respostas.set(i, novaResposta);
 		return i;
 	}
-	
+	 	
 	public void autocorrecao() {
 	    //List para os pesos das questões usados na nota final
 	    List<Integer> pesosDasQuestoes = new ArrayList<Integer>();

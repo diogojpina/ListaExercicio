@@ -158,10 +158,12 @@ public class QuestaoDeMultiplaEscolha extends Questao {
 
         }
         buffer.append("</p>");
-        buffer.append("<p> Comentários: ");
-        if (resposta.getComentario() != null)
-            buffer.append(resposta.getComentario());
-        buffer.append("</p>");
+        
+        if (resposta.getQuestao().getComentario() != null && !resposta.getQuestao().getComentario().equals("")) {
+        	buffer.append("<p> Comentários: ");
+            buffer.append(resposta.getQuestao().getComentario());
+            buffer.append("</p>");
+        }
         buffer.append("<p> Nota: ");
         if (resposta.getNota() != null)
             buffer.append(resposta.getNota());
