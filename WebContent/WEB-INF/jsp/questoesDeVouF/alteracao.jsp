@@ -97,7 +97,14 @@ import="java.sql.*" errorPage="" %>
 						<input id="verdadeiro" type="radio" name="questao.resposta" value="true"/><p>Verdadeiro</p>
 						<input id="falso" type="radio" checked="checked" name="questao.resposta" value="false"/><p>Falso</p>
 					</c:if>
-				<br/><br/>
+			
+				<div id="comentario">
+						<br />
+					<br /> <label for="comentario">Comentário ( feedback para o aluno ):</label> <br />
+					<textarea id="comentario" rows="5" cols="80"
+							name="questao.comentario">${questao.comentario}</textarea>
+					</div>				
+				
 				<button type="submit" name="_method" value="put">Salvar Alterações</button>
 		</form>
 		<br/>

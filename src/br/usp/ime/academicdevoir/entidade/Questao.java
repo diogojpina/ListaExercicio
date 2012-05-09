@@ -135,12 +135,14 @@ public class Questao {
 
 	public String getRenderCorrecao(Resposta resposta) {
 		
-		System.out.println(resposta.getQuestao() + " / aqui a questao");
+		System.out.println("Aqui");
 		
 		
 		if (resposta == null)
 			resposta = new Resposta();
 
+		System.out.println("Passou aqui");
+		
 		String htmlResult = "";
 		StringBuffer buffer = new StringBuffer();
 
@@ -149,8 +151,8 @@ public class Questao {
 			buffer.append(resposta.getValor());
 		buffer.append("</p>");
 		buffer.append("<p> Comentários:<br/> ");
-		if (resposta.getComentario() != null)
-			buffer.append(resposta.getQuestao().getComentario());
+		
+		buffer.append(resposta.getQuestao().getComentario());
 		buffer.append("</p>");
 		buffer.append("<p> Nota: ");
 		if (resposta.getNota() != null)
