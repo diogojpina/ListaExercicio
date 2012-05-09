@@ -91,6 +91,15 @@ import="java.sql.*" errorPage="" %>
 				<label for="codigoDeTeste">Código de teste:</label><br/>
 					<textarea id="codigoDeTeste" rows= "5" cols="80" name="questao.codigoDeTeste">${questao.codigoDeTeste }</textarea>
 				<br/><br/>
+				
+				<div id="comentario">
+						<br />
+					<br /> <label for="comentario">Comentário ( feedback para o aluno ):</label> <br />
+					<textarea id="comentario" rows="5" cols="80"
+							name="questao.comentario">${questao.comentario}</textarea>
+					</div>
+				
+				
 				<button type="submit" name="_method" value="put">Salvar altera&ccedil;&otilde;es</button>
 		</form>
 		<br/>
