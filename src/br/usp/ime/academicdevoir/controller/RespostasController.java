@@ -88,10 +88,12 @@ public class RespostasController {
 		    resposta.setCaminhoParaDiretorioDeTeste(caminho);
 		}
 		if(questao.getTipo() == TipoDeQuestao.MULTIPLAESCOLHA){
-			Integer valor = 0;
-			for(int i = 0; i < resposta2.length; i++)
-				valor += Integer.parseInt(resposta2[i]);
-			resposta.setValor(valor.toString());
+			if (resposta2 != null) {
+				Integer valor = new Integer(0);
+				for(int i = 0; i < resposta2.length; i++)
+					valor += Integer.parseInt(resposta2[i]);
+				resposta.setValor(valor.toString());
+			}
 		}
         resposta.setQuestao(questao);
         

@@ -58,7 +58,10 @@ import="java.sql.*" errorPage="" %>
 	
 	$(document).ready(function(){
 		var numeroDeAlternativas = ${numeroDeAlternativas};
-		liberaAlternativas($('#tipoDeResposta').attr('checked'), numeroDeAlternativas);
+
+
+			liberaAlternativas($('#tipoDeResposta').attr('checked'), numeroDeAlternativas);
+
 		
 		$('#seletorDeAlternativas').change(function() {
 	 		var valor = $(this).val();	 		
@@ -149,7 +152,7 @@ import="java.sql.*" errorPage="" %>
 					</select>					
 					<br/>
 					<p>Resposta única: </p>
-					<input id="tipoDeResposta" type="checkbox" checked="checked" name="questao.respostaUnica" value="true" />
+					<input id="tipoDeResposta" type="checkbox" name="questao.respostaUnica" value="true" />
 					<br/><br/>
 					<label>Alternativas:</label>
 					<c:set var="valorResposta" value="1" />

@@ -124,8 +124,12 @@ public class QuestaoDeMultiplaEscolha extends Questao {
 					buffer.append(" checked=\"checked\"");
 			}
 			else {
-				String binario = Integer.toBinaryString(valorResposta);
-				System.out.print("\n\n\nAQUI " + binario + "\n\n\n");
+				String binario = Integer.toBinaryString(Integer.parseInt(resposta.getValor()));
+				if (i < binario.length()){
+					int i2 = Integer.parseInt(binario.substring(i, i+1));
+					if (i2 == 1) 
+						buffer.append(" checked=\"checked\"");
+				}
 			}
 			
 			

@@ -88,7 +88,7 @@ public class QuestoesDeMultiplaEscolhaController {
 	 * @param id
 	 */
 	public void alteracao(Long id) {
-		QuestaoDeMultiplaEscolha questao = dao.carrega(id);
+		QuestaoDeMultiplaEscolha questao = dao.carrega(id);		
 		result.include("questao", questao);
 		result.include("tags", questao.getTagsEmString());
 		result.include("numeroDeAlternativas", questao.getAlternativas().size());
