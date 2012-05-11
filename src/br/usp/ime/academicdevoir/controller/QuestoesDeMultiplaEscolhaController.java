@@ -92,6 +92,32 @@ public class QuestoesDeMultiplaEscolhaController {
 		result.include("questao", questao);
 		result.include("tags", questao.getTagsEmString());
 		result.include("numeroDeAlternativas", questao.getAlternativas().size());
+		
+		int[] respostas = new int[questao.getAlternativas().size()];
+		if (questao.getRespostaUnica()) {
+			int i, j;
+			for (i=0, j=1;i<questao.getAlternativas().size(); i++, j=j*2)
+				if (questao.getResposta() == j)
+					respostas[i] = 1;
+				else
+					respostas[i] = 0;
+		}
+		else {
+			int i, j;
+			String binario = Integer.toBinaryString(questao.getResposta());
+			for (i=0, j=1;i<questao.getAlternativas().size(); i++, j=j*2)
+				if (i < binario.length())
+					if (Integer.parseInt(binario.substring(i, i+1)) == 1)
+						respostas[i] = 1;
+					else
+						respostas[i] = 0;
+				else
+					respostas[i] = 0;
+		}
+		
+	
+		result.include("respostas", respostas);
+			
 	}
 
 	@Put

@@ -162,11 +162,14 @@ import="java.sql.*" errorPage="" %>
 					<label>Alternativas:</label>
 					<c:set var="valorResposta" value="1" />
 					<c:set var="verdadeiro" value="${questao.resposta }" />
+					<c:set var="i" value="0" />
 					<c:forEach items="${questao.alternativas }" var="alternativa" varStatus="iteracao">
+						
 						<br id="espacoAlternativas${iteracao.index }"/>
 						<br id="espacoAlternativas2_${iteracao.index }"/>
 						<c:choose>
-							<c:when test="${verdadeiro % 2 eq 1 }">
+						
+							<c:when test="${respostas[iteracao.index] eq 1}">
 								<c:choose>
 									<c:when test="${respostaUnica }">
 										<input id="respostaUnica${iteracao.index }" class="respostaDasAlternativas" type="radio" checked="checked" name="resposta[]" value="${valorResposta }" />
@@ -193,7 +196,8 @@ import="java.sql.*" errorPage="" %>
 						</c:choose>							
 							<input  id="alternativa${iteracao.index }" class="alternativa" type="text" size="100" name="questao.alternativas[${iteracao.index }]" value="${alternativa }" />
 							<c:set var="valorResposta" value="${valorResposta*2 }"/>
-							<c:set var="verdadeiro" value="${verdadeiro/2 }"/>														
+							<c:set var="verdadeiro" value="${verdadeiro/2 }"/>			
+										
 					</c:forEach>
 					
 					<c:forEach begin="${numeroDeAlternativas }" end="9" step="1" varStatus="iteracao">
