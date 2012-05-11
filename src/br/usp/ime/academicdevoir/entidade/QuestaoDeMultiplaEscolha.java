@@ -106,6 +106,7 @@ public class QuestaoDeMultiplaEscolha extends Questao {
 
 	public String getRenderAlteracao(Resposta resposta) {
 		if (resposta == null || resposta.getValor() == null || resposta.getValor().isEmpty()) return getRenderizacao();
+		
 
 		String htmlResult = "";
 		StringBuffer buffer = new StringBuffer();
@@ -117,8 +118,17 @@ public class QuestaoDeMultiplaEscolha extends Questao {
 				buffer.append("<tr><td><input type=\"radio\"");
 			else
 				buffer.append("<tr><td><input type=\"checkbox\"");
-			if (Integer.parseInt(resposta.getValor()) == valorResposta)
-				buffer.append(" checked=\"checked\"");
+			
+			if (this.getRespostaUnica()){
+				if (Integer.parseInt(resposta.getValor()) == valorResposta) 
+					buffer.append(" checked=\"checked\"");
+			}
+			else {
+				String binario = Integer.toBinaryString(valorResposta);
+				System.out.print("\n\n\nAQUI " + binario + "\n\n\n");
+			}
+			
+			
 			if(this.getRespostaUnica())
 				buffer.append(" name=\"resposta.valor\" value=\"");
 			else
