@@ -29,7 +29,7 @@ import="java.sql.*" errorPage="" %>
 			var listas = 0;
 			var paginaAlteracao = '<c:url value="/questoes/mult/"/>' + idDaQuestao;
 			
-			$.getJSON('<c:url value="/questoes/buscaListas/"/>' + idDaQuestao, function(json) {
+			$.getJSON('<c:url value="/questoes/buscaListas/"/>' + idDaQuestao, function(json) {				
 				$('#confirmacao').empty();
 				$('<span>Modificar esta questão causará modificação nas seguintes listas: <span><br/><br/>').appendTo('#confirmacao');
 				$.each(json, function() {
@@ -111,6 +111,8 @@ import="java.sql.*" errorPage="" %>
 			<!--input type="submit" value="Cadastrar nova questão"></input-->
 			<a href="<c:url value='/questoes/cadastro'/>">Cadastrar nova questão</a><br/>
 	</form>
+	<div id="confirmacao">	
+	</div>
 	</div>
 	</div>
 </body>

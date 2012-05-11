@@ -58,9 +58,14 @@ import="java.sql.*" errorPage="" %>
 	
 	$(document).ready(function(){
 		var numeroDeAlternativas = ${numeroDeAlternativas};
+		var respostaUnica = ${questao.respostaUnica};
+		
+		if (respostaUnica == true) {
+			$('#tipoDeResposta').attr('checked', true);
+		}
 
 
-			liberaAlternativas($('#tipoDeResposta').attr('checked'), numeroDeAlternativas);
+		liberaAlternativas($('#tipoDeResposta').attr('checked'), numeroDeAlternativas);
 
 		
 		$('#seletorDeAlternativas').change(function() {
