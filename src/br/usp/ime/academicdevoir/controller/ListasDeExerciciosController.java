@@ -95,7 +95,8 @@ public class ListasDeExerciciosController {
 	public ListasDeExerciciosController(Result result,
 			ListaDeExerciciosDao dao, ListaDeRespostasDao listaDeRespostasDao,
 			QuestaoDao questaoDao, ProfessorDao professorDao,
-			TurmaDao turmaDao, Validator validator, UsuarioSession usuarioSession) {
+			TurmaDao turmaDao, Validator validator,
+			UsuarioSession usuarioSession) {
 
 		this.result = result;
 		this.dao = dao;
@@ -119,17 +120,21 @@ public class ListasDeExerciciosController {
 	 */
 	public void cadastra(final PropriedadesDaListaDeExercicios propriedades,
 			final List<Integer> prazoDeEntrega, final Long idDaTurma) {
-		
-		validator.checking(new Validations() {{
-			that(!propriedades.getNome().isEmpty(), "propriedade.nome", "propriedade.nome.notEmpty");
-			that(idDaTurma, is(notNullValue()), "turma.id", "turma.id.notNull");
-		}});
-		
+
+		validator.checking(new Validations() {
+			{
+				that(!propriedades.getNome().isEmpty(), "propriedade.nome",
+						"propriedade.nome.notEmpty");
+				that(idDaTurma, is(notNullValue()), "turma.id",
+						"turma.id.notNull");
+			}
+		});
+
 		propriedades.comPrazoDeEntrega(prazoDeEntrega);
-		
+
 		validator.validate(propriedades);
 		validator.onErrorForwardTo(this).cadastro();
-		
+
 		ListaDeExercicios listaDeExercicios = new ListaDeExercicios();
 		Turma turma = turmaDao.carrega(idDaTurma);
 		listaDeExercicios.setTurma(turma);
@@ -148,11 +153,12 @@ public class ListasDeExerciciosController {
 	 * */
 	public void verLista(Long id) {
 		Usuario u = usuarioSession.getUsuario();
-		if(!(u.getPrivilegio() == Privilegio.ADMINISTRADOR || u.getPrivilegio() == Privilegio.PROFESSOR)) {
+		if (!(u.getPrivilegio() == Privilegio.ADMINISTRADOR || u
+				.getPrivilegio() == Privilegio.PROFESSOR)) {
 			result.redirectTo(LoginController.class).acessoNegado();
 			return;
 		}
-		
+
 		ListaDeExercicios listaDeExercicios = dao.carrega(id);
 		Professor professor = professorDao.carrega(usuarioSession.getUsuario()
 				.getId());
@@ -161,7 +167,8 @@ public class ListasDeExerciciosController {
 		result.include("prazo", listaDeExercicios.getPropriedades()
 				.getPrazoDeEntregaFormatado());
 		result.include("turmasDoProfessor", professor.getTurmas());
-		result.include("numeroDeQuestoes", listaDeExercicios.getQuestoes().size());
+		result.include("numeroDeQuestoes", listaDeExercicios.getQuestoes()
+				.size());
 	}
 
 	@Get
@@ -174,14 +181,14 @@ public class ListasDeExerciciosController {
 	 * */
 	public void resolverLista(Long id) {
 		ListaDeExercicios listaDeExercicios = dao.carrega(id);
-		
+
 		Aluno aluno = (Aluno) usuarioSession.getUsuario();
 		ListaDeRespostas listaDeRespostas = listaDeRespostasDao
 				.getRespostasDoAluno(id, aluno);
 
 		if (listaDeRespostas == null) {
 			PropriedadesDaListaDeRespostas propriedades = new PropriedadesDaListaDeRespostas();
-			 
+
 			propriedades.setEstado(EstadoDaListaDeRespostas.SALVA);
 			propriedades.setNumeroDeEnvios(0);
 
@@ -190,15 +197,16 @@ public class ListasDeExerciciosController {
 			listaDeRespostas.setListaDeExercicios(listaDeExercicios);
 			listaDeRespostas.setAluno(aluno);
 			listaDeRespostas.setPropriedades(propriedades);
-			if (!VerificadorDePrazos.estaNoPrazo(listaDeExercicios.
-                    getPropriedades().getPrazoDeEntrega())) {
-                listaDeRespostas.getPropriedades().
-                setEstado(EstadoDaListaDeRespostas.FINALIZADA);
-                listaDeRespostas.setRespostas(new ArrayList<Resposta>());
-                listaDeRespostasDao.salva(listaDeRespostas);
-                result.redirectTo(this).autoCorrecaoRespostas(listaDeRespostas.getId());
-                return;
-            }
+			if (!VerificadorDePrazos.estaNoPrazo(listaDeExercicios
+					.getPropriedades().getPrazoDeEntrega())) {
+				listaDeRespostas.getPropriedades().setEstado(
+						EstadoDaListaDeRespostas.FINALIZADA);
+				listaDeRespostas.setRespostas(new ArrayList<Resposta>());
+				listaDeRespostasDao.salva(listaDeRespostas);
+				result.redirectTo(this).autoCorrecaoRespostas(
+						listaDeRespostas.getId());
+				return;
+			}
 		}
 
 		else if (listaDeRespostas.getRespostas() != null
@@ -208,13 +216,13 @@ public class ListasDeExerciciosController {
 		}
 
 		listaDeRespostas.setRespostas(new ArrayList<Resposta>());
-        listaDeRespostasDao.salva(listaDeRespostas);
-		
-        if(listaDeExercicios.getPropriedades() != null)
-        	result.include("prazo", listaDeExercicios.getPropriedades()
-        			.getPrazoDeEntregaFormatado());
+		listaDeRespostasDao.salva(listaDeRespostas);
+
+		if (listaDeExercicios.getPropriedades() != null)
+			result.include("prazo", listaDeExercicios.getPropriedades()
+					.getPrazoDeEntregaFormatado());
 		result.include("listaDeExercicios", listaDeExercicios);
-		if(listaDeExercicios.getQuestoes() != null)
+		if (listaDeExercicios.getQuestoes() != null)
 			result.include("numeroDeQuestoes", listaDeExercicios.getQuestoes()
 					.size());
 		result.include("listaDeRespostas", listaDeRespostas);
@@ -224,51 +232,52 @@ public class ListasDeExerciciosController {
 	@Path("/respostas/alterar/{listaDeRespostas.id}")
 	@Permission({ Privilegio.ALUNO, Privilegio.MONITOR })
 	public void alterarRespostas(ListaDeRespostas listaDeRespostas) {
-	    listaDeRespostas = listaDeRespostasDao
+		listaDeRespostas = listaDeRespostasDao
 				.carrega(listaDeRespostas.getId());
-	    
-        ListaDeExercicios listaDeExercicios = listaDeRespostas
-                                                   .getListaDeExercicios();
-        
-        if (listaDeRespostas.getPropriedades().getEstado() == 
-                EstadoDaListaDeRespostas.SALVA && 
-                !VerificadorDePrazos.estaNoPrazo(listaDeRespostas.
-                getListaDeExercicios().getPropriedades().getPrazoDeEntrega())) {
-            listaDeRespostas.getPropriedades().
-            setEstado(EstadoDaListaDeRespostas.FINALIZADA);
-            listaDeRespostasDao.atualiza(listaDeRespostas);
-            result.redirectTo(ListasDeExerciciosController.class).
-                                autoCorrecaoRespostas(listaDeRespostas.getId());
-            return;
-        }
-            
-	    if (listaDeRespostas.getPropriedades().getEstado() == 
-	        EstadoDaListaDeRespostas.CORRIGIDA ||
-	        listaDeRespostas.getPropriedades().getEstado() == 
-	            EstadoDaListaDeRespostas.FINALIZADA) {
-	        result.redirectTo(ListasDeExerciciosController.class).
-	               verCorrecao(listaDeRespostas);
-	        return;
-	    }
+
+		ListaDeExercicios listaDeExercicios = listaDeRespostas
+				.getListaDeExercicios();
+
+		if (listaDeRespostas.getPropriedades().getEstado() == EstadoDaListaDeRespostas.SALVA
+				&& !VerificadorDePrazos.estaNoPrazo(listaDeRespostas
+						.getListaDeExercicios().getPropriedades()
+						.getPrazoDeEntrega())) {
+			listaDeRespostas.getPropriedades().setEstado(
+					EstadoDaListaDeRespostas.FINALIZADA);
+			listaDeRespostasDao.atualiza(listaDeRespostas);
+			result.redirectTo(ListasDeExerciciosController.class)
+					.autoCorrecaoRespostas(listaDeRespostas.getId());
+			return;
+		}
+
+		if (listaDeRespostas.getPropriedades().getEstado() == EstadoDaListaDeRespostas.CORRIGIDA
+				|| listaDeRespostas.getPropriedades().getEstado() == EstadoDaListaDeRespostas.FINALIZADA) {
+			result.redirectTo(ListasDeExerciciosController.class).verCorrecao(
+					listaDeRespostas);
+			return;
+		}
 
 		List<String> renders = new ArrayList<String>();
-		
+
 		List<QuestaoDaLista> questoes = listaDeExercicios.getQuestoes();
 		List<Resposta> respostas = listaDeRespostas.getRespostas();
 		boolean achouResposta;
-		
+
 		for (QuestaoDaLista questaoDaLista : questoes) {
-			
+
 			achouResposta = false;
 			for (Resposta resposta : respostas) {
-				if (resposta.getQuestao().getId() == questaoDaLista.getQuestao().getId()) {
-					renders.add(resposta.getQuestao().getRenderAlteracao(resposta));
+				if (resposta.getQuestao().getId() == questaoDaLista
+						.getQuestao().getId()) {
+					renders.add(resposta.getQuestao().getRenderAlteracao(
+							resposta));
 					respostas.remove(resposta);
 					achouResposta = true;
 					break;
 				}
 			}
-			if (achouResposta) continue;
+			if (achouResposta)
+				continue;
 			renders.add(questaoDaLista.getQuestao().getRenderizacao());
 		}
 
@@ -276,49 +285,80 @@ public class ListasDeExerciciosController {
 		result.include("listaDeRespostas", listaDeRespostas);
 		result.include("listaDeExercicios", listaDeExercicios);
 		result.include("numeroDeQuestoes", questoes.size());
-	    result.include("VerificadorDePrazos", VerificadorDePrazos.class);
+		result.include("VerificadorDePrazos", VerificadorDePrazos.class);
 
 	}
 
 	@Get
-    @Path("/respostas/verCorrecao/{listaDeRespostas.id}")
-    public void verCorrecao(ListaDeRespostas listaDeRespostas) {
-	    listaDeRespostas = listaDeRespostasDao
-            .carrega(listaDeRespostas.getId());
-	   
-	    ListaDeExercicios listaDeExercicios = listaDeRespostas
-            .getListaDeExercicios();
-	    List<String> renders = new ArrayList<String>();
-    
-	    List<QuestaoDaLista> questoes = listaDeExercicios.getQuestoes();
-	    List<Resposta> respostas = listaDeRespostas.getRespostas();
-	    boolean achouResposta;
-    
-	    for (QuestaoDaLista questaoDaLista : questoes) {
-        
-	        achouResposta = false;
-	        for (Resposta resposta : respostas) {
-	            if (resposta.getQuestao().getId() == questaoDaLista.getQuestao().
-	                    getId()) {
-	                renders.add(resposta.getQuestao().getRenderCorrecao(resposta));
-	                respostas.remove(resposta);
-	                achouResposta = true;
-	                break;
-	            }
-	        }
+	@Path("/respostas/verCorrecao/{listaDeRespostas.id}")
+	public void verCorrecao(ListaDeRespostas listaDeRespostas) {
+		listaDeRespostas = listaDeRespostasDao
+				.carrega(listaDeRespostas.getId());
 
-	        if (achouResposta) continue;
-	        renders.add(questaoDaLista.getQuestao().
-	                getRenderCorrecao(new Resposta()));
-	    }
-    
-        result.include("renderizacao", renders);
-        result.include("listaDeRespostas", listaDeRespostas);
-        result.include("listaDeExercicios", listaDeExercicios);
-        result.include("numeroDeQuestoes", questoes
-                .size());
-    }
-	
+		ListaDeExercicios listaDeExercicios = listaDeRespostas
+				.getListaDeExercicios();
+		List<String> renders = new ArrayList<String>();
+
+		List<QuestaoDaLista> questoes = listaDeExercicios.getQuestoes();
+		List<Resposta> respostas = listaDeRespostas.getRespostas();
+		boolean achouResposta;
+
+		for (QuestaoDaLista questaoDaLista : questoes) {
+
+			achouResposta = false;
+			for (Resposta resposta : respostas) {
+
+				if (resposta.getQuestao().getId() == questaoDaLista
+						.getQuestao().getId()) {
+
+					renders.add(renderCorrecao(resposta));
+
+					respostas.remove(resposta);
+					achouResposta = true;
+					break;
+				}
+			}
+
+			if (achouResposta)
+				continue;
+			renders.add(questaoDaLista.getQuestao().getRenderCorrecao(
+					new Resposta()));
+		}
+
+		result.include("renderizacao", renders);
+		result.include("listaDeRespostas", listaDeRespostas);
+		result.include("listaDeExercicios", listaDeExercicios);
+		result.include("numeroDeQuestoes", questoes.size());
+	}
+
+	public String renderCorrecao(Resposta resposta) {
+
+		if (resposta == null)
+			resposta = new Resposta();
+
+		String htmlResult = "";
+		StringBuffer buffer = new StringBuffer();
+
+		buffer.append("<p>");
+		if (resposta.getValor() != null)
+			buffer.append("Resposta: " + resposta.getValor());
+		buffer.append("</p>");
+		buffer.append("<p> Comentários:<br/> ");
+
+		if (resposta.getQuestao().getComentario() != null) {
+			buffer.append(resposta.getQuestao().getComentario());
+		}
+		buffer.append("</p>");
+		buffer.append("<p> Nota: ");
+		if (resposta.getNota() != null)
+			buffer.append(resposta.getNota());
+		buffer.append("</p>");
+
+		htmlResult = buffer.toString();
+
+		return htmlResult;
+	}
+
 	@Get
 	@Path("/listasDeExercicios/altera/{id}")
 	@Permission({ Privilegio.ADMINISTRADOR, Privilegio.PROFESSOR })
@@ -329,7 +369,7 @@ public class ListasDeExerciciosController {
 	 * @return ListaDeExercicios 
 	 * */
 	public void alteracao(Long id) {
-		
+
 		ListaDeExercicios listaDeExercicios = dao.carrega(id);
 
 		result.include("listaDeExercicios", listaDeExercicios);
@@ -388,7 +428,7 @@ public class ListasDeExerciciosController {
 	 */
 	public void incluiQuestao(ListaDeExercicios listaDeExercicios,
 			Long idDaQuestao, Integer pesoDaQuestao) {
-		
+
 		QuestaoDaLista novaQuestao = new QuestaoDaLista();
 		novaQuestao.setPeso(pesoDaQuestao);
 		Questao questao = (Questao) questaoDao.carrega(idDaQuestao);
@@ -396,7 +436,7 @@ public class ListasDeExerciciosController {
 
 		dao.recarrega(listaDeExercicios);
 		List<QuestaoDaLista> questoes = listaDeExercicios.getQuestoes();
-		
+
 		novaQuestao.setOrdem(questoes.size());
 		questoes.add(novaQuestao);
 		listaDeExercicios.setQuestoes(questoes);
@@ -405,35 +445,36 @@ public class ListasDeExerciciosController {
 		result.redirectTo(this).verLista(listaDeExercicios.getId());
 	}
 
-//	@Put
-//	@Path("/listasDeExercicios/{id}/questoes/{indice}")
-//	@Permission({ Privilegio.ADMINISTRADOR, Privilegio.PROFESSOR })
-//	/**
-//	 * Altera a questão com o indice fornecido (na lista de exercícios com o id fornecido)
-//	 * para a questão com id fornecido.
-//	 * 
-//	 * @param id
-//	 * @param indice
-//	 * @param idDaNovaQuestao
-//	 * @param ordemDaQuestao
-//	 */
-//	public void trocaQuestao(Long id, Integer indice, Long idDaNovaQuestao,
-//			Integer ordemDaQuestao) {
-//		
-//		ListaDeExercicios listaDeExercicios = dao.carrega(id);
-//		List<QuestaoDaLista> questoesDaLista = listaDeExercicios.getQuestoes();
-//		QuestaoDaLista questaoDaLista = listaDeExercicios.getQuestoes().get(
-//				indice.intValue());
-//		Questao questao = (Questao) questaoDao.carrega(idDaNovaQuestao);
-//
-//		questaoDaLista.setQuestao(questao);
-//		questaoDaLista.setOrdem(ordemDaQuestao);
-//		questoesDaLista.set(indice.intValue(), questaoDaLista);
-//		listaDeExercicios.setQuestoes(questoesDaLista);
-//
-//		dao.atualiza(listaDeExercicios);
-//		result.redirectTo(this).verLista(listaDeExercicios.getId());
-//	}
+	// @Put
+	// @Path("/listasDeExercicios/{id}/questoes/{indice}")
+	// @Permission({ Privilegio.ADMINISTRADOR, Privilegio.PROFESSOR })
+	// /**
+	// * Altera a questão com o indice fornecido (na lista de exercícios com o
+	// id fornecido)
+	// * para a questão com id fornecido.
+	// *
+	// * @param id
+	// * @param indice
+	// * @param idDaNovaQuestao
+	// * @param ordemDaQuestao
+	// */
+	// public void trocaQuestao(Long id, Integer indice, Long idDaNovaQuestao,
+	// Integer ordemDaQuestao) {
+	//
+	// ListaDeExercicios listaDeExercicios = dao.carrega(id);
+	// List<QuestaoDaLista> questoesDaLista = listaDeExercicios.getQuestoes();
+	// QuestaoDaLista questaoDaLista = listaDeExercicios.getQuestoes().get(
+	// indice.intValue());
+	// Questao questao = (Questao) questaoDao.carrega(idDaNovaQuestao);
+	//
+	// questaoDaLista.setQuestao(questao);
+	// questaoDaLista.setOrdem(ordemDaQuestao);
+	// questoesDaLista.set(indice.intValue(), questaoDaLista);
+	// listaDeExercicios.setQuestoes(questoesDaLista);
+	//
+	// dao.atualiza(listaDeExercicios);
+	// result.redirectTo(this).verLista(listaDeExercicios.getId());
+	// }
 
 	@Delete
 	@Path("/listasDeExercicios/{id}/questoes/{indice}")
@@ -444,7 +485,7 @@ public class ListasDeExerciciosController {
 	 * @param id
 	 * @param indice
 	 */
-	public void removeQuestao(Long id, Integer indice) {		
+	public void removeQuestao(Long id, Integer indice) {
 		ListaDeExercicios listaDeExercicios = dao.carrega(id);
 		List<QuestaoDaLista> questoes = listaDeExercicios.getQuestoes();
 
@@ -476,7 +517,7 @@ public class ListasDeExerciciosController {
 	public void lista() {
 		result.include("listaDeListas", dao.listaTudo());
 	}
-	
+
 	@Get
 	@Path("/listasDeExercicios/listasTurma/{idTurma}")
 	/**
@@ -486,44 +527,44 @@ public class ListasDeExerciciosController {
 		Turma turma = turmaDao.carrega(idTurma);
 		result.include("listaDeListas", dao.listasDeTurma(turma));
 	}
-	
+
 	@Get
-    @Path("/respostas/autocorrecao/{id}")
-    /** 
-     * Corrige todas as respostas da lista de exercícios com o id fornecido.
-     * 
-     * @param id
-     * */
-    public void autoCorrecaoRespostas(Long id) {
-        //Carrega a lista de exercícios com esse id
-        ListaDeRespostas listaDeRespostas = listaDeRespostasDao.carrega(id);
-        
-        AutoCorrecao autoCorrecao = listaDeRespostas.getListaDeExercicios().
-            getPropriedades().getAutoCorrecao();
-        
-        if (listaDeRespostas.getPropriedades().getEstado() == 
-                EstadoDaListaDeRespostas.SALVA && 
-                !VerificadorDePrazos.estaNoPrazo(listaDeRespostas.
-                getListaDeExercicios().getPropriedades().getPrazoDeEntrega())) {
-            listaDeRespostas.getPropriedades().
-                setEstado(EstadoDaListaDeRespostas.FINALIZADA);
-            listaDeRespostasDao.atualiza(listaDeRespostas);
-        }
-            
-        //Não corrige se autocorreção estiver desativada para esse lista
-        if (autoCorrecao == AutoCorrecao.AMBOS) {
-        
-            listaDeRespostas.autocorrecao();
-            listaDeRespostasDao.atualiza(listaDeRespostas);
-            //Redireciona para o menu de listas
-            result.redirectTo(this).verCorrecao(listaDeRespostas);
-        }
-        
-        else
-            result.redirectTo(this).listasTurma(listaDeRespostas.
-                    getListaDeExercicios().getTurma().getId());
-    }
-	
+	@Path("/respostas/autocorrecao/{id}")
+	/** 
+	 * Corrige todas as respostas da lista de exercícios com o id fornecido.
+	 * 
+	 * @param id
+	 * */
+	public void autoCorrecaoRespostas(Long id) {
+		// Carrega a lista de exercícios com esse id
+		ListaDeRespostas listaDeRespostas = listaDeRespostasDao.carrega(id);
+
+		AutoCorrecao autoCorrecao = listaDeRespostas.getListaDeExercicios()
+				.getPropriedades().getAutoCorrecao();
+
+		if (listaDeRespostas.getPropriedades().getEstado() == EstadoDaListaDeRespostas.SALVA
+				&& !VerificadorDePrazos.estaNoPrazo(listaDeRespostas
+						.getListaDeExercicios().getPropriedades()
+						.getPrazoDeEntrega())) {
+			listaDeRespostas.getPropriedades().setEstado(
+					EstadoDaListaDeRespostas.FINALIZADA);
+			listaDeRespostasDao.atualiza(listaDeRespostas);
+		}
+
+		// Não corrige se autocorreção estiver desativada para esse lista
+		if (autoCorrecao == AutoCorrecao.AMBOS) {
+
+			listaDeRespostas.autocorrecao();
+			listaDeRespostasDao.atualiza(listaDeRespostas);
+			// Redireciona para o menu de listas
+			result.redirectTo(this).verCorrecao(listaDeRespostas);
+		}
+
+		else
+			result.redirectTo(this).listasTurma(
+					listaDeRespostas.getListaDeExercicios().getTurma().getId());
+	}
+
 	@Get
 	@Path("/listasDeExercicios/autocorrecao/{id}")
 	/** 
@@ -532,35 +573,38 @@ public class ListasDeExerciciosController {
 	 * @param id
 	 * */
 	public void autoCorrecaoLista(Long id) {
-		//Carrega a lista de exercícios com esse id
+		// Carrega a lista de exercícios com esse id
 		ListaDeExercicios listaDeExercicios = dao.carrega(id);
-		
-		//Carrega as propriedades da lista de exercícios
-		PropriedadesDaListaDeExercicios propriedades = listaDeExercicios.getPropriedades();
-		
-		//Não corrige se autocorreção estiver desativada para esse lista
+
+		// Carrega as propriedades da lista de exercícios
+		PropriedadesDaListaDeExercicios propriedades = listaDeExercicios
+				.getPropriedades();
+
+		// Não corrige se autocorreção estiver desativada para esse lista
 		if (propriedades.getAutoCorrecao() == AutoCorrecao.DESATIVADA) {
 			result.redirectTo(this).lista();
 			return;
 		}
-		
-		//Pegando todas as listas de respostas. Cada elemento corresponde a Lista de um aluno
-		List<ListaDeRespostas> listasDeRespostas = listaDeRespostasDao.listaRespostasDaLista(listaDeExercicios);
-		
-		//Para cada Lista de Resposta (Aluno)
+
+		// Pegando todas as listas de respostas. Cada elemento corresponde a
+		// Lista de um aluno
+		List<ListaDeRespostas> listasDeRespostas = listaDeRespostasDao
+				.listaRespostasDaLista(listaDeExercicios);
+
+		// Para cada Lista de Resposta (Aluno)
 		for (ListaDeRespostas listaDeRespostas : listasDeRespostas) {
-		    listaDeRespostas.autocorrecao();
-		    listaDeRespostas.getPropriedades().
-		        setEstado(EstadoDaListaDeRespostas.CORRIGIDA);
+			listaDeRespostas.autocorrecao();
+			listaDeRespostas.getPropriedades().setEstado(
+					EstadoDaListaDeRespostas.CORRIGIDA);
 
 			listaDeRespostasDao.atualiza(listaDeRespostas);
 		}
-		
-		//Redireciona para o menu de listas
+
+		// Redireciona para o menu de listas
 		result.redirectTo(this).lista();
-		
+
 	}
-	
+
 	@Get
 	@Path("/listasDeExercicios/{id}/inclusaoQuestoes")
 	@Permission({ Privilegio.ADMINISTRADOR, Privilegio.PROFESSOR })
@@ -573,42 +617,46 @@ public class ListasDeExerciciosController {
 		List<Questao> listaDeQuestoesPaginadas;
 		Integer primeiroReg, ultimaPagina;
 		Usuario u = usuarioSession.getUsuario();
-		if(!(u.getPrivilegio() == Privilegio.ADMINISTRADOR || u.getPrivilegio() == Privilegio.PROFESSOR)) {
+		if (!(u.getPrivilegio() == Privilegio.ADMINISTRADOR || u
+				.getPrivilegio() == Privilegio.PROFESSOR)) {
 			result.redirectTo(LoginController.class).acessoNegado();
 			return;
 		}
-		
-		primeiroReg = (proxPagina - 1)*Constantes.NUM_REGISTROS_PAGINA;
-		
-		listaDeQuestoesPaginadas = questaoDao.listaPaginada(primeiroReg, Constantes.NUM_REGISTROS_PAGINA, filtro);
-		ultimaPagina = questaoDao.tamanhoDaLista(filtro) / Constantes.NUM_REGISTROS_PAGINA;
-		if(listaDeQuestoesPaginadas.size() % Constantes.NUM_REGISTROS_PAGINA != 0) ultimaPagina++;
-		
+
+		primeiroReg = (proxPagina - 1) * Constantes.NUM_REGISTROS_PAGINA;
+
+		listaDeQuestoesPaginadas = questaoDao.listaPaginada(primeiroReg,
+				Constantes.NUM_REGISTROS_PAGINA, filtro);
+		ultimaPagina = questaoDao.tamanhoDaLista(filtro)
+				/ Constantes.NUM_REGISTROS_PAGINA;
+		if (listaDeQuestoesPaginadas.size() % Constantes.NUM_REGISTROS_PAGINA != 0)
+			ultimaPagina++;
+
 		result.include("idDaListaDeExercicios", id);
 		result.include("listaDeQuestoes", listaDeQuestoesPaginadas);
 		result.include("pagina", proxPagina);
 		result.include("ultimaPagina", ultimaPagina);
-		result.include("filtroAtual", filtro);		
+		result.include("filtroAtual", filtro);
 	}
-	
+
 	@Get
 	@Path("/listasDeExercicios/trocaOrdem/{id}")
 	public void trocaOrdem(Long id, List<Integer> novaOrdem) {
 		ListaDeExercicios lista = dao.carrega(id);
-		List<QuestaoDaLista> questoes = lista.getQuestoes();		
+		List<QuestaoDaLista> questoes = lista.getQuestoes();
 		Integer ordem;
 		QuestaoDaLista questao;
-		
+
 		for (int i = 0; i < questoes.size(); i++) {
 			ordem = novaOrdem.get(i);
 			questao = questoes.get(i);
 			questao.setOrdem(ordem);
 			questoes.set(i, questao);
 		}
-		
+
 		lista.setQuestoes(questoes);
-		dao.atualiza(lista);		
+		dao.atualiza(lista);
 		result.redirectTo(ListasDeExerciciosController.class).verLista(id);
 	}
-	
+
 }

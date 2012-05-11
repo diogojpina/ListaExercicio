@@ -1,108 +1,160 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<%@ page contentType="text/html; charset=utf-8" pageEncoding="utf-8" language="java"
-import="java.sql.*" errorPage="" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ page contentType="text/html; charset=utf-8" pageEncoding="utf-8"
+	language="java" import="java.sql.*" errorPage=""%>
 
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-<link rel="stylesheet" type="text/css" charset="utf-8" media="screen" href="<c:url value="/css/jquery.ui.core.css"/>"/>
-<link rel="stylesheet" type="text/css" charset="utf-8" media="screen" href="<c:url value="/css/jquery.ui.theme.css"/>"/>
-<link rel="stylesheet" type="text/css" charset="utf-8" media="screen" href="<c:url value="/css/jquery.ui.autocomplete.css"/>"/>
-<script type="text/javascript" charset="utf-8" src="<c:url value="/javascript/jquery-1.7.1.min.js"/>"></script>
-<script type="text/javascript" charset="utf-8" src="<c:url value="/javascript/jquery-ui/jquery.ui.core.min.js"/>"></script>
-<script type="text/javascript" charset="utf-8" src="<c:url value="/javascript/jquery-ui/jquery.ui.position.min.js"/>"></script>
-<script type="text/javascript" charset="utf-8" src="<c:url value="/javascript/jquery-ui/jquery.ui.widget.min.js"/>"></script>
-<script type="text/javascript" charset="utf-8" src="<c:url value="/javascript/jquery-ui/jquery.ui.autocomplete.min.js"/>"></script>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" charset="utf-8" media="screen"
+	href="<c:url value="/css/jquery.ui.core.css"/>" />
+<link rel="stylesheet" type="text/css" charset="utf-8" media="screen"
+	href="<c:url value="/css/jquery.ui.theme.css"/>" />
+<link rel="stylesheet" type="text/css" charset="utf-8" media="screen"
+	href="<c:url value="/css/jquery.ui.autocomplete.css"/>" />
+<script type="text/javascript" charset="utf-8"
+	src="<c:url value="/javascript/jquery-1.7.1.min.js"/>"></script>
+<script type="text/javascript" charset="utf-8"
+	src="<c:url value="/javascript/jquery-ui/jquery.ui.core.min.js"/>"></script>
+<script type="text/javascript" charset="utf-8"
+	src="<c:url value="/javascript/jquery-ui/jquery.ui.position.min.js"/>"></script>
+<script type="text/javascript" charset="utf-8"
+	src="<c:url value="/javascript/jquery-ui/jquery.ui.widget.min.js"/>"></script>
+<script type="text/javascript" charset="utf-8"
+	src="<c:url value="/javascript/jquery-ui/jquery.ui.autocomplete.min.js"/>"></script>
 <script type="text/javascript" charset="utf-8">
-	function split( val ) {
-		return val.split( /,\s*/ );
+	function split(val) {
+		return val.split(/,\s*/);
 	}
-	
-	function extractLast( term ) {
-		return split( term ).pop();
+
+	function extractLast(term) {
+		return split(term).pop();
 	}
-	
-	$(document).ready(function(){
-		//Adaptado do exemplo do JQuery UI 
-	 	$('#tags')
-		.bind('keydown', function(event) {
-			if (event.keyCode === $.ui.keyCode.TAB &&
-					$(this).data('autocomplete').menu.active) {
-				event.preventDefault();
-			}
-		})
-		.autocomplete({
-			source: function(request, response) {
-				$.getJSON('<c:url value="/questoes/tags/autocompletar.json"/>', {
-					term: extractLast(request.term)
-				}, 
-				function(result) {
-					response($.map(result, function(item) {
-						return item.nome;
-					}));
-				});
-			},
-			search: function() {
-				var term = extractLast(this.value);
-				if (term.length < 2) {
-					return false;
-				}
-			},
-			focus: function() {
-				return false;
-			},
-			select: function(event, ui) {
-				var terms = split(this.value);
-				terms.pop();
-				terms.push(ui.item.value);
-				terms.push("");
-				this.value = terms.join(", ");
-				return false;
-			}
-		});
-	});	
+
+	$(document)
+			.ready(
+					function() {
+						//Adaptado do exemplo do JQuery UI 
+						$('#tags')
+								.bind(
+										'keydown',
+										function(event) {
+											if (event.keyCode === $.ui.keyCode.TAB
+													&& $(this).data(
+															'autocomplete').menu.active) {
+												event.preventDefault();
+											}
+										})
+								.autocomplete(
+										{
+											source : function(request, response) {
+												$
+														.getJSON(
+																'<c:url value="/questoes/tags/autocompletar.json"/>',
+																{
+																	term : extractLast(request.term)
+																},
+																function(result) {
+																	response($
+																			.map(
+																					result,
+																					function(
+																							item) {
+																						return item.nome;
+																					}));
+																});
+											},
+											search : function() {
+												var term = extractLast(this.value);
+												if (term.length < 2) {
+													return false;
+												}
+											},
+											focus : function() {
+												return false;
+											},
+											select : function(event, ui) {
+												var terms = split(this.value);
+												terms.pop();
+												terms.push(ui.item.value);
+												terms.push("");
+												this.value = terms.join(", ");
+												return false;
+											}
+										});
+					});
 </script>
 <style type="text/css">
-<%@ include file="/css/form2.css" %>
+<%@ include file="/css/form2.css"%>
 </style>
 </head>
 
 <body>
-<div id="wrapper">
-    <div id="header"> <%@ include file="/css/header.jsp" %></div> <br/>
-    <div id="left"><fieldset><%@ include file="/css/menu.jsp" %></fieldset></div>
-    <div id="right">
-    <div id="menu">Alterar Questão</div><br/>
-	<div>
-		<%@ include file="../questoes/menu.jsp" %><br/>
-	</div>
-	
-	<div>
-		<br/>
-		<form style="width: 700px" action="<c:url value="/questoes/vouf/${questao.id }" />" method="post" accept-charset="utf-8">
-				<br/>
-				<label for="enunciado">Enunciado:</label><br/>
-					<textarea id="enunciado" rows= "5" cols="80" name="questao.enunciado">${questao.enunciado }</textarea>
-				<br/><br/>
-				<label for="tags">Tags: </label>
+	<div id="wrapper">
+		<div id="header">
+			<%@ include file="/css/header.jsp"%></div>
+		<br />
+		<div id="left">
+			<fieldset><%@ include file="/css/menu.jsp"%></fieldset>
+		</div>
+		<div id="right">
+			<div id="menu">Alterar Questão</div>
+			<br />
+			<div>
+				<%@ include file="../questoes/menu.jsp"%><br />
+			</div>
+
+			<div>
+				<br />
+				<form style="width: 700px"
+					action="<c:url value="/questoes/vouf/${questao.id }" />"
+					method="post" accept-charset="utf-8">
+					<br />
+					<label for="enunciado">Enunciado:</label>
+					<br />
+					<textarea id="enunciado" rows="5" cols="80"
+						name="questao.enunciado">${questao.enunciado }</textarea>
+					<br />
+					<br />
+					<label for="tags">Tags: </label>
 					<input id="tags" type="text" name="tags" value="${tags }"></input>
-				<br/><br/>
-				<label for="resposta">Resposta:</label>
+					<br />
+					<br />
+					<label for="resposta">Resposta:</label>
+					<br/>
 					<c:if test="${questao.resposta }">
-						<input id="verdadeiro" type="radio" checked="checked" name="questao.resposta" value="true"/><p>Verdadeiro</p>
-						<input id="falso" type="radio" name="questao.resposta" value="false"/><p>Falso</p>
+						<input id="verdadeiro" type="radio" checked="checked"
+							name="questao.resposta" value="true" />Verdadeiro
+					<br/>		
+						<input id="falso" type="radio" name="questao.resposta"
+							value="false" />Falso
 					</c:if>
 					<c:if test="${not questao.resposta or empty questao.resposta}">
-						<input id="verdadeiro" type="radio" name="questao.resposta" value="true"/><p>Verdadeiro</p>
-						<input id="falso" type="radio" checked="checked" name="questao.resposta" value="false"/><p>Falso</p>
+						<input id="verdadeiro" type="radio" name="questao.resposta"
+							value="true" />
+						Verdadeiro
+						<br/>
+						<input id="falso" type="radio" checked="checked"
+							name="questao.resposta" value="false" />
+						Falso
 					</c:if>
-				<br/><br/>
-				<button type="submit" name="_method" value="put">Salvar Alterações</button>
-		</form>
-		<br/>
-	</div>
-	</div>
+
+
+
+
+					<div id="comentario">
+						<br /> <br /> <label for="comentario">Comentário (
+							feedback para o aluno ):</label> <br />
+						<textarea id="comentario" rows="5" cols="80"
+							name="questao.comentario">${questao.comentario}</textarea>
+					</div>
+
+					<button type="submit" name="_method" value="put">Salvar
+						Alterações</button>
+				</form>
+				<br />
+			</div>
+		</div>
 	</div>
 </body>
 </html>

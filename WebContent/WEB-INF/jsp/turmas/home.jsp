@@ -18,15 +18,50 @@ import="java.sql.*" errorPage="" %>
     <div id="menu">${turma.disciplina.nome} - ${turma.nome}</div>
     <br/><br/>
     
-    <table>
-        <c:forEach items="${listaDeListas}" var="lista">
-            <tr>
-                <td>
-                    <a href="<c:url value="/listasDeExercicios/${lista.id}"/>">${lista.propriedades.nome} </a>
-                </td>
-            </tr>
-        </c:forEach>
-	</table>
+  	<div>
+		<ul>
+			<c:if test ="${usuarioSession.usuario.privilegio == 'PROFESSOR' || usuarioSession.usuario.privilegio == 'ADMINISTRADOR'}">
+				<c:forEach items="${listaDeListas }" var="lista">
+        			<li><a href="<c:url value="/listasDeExercicios/${lista.id }"/>">${lista.propriedades.nome }</a></li>
+        		</c:forEach>              
+    		</c:if>
+                	
+            <c:if test ="${usuarioSession.usuario.privilegio == 'ALUNO'}">
+            	<!-- Listas de Exerc&iacute;cios corrigidas -->
+            	<c:forEach items="${listaDeListas }" var="lista">
+					<%boolean flag=true;%>
+                	<c:forEach items="${lista.respostas }" var="resposta">
+                		<c:if test ="${resposta.aluno.id == usuarioSession.usuario.id}">
+        					<c:if test ="${resposta.propriedades.estado == 'CORRIGIDA'}">
+        						<li><a href="<c:url value="/listasDeExercicios/resolver/${lista.id }"/>">${lista.propriedades.nome }</a> - Corrigida</li>
+        						<%flag=false;%>
+        					</c:if>
+        		<!-- Listas de Exerc&iacute;cios finalizadas -->
+        					<c:if test ="${resposta.propriedades.estado == 'FINALIZADA'}">
+        						<li><a href="<c:url value="/listasDeExercicios/resolver/${lista.id }"/>">${lista.propriedades.nome }</a> - Finalizada</li>
+        						<%flag=false;%>
+        					</c:if>
+        		<!-- Listas de Exerc&iacute;cios salvas -->
+        					<c:if test ="${resposta.propriedades.estado == 'SALVA'}">
+        						<li><a href="<c:url value="/listasDeExercicios/resolver/${lista.id }"/>">${lista.propriedades.nome }</a> - Salva</li>
+        						<%flag=false;%>
+        					</c:if>
+        		<!-- Listas de Exerc&iacute;cios inicializdas -->        					
+        					<c:if test ="<%=flag%>" >
+        						<li><a href="<c:url value="/listasDeExercicios/resolver/${lista.id }"/>">${lista.propriedades.nome }</a> - Inicializada</li>
+        						<%flag=false;%>
+        					</c:if>
+        				</c:if>
+        			</c:forEach>
+        		<!-- Listas de Exerc&iacute;cios não inicializadas -->
+        			<c:if test ="<%=flag%>" >
+	       				<li><a href="<c:url value="/listasDeExercicios/resolver/${lista.id }"/>">${lista.propriedades.nome }</a> - Não inicializada</li>
+     				</c:if>
+        		</c:forEach>        			
+			</c:if>
+
+		</ul>
+	</div>	
     
     <c:if test="${usuarioSession.usuario.privilegio == 'ALUNO'}">
     <form action='../removeMatricula'>
@@ -58,12 +93,7 @@ import="java.sql.*" errorPage="" %>
         	<a href="<c:url value='../listaAlunos?idTurma=${turma.id}'/>">Gerenciar alunos</a><br/>	         
  		</c:if>
     </form>
-    <form action='../../listasDeExercicios' method="get">
-        <input type="hidden" value="${turma.id}" name="idTurma">
-        <c:if test ="${usuarioSession.usuario.privilegio == 'ALUNO'}">
-        	<a href="<c:url value='../../listasDeExercicios/listasTurma/${turma.id}'/>">Resolver lista</a><br/>
-        </c:if>
-    </form>
+ 
     
     
     
