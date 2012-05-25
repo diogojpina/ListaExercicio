@@ -110,6 +110,7 @@ public class QuestaoDeCodigo extends Questao {
        if (linguagem.equals("java")) {
             TestadorDeCodigoJava testador = new TestadorDeCodigoJava(
                     caminho);
+            
             try {
                 resultado = 
                     testador.testaCodigoJava(respostaAluno.getValor(), 

@@ -320,7 +320,7 @@ public class ListasDeExerciciosController {
 			}
 
 			if (achouResposta)
-				continue;
+				continue;			
 			renders.add(questaoDaLista.getQuestao().getRenderCorrecao(
 					new Resposta()));
 		}

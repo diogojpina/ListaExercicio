@@ -152,7 +152,8 @@ public class Questao {
 		buffer.append("</p>");
 		buffer.append("<p> Comentários:<br/> ");
 		
-		buffer.append(resposta.getQuestao().getComentario());
+		if (resposta.getQuestao() != null)
+			buffer.append(resposta.getQuestao().getComentario());
 		buffer.append("</p>");
 		buffer.append("<p> Nota: ");
 		if (resposta.getNota() != null)
