@@ -31,6 +31,8 @@ public class Disciplina {
     private Collection<Turma> turmas;
     //TODO: estava assim: private Collection<Turma> turmas = new ArrayList<Turma>();
 
+    @OneToMany(mappedBy = "disciplina")
+    private Collection<Questao> questoes;
     /**
 	 * @return  id da disciplina
 	 * @uml.property  name="id"
@@ -75,6 +77,14 @@ public class Disciplina {
      */
     public void setTurmas(Collection<Turma> turmas) {
         this.turmas = turmas;
+    }
+    
+    public Collection<Questao> getQuestoes(){
+    	return questoes;
+    }
+    
+    public void setQuestoes(Collection<Questao> questoes){
+    	this.questoes = questoes;
     }
 
 }

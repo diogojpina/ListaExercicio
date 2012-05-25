@@ -6,10 +6,12 @@ import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
 
+import br.usp.ime.academicdevoir.dao.DisciplinaDao;
 import br.usp.ime.academicdevoir.dao.ListaDeExerciciosDao;
 import br.usp.ime.academicdevoir.dao.ListaDeRespostasDao;
 import br.usp.ime.academicdevoir.dao.QuestaoDao;
 import br.usp.ime.academicdevoir.dao.TagDao;
+import br.usp.ime.academicdevoir.entidade.Disciplina;
 import br.usp.ime.academicdevoir.entidade.ListaDeExercicios;
 import br.usp.ime.academicdevoir.entidade.ListaDeRespostas;
 import br.usp.ime.academicdevoir.entidade.PropriedadesDaListaDeExercicios;
@@ -42,6 +44,8 @@ public class QuestoesController {
 	 * @uml.associationEnd multiplicity="(1 1)"
 	 */
 	private final QuestaoDao dao;
+	
+	private DisciplinaDao disciplinaDao;
 	/**
 	 * @uml.property name="result"
 	 * @uml.associationEnd multiplicity="(1 1)"
@@ -60,11 +64,12 @@ public class QuestoesController {
 	 *            para controle de permissões
 	 */
 	public QuestoesController(QuestaoDao dao, TagDao tagDao, ListaDeExerciciosDao listaDeExerciciosDao, ListaDeRespostasDao listaDeRespostasDao, Result result,
-			UsuarioSession usuarioSession) {
+			DisciplinaDao disciplinaDao, UsuarioSession usuarioSession) {
 		this.dao = dao;
 		this.tagDao = tagDao;
 		this.listaDeExerciciosDao = listaDeExerciciosDao;
 		this.listaDeRespostasDao = listaDeRespostasDao;
+		this.disciplinaDao = disciplinaDao;
 		this.result = result;
 	}
 
@@ -158,6 +163,9 @@ public class QuestoesController {
 	 * Permite acesso à página com formulário para cadastro de uma nova questão.
 	 */
 	public void cadastro() {
+		List<Disciplina> disciplinas = disciplinaDao.listaTudo();
+		
+        result.include("disciplinas", disciplinas);
 	}
 
 	@Get

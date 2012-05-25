@@ -14,11 +14,11 @@ import javax.persistence.InheritanceType;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.validation.constraints.NotNull;
 
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
-import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import br.usp.ime.academicdevoir.dao.TagDao;
@@ -36,6 +36,9 @@ public class Questao {
 	@Id
 	@GeneratedValue
 	private Long id;
+	
+	@ManyToOne
+	protected Disciplina disciplina;
 
 	@Column(length = Constantes.MAX_TAM_CAMPO)
 	protected String comentario;
@@ -63,6 +66,14 @@ public class Questao {
 	 */
 	public void setId(Long id) {
 		this.id = id;
+	}
+	
+	public Disciplina getDisciplina(){
+		return disciplina;
+	}
+	
+	public void setDisciplina(Disciplina disciplina){
+		this.disciplina = disciplina;
 	}
 
 	/**

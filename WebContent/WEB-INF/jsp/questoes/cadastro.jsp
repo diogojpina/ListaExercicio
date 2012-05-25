@@ -253,6 +253,16 @@
 					action="<c:url value="/questoes/codigo"/>" method="post"
 					accept-charset="us-ascii">
 					<br />
+					<p>	
+					<label>Disciplinas:</label>
+					<select name="questao.disciplina.id">
+						<option value="">Selecione uma disciplina</option>
+						<c:forEach items="${disciplinas}" var="disciplina">
+							
+							<option value="${disciplina.id}" <c:if test="${displina.id == disciplina_id}"> selected="selected" </c:if>>${disciplina.nome }</option>
+						</c:forEach>
+					</select>
+					</p>
 					<label for="enunciado">Enunciado:</label>
 					<br />
 					<textarea id="enunciado" rows="5" cols="80"
