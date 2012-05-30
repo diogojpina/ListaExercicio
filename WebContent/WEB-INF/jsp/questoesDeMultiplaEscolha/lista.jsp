@@ -90,7 +90,8 @@ import="java.sql.*" errorPage="" %>
 						<td>
 							<ol>
 								<c:forEach items="${questao.alternativas }" var="alternativa">
-									<li>${alternativa }</li><br/>
+									<li>${alternativa.alternativa }
+									(${alternativa.peso })</li><br/>
 								</c:forEach>
 							</ol>
 						</td>					

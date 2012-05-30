@@ -12,6 +12,8 @@ import br.com.caelum.vraptor.Result;
 import br.com.caelum.vraptor.Validator;
 import br.usp.ime.academicdevoir.dao.QuestaoDeMultiplaEscolhaDao;
 import br.usp.ime.academicdevoir.dao.TagDao;
+import br.usp.ime.academicdevoir.entidade.AlternativasMultiplaEscolha;
+import br.usp.ime.academicdevoir.entidade.AlternativasMultiplaEscolhaDao;
 import br.usp.ime.academicdevoir.entidade.QuestaoDeMultiplaEscolha;
 import br.usp.ime.academicdevoir.infra.Permission;
 import br.usp.ime.academicdevoir.infra.Privilegio;
@@ -30,6 +32,9 @@ public class QuestoesDeMultiplaEscolhaController {
 	 * @uml.associationEnd multiplicity="(1 1)"
 	 */
 	private QuestaoDeMultiplaEscolhaDao dao;
+	
+	private AlternativasMultiplaEscolhaDao alternativasDao;
+	
 	/**
 	 * @uml.property name="result"
 	 * @uml.associationEnd multiplicity="(1 1)"
@@ -52,10 +57,11 @@ public class QuestoesDeMultiplaEscolhaController {
 	 *            para interação com o banco de dados
 	 */
 	public QuestoesDeMultiplaEscolhaController(QuestaoDeMultiplaEscolhaDao dao,
-			TagDao tagDao, Result result, Validator validator,
+			TagDao tagDao, AlternativasMultiplaEscolhaDao alternativasDao, Result result, Validator validator,
 			UsuarioSession usuarioSession) {
 		this.dao = dao;
 		this.tagDao = tagDao;
+		this.alternativasDao = alternativasDao;
 		this.result = result;
 		this.validator = validator;
 	}
@@ -68,13 +74,22 @@ public class QuestoesDeMultiplaEscolhaController {
 	 * @param questao
 	 */
 	public void cadastra(final QuestaoDeMultiplaEscolha questao,
-			List<Integer> resposta, String tags) {
+			List<Integer> resposta, String tags, int numeroDeAlternativas) {
 
 		questao.setTags(tags, tagDao);
 		questao.setResposta(resposta);
 
 		validator.validate(questao);
 		validator.onErrorUsePageOf(QuestoesController.class).cadastro();
+
+		for (int i=0; i<numeroDeAlternativas; i++) {
+			questao.getAlternativas().get(i).setQuestao(questao);			
+		}
+			
+		for (int i=numeroDeAlternativas; i<10; i++) {
+			questao.getAlternativas().remove(numeroDeAlternativas);
+		}
+		
 
 		dao.salva(questao);
 		result.redirectTo(this).lista();
