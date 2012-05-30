@@ -252,7 +252,12 @@
 				<form style="width: 700px"
 					action="<c:url value="/questoes/codigo"/>" method="post"
 					accept-charset="us-ascii">
-					<br />
+					
+			<c:forEach items="${errors}" var="msg">
+		    	<b>${msg.message}</b><br/>
+		    </c:forEach>
+		    <br><br>
+					
 					<p>	
 					<label>Disciplinas:</label>
 					<select name="questao.disciplina.id">

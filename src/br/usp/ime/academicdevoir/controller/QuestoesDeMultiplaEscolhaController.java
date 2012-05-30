@@ -10,8 +10,11 @@ import br.com.caelum.vraptor.Put;
 import br.com.caelum.vraptor.Resource;
 import br.com.caelum.vraptor.Result;
 import br.com.caelum.vraptor.Validator;
+import br.com.caelum.vraptor.validator.Validations;
+import br.usp.ime.academicdevoir.dao.DisciplinaDao;
 import br.usp.ime.academicdevoir.dao.QuestaoDeMultiplaEscolhaDao;
 import br.usp.ime.academicdevoir.dao.TagDao;
+import br.usp.ime.academicdevoir.entidade.Disciplina;
 import br.usp.ime.academicdevoir.entidade.QuestaoDeMultiplaEscolha;
 import br.usp.ime.academicdevoir.infra.Permission;
 import br.usp.ime.academicdevoir.infra.Privilegio;
@@ -41,6 +44,7 @@ public class QuestoesDeMultiplaEscolhaController {
 	 */
 	private Validator validator;
 	private TagDao tagDao;
+	private DisciplinaDao disciplinaDao;
 
 	/**
 	 * @param result
@@ -52,10 +56,11 @@ public class QuestoesDeMultiplaEscolhaController {
 	 *            para interação com o banco de dados
 	 */
 	public QuestoesDeMultiplaEscolhaController(QuestaoDeMultiplaEscolhaDao dao,
-			TagDao tagDao, Result result, Validator validator,
+			TagDao tagDao, DisciplinaDao disciplinaDao, Result result, Validator validator,
 			UsuarioSession usuarioSession) {
 		this.dao = dao;
 		this.tagDao = tagDao;
+		this.disciplinaDao = disciplinaDao;
 		this.result = result;
 		this.validator = validator;
 	}
@@ -70,12 +75,20 @@ public class QuestoesDeMultiplaEscolhaController {
 	public void cadastra(final QuestaoDeMultiplaEscolha questao,
 			List<Integer> resposta, String tags) {
 
-		questao.setTags(tags, tagDao);
-		questao.setResposta(resposta);
-
+		validator.checking(new Validations() {{
+			that(questao.getDisciplina().getId() != null, "questao.id", "questao.id.notNull");
+		}});
+		
 		validator.validate(questao);
-		validator.onErrorUsePageOf(QuestoesController.class).cadastro();
+		validator.onErrorRedirectTo(QuestoesController.class).cadastro();
 
+		questao.setTags(tags, tagDao);
+		
+		Disciplina disciplina = disciplinaDao.carrega(questao.getDisciplina().getId());
+		disciplina.setTags(tags, tagDao);
+		questao.setResposta(resposta);
+		
+		disciplinaDao.atualizaDisciplina(disciplina);
 		dao.salva(questao);
 		result.redirectTo(this).lista();
 	}

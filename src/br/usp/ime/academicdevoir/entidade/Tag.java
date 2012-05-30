@@ -28,6 +28,10 @@ public class Tag {
 	@JoinTable(name = "tags_questoes", joinColumns = { @JoinColumn(name = "id_tag") }, inverseJoinColumns = { @JoinColumn(name = "id_questao") })
 	private List<Questao> questoes;
 
+	@ManyToMany(fetch = FetchType.LAZY)
+	@JoinTable(name = "tags_disciplinas", joinColumns = { @JoinColumn(name = "id_tag") }, inverseJoinColumns = { @JoinColumn(name = "id_disciplina") })
+	private List<Disciplina> disciplinas;
+	
 	public Tag() {
 	}
 
@@ -57,5 +61,13 @@ public class Tag {
 
 	public void setQuestoes(List<Questao> questoes) {
 		this.questoes = questoes;
+	}
+	
+	public List<Disciplina> getDisciplinas() {
+		return disciplinas;
+	}
+
+	public void setDisciplinas(List<Disciplina> disciplinas) {
+		this.disciplinas = disciplinas;
 	}
 }
