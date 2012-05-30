@@ -53,7 +53,7 @@ import="java.sql.*" errorPage="" %>
 								<fieldset class="fieldsetSemFormatacao">
 									<input id="idDaQuestao" type="hidden" name="idDaQuestao" value="${questao.id }" />
 									<label id="labelPesoDaQuestao" for="pesoDaQuestao">Peso:</label>
-									<input id="pesoDaQuestao" type="text" size="6" maxlength="6" name="pesoDaQuestao" />
+									<input id="pesoDaQuestao" type="text" size="6" maxlength="6" name="pesoDaQuestao" value="1"/>
 									<button id="incluiQuestao" type="submit" name="_method" value="put">Incluir</button>
 								</fieldset>
 							</form>
