@@ -119,8 +119,14 @@ public class ListasDeExerciciosController {
 	 * @param idDasTurmas
 	 */
 	public void cadastra(final PropriedadesDaListaDeExercicios propriedades,
-			final List<Integer> prazoDeEntrega, final Long idDaTurma) {
+			final List<Integer> prazoDeEntrega, final Long idDaTurma, String data1) {
 
+		String[] dias  = data1.split("/");
+			
+		prazoDeEntrega.add(0, Integer.parseInt(dias[0]));
+		prazoDeEntrega.add(1, Integer.parseInt(dias[1]));
+		prazoDeEntrega.add(2, Integer.parseInt(dias[2]));
+			
 		validator.checking(new Validations() {
 			{
 				that(!propriedades.getNome().isEmpty(), "propriedade.nome",
@@ -637,7 +643,7 @@ public class ListasDeExerciciosController {
 		result.include("pagina", proxPagina);
 		result.include("ultimaPagina", ultimaPagina);
 		result.include("filtroAtual", filtro);
-	}
+	} 	
 
 	@Get
 	@Path("/listasDeExercicios/trocaOrdem/{id}")
