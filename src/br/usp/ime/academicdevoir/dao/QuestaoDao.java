@@ -1,6 +1,5 @@
 package br.usp.ime.academicdevoir.dao;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.hibernate.Criteria;
@@ -10,8 +9,8 @@ import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Restrictions;
 
 import br.com.caelum.vraptor.ioc.Component;
+import br.usp.ime.academicdevoir.entidade.Disciplina;
 import br.usp.ime.academicdevoir.entidade.Questao;
-import br.usp.ime.academicdevoir.entidade.Tag;
 
 @Component
 public class QuestaoDao {
@@ -22,10 +21,12 @@ public class QuestaoDao {
 	 *                     elementType="br.usp.ime.academicdevoir.entidade.Questao"
 	 */
 	private final Session session;
+	private ListaDeExerciciosDao listaDeExercicioDao;
 	
 
-	public QuestaoDao(Session session) {
+	public QuestaoDao(Session session, ListaDeExerciciosDao listaDeExerciciosDao) {
 		this.session = session;
+		this.listaDeExercicioDao = listaDeExerciciosDao;
 	}
 
 	@SuppressWarnings("unchecked")
@@ -43,8 +44,15 @@ public class QuestaoDao {
 	 * 
 	 * @return List<Questao>
 	 */
-	private Criteria listaFiltrada(String filtro) {
+	private Criteria listaFiltrada(String filtro, Long idLista) {
 		Criteria criteria = this.session.createCriteria(Questao.class);
+		/**
+		 * filtra por disciplina
+		*/
+		
+		Disciplina disciplina = listaDeExercicioDao.carrega(idLista).getTurma().getDisciplina();
+		criteria.createCriteria("disciplina").add(Restrictions.eq("id", disciplina.getId()));
+		
 		if (filtro != null && !filtro.equals(""))
 			criteria.createCriteria("tags").add(Restrictions.ilike("nome", filtro, MatchMode.ANYWHERE));
 		return criteria;
@@ -56,8 +64,8 @@ public class QuestaoDao {
 	 * 
 	 * @return List<Questao>
 	 */
-	public Integer tamanhoDaLista(String filtro) {
-		return listaFiltrada(filtro).list().size();
+	public Integer tamanhoDaLista(String filtro, Long idLista) {
+		return listaFiltrada(filtro, idLista).list().size();
 	}
 
 	@SuppressWarnings("unchecked")
@@ -67,8 +75,8 @@ public class QuestaoDao {
 	 * @return List<Questao>
 	 */
 	public List<Questao> listaPaginada(Integer primeiro, Integer numRegistros,
-			String filtro) {
-		Criteria criteria = listaFiltrada(filtro);
+			String filtro, Long idLista) {
+		Criteria criteria = listaFiltrada(filtro, idLista);
 		criteria.setFirstResult(primeiro);
 		criteria.setMaxResults(numRegistros);
 		return criteria.list();

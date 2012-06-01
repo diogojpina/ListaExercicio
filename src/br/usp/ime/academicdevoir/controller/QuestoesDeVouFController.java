@@ -8,8 +8,11 @@ import br.com.caelum.vraptor.Put;
 import br.com.caelum.vraptor.Resource;
 import br.com.caelum.vraptor.Result;
 import br.com.caelum.vraptor.Validator;
+import br.com.caelum.vraptor.validator.Validations;
+import br.usp.ime.academicdevoir.dao.DisciplinaDao;
 import br.usp.ime.academicdevoir.dao.QuestaoDeVouFDao;
 import br.usp.ime.academicdevoir.dao.TagDao;
+import br.usp.ime.academicdevoir.entidade.Disciplina;
 import br.usp.ime.academicdevoir.entidade.QuestaoDeVouF;
 import br.usp.ime.academicdevoir.infra.Permission;
 import br.usp.ime.academicdevoir.infra.Privilegio;
@@ -38,6 +41,7 @@ public class QuestoesDeVouFController {
 	 */
 	private Validator validator;
 	private TagDao tagDao;
+	private DisciplinaDao disciplinaDao;
 
 	/**
 	 * @param result
@@ -48,10 +52,11 @@ public class QuestoesDeVouFController {
 	 * @param turmaDao
 	 *            para interação com o banco de dados
 	 */
-	public QuestoesDeVouFController(QuestaoDeVouFDao dao, TagDao tagDao,
+	public QuestoesDeVouFController(QuestaoDeVouFDao dao, TagDao tagDao, DisciplinaDao disciplinaDao,
 			Result result, Validator validator, UsuarioSession usuarioSession) {
 		this.dao = dao;
 		this.tagDao = tagDao;
+		this.disciplinaDao = disciplinaDao;
 		this.result = result;
 		this.validator = validator;
 	}
@@ -64,11 +69,19 @@ public class QuestoesDeVouFController {
 	 */
 	public void cadastra(final QuestaoDeVouF questao, String tags) {
 
-		questao.setTags(tags, tagDao);
-
+		validator.checking(new Validations() {{
+			that(questao.getDisciplina().getId() != null, "questao.id", "questao.id.notNull");
+		}});
+		
 		validator.validate(questao);
-		validator.onErrorUsePageOf(QuestoesController.class).cadastro();
+		validator.onErrorRedirectTo(QuestoesController.class).cadastro();
 
+		questao.setTags(tags, tagDao);
+		
+		Disciplina disciplina = disciplinaDao.carrega(questao.getDisciplina().getId());
+		disciplina.setTags(tags, tagDao);
+		
+		disciplinaDao.atualizaDisciplina(disciplina);
 		dao.salva(questao);
 		result.redirectTo(this).lista();
 	}

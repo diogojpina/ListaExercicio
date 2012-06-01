@@ -256,6 +256,12 @@
 					accept-charset="us-ascii">
 					<br />
 					<p>
+				
+			<c:forEach items="${errors}" var="msg">
+		    	<b>${msg.message}</b><br/>
+		    </c:forEach>
+		    <br><br>
+					
 					<label>Disciplinas:</label>
 					<select name="questao.disciplina.id">
 						<option value="">Selecione uma disciplina</option>
