@@ -65,18 +65,11 @@ import="java.sql.*" errorPage="" %>
 						<c:choose>
 							<c:when test="${listaDeExercicios.propriedades.autoCorrecao eq 'DESATIVADA' }">
 								<option selected="selected" value="0">Desativada</option>
-								<option value="1">Professor</option>
-								<option value="2">Aluno e Professor</option>
-							</c:when>
-							<c:when test="${listaDeExercicios.propriedades.autoCorrecao eq 'PROFESSOR' }">
-								<option value="0">Desativada</option>
-								<option selected="selected" value="1">Professor</option>
-								<option value="2">Aluno e Professor</option>
+								<option value="1">Ativada</option>
 							</c:when>
 							<c:otherwise>
 								<option value="0">Desativada</option>
-								<option value="1">Professor</option>
-								<option selected="selected" value="2">Aluno e Professor</option>
+								<option selected="selected" value="1">Ativada</option>
 							</c:otherwise>
 						</c:choose>						
 					</select>

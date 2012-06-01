@@ -57,8 +57,7 @@ import="java.sql.*" errorPage="" %>
 				<label for="autoCorrecao">Auto Corre&ccedil;&atilde;o:</label>
 					<select id="autoCorrecao" name="propriedades.autoCorrecao">
 						<option value="0">Desativada</option>
-						<option value="1">Professor</option>
-						<option value="2">Aluno e Professor</option>
+						<option value="1">Ativada</option>
 					</select>
 				<br/><br/>
 					

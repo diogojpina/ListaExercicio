@@ -30,11 +30,20 @@ import="java.sql.*" errorPage="" %>
 			});		
 		</c:forEach>
 		
-		$('#enviaRespostas').click(function() {
-			$(this).attr("disabled", "disabled").empty().append("Enviando");
-			$('#questao0').submit();
+		 $('#salvaRespostas').click(function() {
+				$(this).attr("disabled", "disabled").empty().append("Salvando...");
+				$('#enviaRespostas').hide();
+				$('#questao0').submit();
+				$('#acao0').val(1);
+			});
+	       
+			$('#enviaRespostas').click(function() {
+				$(this).attr("disabled", "disabled").empty().append("Enviando...");
+				$('#salvaRespostas').hide();
+				$('#questao0').submit();
+				$('#acao0').val(2);
+			});
 		});
-	});
 </script>
 
 <style type="text/css">
@@ -65,7 +74,7 @@ import="java.sql.*" errorPage="" %>
 	<div>
 		<c:forEach items="${listaDeExercicios.questoes}" var="questaoDaLista" varStatus="iteracao">
 			<form id="questao${iteracao.index }" class="respostaForm" action="<c:url value="/respostas/${listaDeRespostas.id }/cadastra"/>" method="post" accept-charset="utf-8" enctype="multipart/form-data">
-				teste
+				<input type="hidden" name="acao" id="acao${iteracao.index}" />
 				<fieldset>
 						<p>${iteracao.index + 1} )
 								${questaoDaLista.questao.enunciado}</p>

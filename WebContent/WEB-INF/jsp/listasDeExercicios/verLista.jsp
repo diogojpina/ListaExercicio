@@ -135,11 +135,8 @@ import="java.sql.*" errorPage="" %>
 					<c:when test="${listaDeExercicios.propriedades.autoCorrecao eq 'DESATIVADA' }">
 						Desabilitada
 					</c:when>
-					<c:when test="${listaDeExercicios.propriedades.autoCorrecao eq 'PROFESSOR' }">
-						Somente Professor
-					</c:when>
 					<c:otherwise>
-						Professor e Aluno
+						Habilitada
 					</c:otherwise>
 				</c:choose>
 			</td>

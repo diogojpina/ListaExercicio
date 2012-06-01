@@ -55,24 +55,19 @@ public class RespostasController {
 	 */
 	@Post
 	@Path("/respostas/{listaDeRespostas.id}/cadastra")
-	public void salvaResposta(ListaDeRespostas listaDeRespostas, Resposta resposta, String[] resposta2, Long idDaQuestao, UploadedFile arquivo) {
+	public void salvaResposta(ListaDeRespostas listaDeRespostas, Resposta resposta, String[] resposta2, Long idDaQuestao, UploadedFile arquivo, int acao) {
 	    String caminho;
-	    int nenvios, nmaxenvios;
+	    int nmaxenvios, nenvios;
 	    if (resposta == null) 
 	    	resposta = new Resposta();
 		
 	    dao.recarrega(listaDeRespostas);
 	    
 	    
-        if (listaDeRespostas.getPropriedades().getEstado() == 
-                EstadoDaListaDeRespostas.SALVA && 
-                !VerificadorDePrazos.estaNoPrazo(listaDeRespostas.
-                getListaDeExercicios().getPropriedades().getPrazoDeEntrega())) {
-            listaDeRespostas.getPropriedades().
-                setEstado(EstadoDaListaDeRespostas.FINALIZADA);
-            dao.atualiza(listaDeRespostas);
+        if ( !VerificadorDePrazos.estaNoPrazo(listaDeRespostas.getListaDeExercicios().getPropriedades().getPrazoDeEntrega())) {
+            listaDeRespostas.getPropriedades().setEstado(EstadoDaListaDeRespostas.FINALIZADA);
             result.redirectTo(ListasDeExerciciosController.class).
-            listasTurma(listaDeRespostas.getListaDeExercicios().
+            	listasTurma(listaDeRespostas.getListaDeExercicios().
                     getTurma().getId());
             return;
         }
@@ -95,24 +90,30 @@ public class RespostasController {
 				resposta.setValor(valor.toString());
 			}
 		}
-        resposta.setQuestao(questao);
-        
-		if (listaDeRespostas.getListaDeExercicios().getPropriedades().
-		        getNumeroMaximoDeEnvios() != null) {
-	        nmaxenvios =  listaDeRespostas.getListaDeExercicios().getPropriedades().getNumeroMaximoDeEnvios();
-		    nenvios = listaDeRespostas.getPropriedades().getNumeroDeEnvios();
-		    if (listaDeRespostas.getRespostas().isEmpty())
-		        listaDeRespostas.getPropriedades().setNumeroDeEnvios(nenvios + 1);
-        
-		    if (listaDeRespostas.adiciona(resposta) == 0)
-		        listaDeRespostas.getPropriedades().setNumeroDeEnvios(nenvios + 1);
-		    if (listaDeRespostas.getPropriedades().getNumeroDeEnvios() >= nmaxenvios)
-		        listaDeRespostas.getPropriedades().setEstado
-		            (EstadoDaListaDeRespostas.FINALIZADA);
-		}
-		else
-		    listaDeRespostas.adiciona(resposta);
 		
+		resposta.setQuestao(questao);
+		
+		if(acao == 2) {/*Enviando*/
+			if (listaDeRespostas.getListaDeExercicios().getPropriedades().
+			    getNumeroMaximoDeEnvios() != null) {
+		        nmaxenvios =  listaDeRespostas.getListaDeExercicios().getPropriedades().getNumeroMaximoDeEnvios();
+			    nenvios = listaDeRespostas.getPropriedades().getNumeroDeEnvios();
+			    if (listaDeRespostas.getRespostas().isEmpty())
+			        listaDeRespostas.getPropriedades().setNumeroDeEnvios(nenvios + 1);
+	        
+			    if (listaDeRespostas.adiciona(resposta) == 0)
+			        listaDeRespostas.getPropriedades().setNumeroDeEnvios(nenvios + 1);
+			    if (listaDeRespostas.getPropriedades().getNumeroDeEnvios() > nmaxenvios){
+			        listaDeRespostas.getPropriedades().setEstado(EstadoDaListaDeRespostas.FINALIZADA);
+			        result.redirectTo(ListasDeExerciciosController.class).listasTurma(listaDeRespostas.getListaDeExercicios().
+	                    getTurma().getId());
+			        return;
+			    }
+			}
+		}
+        
+        listaDeRespostas.adiciona(resposta);
+		listaDeRespostas.getPropriedades().setEstado(EstadoDaListaDeRespostas.SALVA);
 		dao.atualiza(listaDeRespostas);
        
 	    result.redirectTo(ListasDeExerciciosController.class).

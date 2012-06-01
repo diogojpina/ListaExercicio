@@ -552,7 +552,7 @@ public class ListasDeExerciciosController {
 		}
 
 		// Não corrige se autocorreção estiver desativada para esse lista
-		if (autoCorrecao == AutoCorrecao.AMBOS) {
+		if (autoCorrecao == AutoCorrecao.ATIVADA) {
 
 			listaDeRespostas.autocorrecao();
 			listaDeRespostasDao.atualiza(listaDeRespostas);

@@ -50,7 +50,6 @@ import="java.sql.*" errorPage="" %>
 		$('#enviaRespostas').click(function() {
 			$(this).attr("disabled", "disabled").empty().append("Enviando...");
 			$('#salvaRespostas').hide();
-			$('#salvaRespostas').
 			$('#questao0').submit();
 			$('#acao0').val(2);
 		});
