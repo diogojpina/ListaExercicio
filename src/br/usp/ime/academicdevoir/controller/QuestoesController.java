@@ -107,7 +107,7 @@ public class QuestoesController {
 
 	@Delete
 	@Path("/questoes/{id}")
-	@Permission(Privilegio.ADMINISTRADOR)
+	@Permission({Privilegio.ADMINISTRADOR, Privilegio.PROFESSOR})
 	/**
 	 * Remove uma questão do banco de dados com o id fornecido.
 	 * @param id

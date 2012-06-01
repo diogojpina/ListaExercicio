@@ -1,13 +1,14 @@
 package br.usp.ime.academicdevoir.entidade;
 
-import java.util.ArrayList;
 import java.util.List;
 
-import javax.persistence.CollectionTable;
-import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.OneToMany;
 import javax.validation.constraints.NotNull;
+
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.CascadeType;
 
 import br.usp.ime.academicdevoir.dao.TagDao;
 import br.usp.ime.academicdevoir.infra.TipoDeQuestao;
@@ -21,14 +22,19 @@ public class QuestaoDeMultiplaEscolha extends Questao {
 	 * @uml.property name="alternativas"
 	 * @uml.associationEnd multiplicity="(0 -1)" elementType="java.lang.String"
 	 */
+	/*
 	@ElementCollection(fetch = FetchType.LAZY)
 	@CollectionTable(name = "alternativasDasQuestoes")
 	private List<String> alternativas;
+	*/
+	@OneToMany(mappedBy = "questao", fetch=FetchType.EAGER)
+	@Cascade(CascadeType.ALL)
+	private List<AlternativasMultiplaEscolha> alternativas;
 
 	/**
 	 * @uml.property name="resposta"
 	 */
-	@NotNull
+	//@NotNull
 	private Integer resposta;
 
 	public Boolean getRespostaUnica() {
@@ -39,11 +45,11 @@ public class QuestaoDeMultiplaEscolha extends Questao {
 		this.respostaUnica = respostaUnica;
 	}
 
-	public List<String> getAlternativas() {
+	public List<AlternativasMultiplaEscolha> getAlternativas() {
 		return alternativas;
 	}
 
-	public void setAlternativas(List<String> alternativas) {
+	public void setAlternativas(List<AlternativasMultiplaEscolha> alternativas) {
 		this.alternativas = alternativas;
 	}
 
@@ -218,11 +224,13 @@ public class QuestaoDeMultiplaEscolha extends Questao {
     	questao.enunciado = this.enunciado;
     	questao.respostaUnica = this.respostaUnica;
     	questao.resposta = this.resposta;
+    	/*
     	questao.alternativas = new ArrayList<String>();
     	
     	for (String alternativa : this.alternativas) {
     		questao.alternativas.add(alternativa);
     	}
+    	*/
     			
     	questao.setTags(this.getTagsEmString(), dao);
     	

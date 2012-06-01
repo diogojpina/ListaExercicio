@@ -30,8 +30,9 @@ public class QuestaoDeMultiplaEscolhaDao {
 	 * @return List<QuestaoDeMultiplaEscolha>
 	 */
 	public List<QuestaoDeMultiplaEscolha> listaTudo() {
-		return this.session.createCriteria(QuestaoDeMultiplaEscolha.class)
-				.list();
+		List<QuestaoDeMultiplaEscolha> a = null;
+		a = this.session.createQuery("FROM QuestaoDeMultiplaEscolha").list();
+		return  a;
 	}
 
 	/**

@@ -40,6 +40,7 @@
 		while (i < numeroDeAlternativas) {
 			$('#resposta' + tipo + i).removeAttr('disabled').show();
 			$('#alternativa' + i).removeAttr('disabled').show();
+			$('#peso' + i).removeAttr('disabled').show();
 			$('#espacoAlternativas' + i).show();
 			$('#espacoAlternativas2_' + i).show();
 			$('#resposta' + outro + i).attr('disabled', 'disabled').hide();
@@ -49,6 +50,7 @@
 		while (i < 10) {
 			$('#resposta' + tipo + i).attr('disabled', 'disabled').hide();
 			$('#alternativa' + i).attr('disabled', 'disabled').hide();
+			$('#peso' + i).attr('disabled', 'disabled').hide();
 			$('#espacoAlternativas' + i).hide();
 			$('#espacoAlternativas2_' + i).hide();
 			$('#resposta' + outro + i).attr('disabled', 'disabled').hide();
@@ -229,7 +231,7 @@
 </script>
 
 <style type="text/css">
-<%@ include file="/css/form2.css"%>
+<%@include file="/css/form2.css"%>
 </style>
 </head>
 
@@ -252,22 +254,22 @@
 				<form style="width: 700px"
 					action="<c:url value="/questoes/codigo"/>" method="post"
 					accept-charset="us-ascii">
-					
+					<br />
+					<p>
+				
 			<c:forEach items="${errors}" var="msg">
 		    	<b>${msg.message}</b><br/>
 		    </c:forEach>
 		    <br><br>
 					
-					<p>	
 					<label>Disciplinas:</label>
 					<select name="questao.disciplina.id">
 						<option value="">Selecione uma disciplina</option>
 						<c:forEach items="${disciplinas}" var="disciplina">
-							
-							<option value="${disciplina.id}" <c:if test="${displina.id == disciplina_id}"> selected="selected" </c:if>>${disciplina.nome }</option>
+						<option value="${disciplina.id}" <c:if test="${displina.id == disciplina_id}"> selected="selected" </c:if>>${disciplina.nome }</option>
 						</c:forEach>
 					</select>
-					</p>
+					</p>					
 					<label for="enunciado">Enunciado:</label>
 					<br />
 					<textarea id="enunciado" rows="5" cols="80"
@@ -290,8 +292,7 @@
 					<input id="tags" type="text" name="tags" />
 
 					<div id="questaoDeMultiplaEscolhaContainer">
-						<br />
-						<br />
+						<br /> <br />
 						<p>Número de Alternativas:</p>
 						<select id="seletorDeAlternativas" name="numeroDeAlternativas">
 							<c:forEach begin="2" end="10" step="1" varStatus="iteracao">
@@ -309,8 +310,7 @@
 						<p>Resposta única:</p>
 						<input id="tipoDeResposta" type="checkbox" checked="checked"
 							name="questao.respostaUnica" value="true" disabled="disabled" />
-						<br />
-						<br /> <label>Alternativas:</label>
+						<br /> <br /> <label>Alternativas:</label>
 						<c:set var="valorResposta" value="1" />
 						<c:forEach begin="0" end="9" step="1" varStatus="iteracao">
 							<br id="espacoAlternativas${iteracao.index }" />
@@ -325,6 +325,7 @@
 										class="respostaDasAlternativas" type="checkbox"
 										checked="checked" name="resposta[]" value="${valorResposta }"
 										disabled="disabled" />
+
 								</c:when>
 								<c:otherwise>
 									<input id="respostaUnica${iteracao.index }"
@@ -336,23 +337,39 @@
 										disabled="disabled" />
 								</c:otherwise>
 							</c:choose>
+
+
 							<c:set var="valorResposta" value="${valorResposta*2 }" />
 							<input id="alternativa${iteracao.index }" class="alternativa"
-								type="text" size="100" name="questao.alternativas[]"
+								type="text" size="100" name="questao.alternativas[].alternativa"
 								disabled="disabled" />
+							<br />
+
+<div id="peso${iteracao.index }" class="peso">
+Peso:
+<input id="peso${iteracao.index }" class="peso" type="text" 
+								size="3" name="questao.alternativas[].peso" /> 
+</div>
+
+							
+
+
+
+
+
+
 						</c:forEach>
 					</div>
 
 					<div id="questaoDeTextoContainer">
-						<br />
-						<br /> <label for="respostaTexto">Resposta:</label> <br />
+						<br /> <br /> <label for="respostaTexto">Resposta:</label> <br />
 						<textarea id="respostaTexto" rows="5" cols="80"
 							name="questao.resposta" disabled="disabled"></textarea>
 					</div>
 
 					<div id="questaoDeCodigoContainer">
-						<br />
-						<br /> <label for="codigoDeTeste">Código de teste:</label> <br />
+						<br /> <br /> <label for="codigoDeTeste">Código de
+							teste:</label> <br />
 						<textarea id="codigoDeTeste" rows="5" cols="80"
 							name="questao.codigoDeTeste"></textarea>
 					</div>
@@ -372,8 +389,8 @@
 					</div>
 
 					<div id="comentario">
-						<br />
-						<br /> <label for="comentario">Comentário ( feedback para o aluno ):</label> <br />
+						<br /> <br /> <label for="comentario">Comentário (
+							feedback para o aluno ):</label> <br />
 						<textarea id="comentario" rows="5" cols="80"
 							name="questao.comentario"></textarea>
 					</div>
