@@ -48,5 +48,10 @@ public class AlternativasMultiplaEscolha {
 		this.questao = questao;
 	}
 	
+	@Override
+	public String toString() {
+		return this.alternativa;
+	}
+	
 
 }

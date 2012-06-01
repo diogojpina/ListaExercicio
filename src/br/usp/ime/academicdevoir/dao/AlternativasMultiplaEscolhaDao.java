@@ -1,4 +1,4 @@
-package br.usp.ime.academicdevoir.entidade;
+package br.usp.ime.academicdevoir.dao;
 
 import org.hibernate.Session;
 

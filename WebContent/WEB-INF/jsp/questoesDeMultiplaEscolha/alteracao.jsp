@@ -32,6 +32,7 @@ import="java.sql.*" errorPage="" %>
 		while (i < numeroDeAlternativas) {
 			$('#resposta' + tipo + i).removeAttr('disabled').show();
 			$('#alternativa'+i).removeAttr('disabled').show();
+			$('#peso' + i).removeAttr('disabled').show();
 			$('#espacoAlternativas'+i).show();
 			$('#espacoAlternativas2_'+i).show();
 			$('#resposta' + outro + i).attr('disabled', 'disabled').hide();
@@ -41,6 +42,7 @@ import="java.sql.*" errorPage="" %>
 		while (i < 10) {
 			$('#resposta' + tipo + i).attr('disabled', 'disabled').hide();
 			$('#alternativa'+i).attr('disabled', 'disabled').hide();
+			$('#peso' + i).attr('disabled', 'disabled').hide();
 			$('#espacoAlternativas'+i).hide();
 			$('#espacoAlternativas2_'+i).hide();
 			$('#resposta' + outro + i).attr('disabled', 'disabled').hide();
@@ -194,9 +196,16 @@ import="java.sql.*" errorPage="" %>
 								</c:choose>
 							</c:otherwise>
 						</c:choose>							
-							<input  id="alternativa${iteracao.index }" class="alternativa" type="text" size="100" name="questao.alternativas[${iteracao.index }]" value="${alternativa }" />
+							<input  id="alternativa${iteracao.index }" class="alternativa" type="text" size="100" name="questao.alternativas[].alternativa" value="${alternativa }" />
 							<c:set var="valorResposta" value="${valorResposta*2 }"/>
-							<c:set var="verdadeiro" value="${verdadeiro/2 }"/>			
+							<c:set var="verdadeiro" value="${verdadeiro/2 }"/>		
+							
+<div id="peso${iteracao.index}" class="peso">
+Peso:
+<input type="hidden" name="questao.alternativas[].id" value="${alternativa.id}" />
+<input id="peso${iteracao.index}" class="peso" type="text" 
+								size="3" name="questao.alternativas[].peso" value="${alternativa.peso }" /> 
+</div>									
 										
 					</c:forEach>
 					
@@ -206,7 +215,13 @@ import="java.sql.*" errorPage="" %>
 						
 						<input id="respostaUnica${iteracao.index }" class="respostaDasAlternativas" type="radio" name="questao.resposta" value="${valorResposta }" disabled="disabled" />
 						<input id="respostaMultipla${iteracao.index }" class="respostaDasAlternativas" type="checkbox" name="questao.resposta" value="${valorResposta }" disabled="disabled" />
-						<input  id="alternativa${iteracao.index }" class="alternativa" type="text" size="100" name="questao.alternativas[${iteracao.index }]" disabled="disabled" />
+						<input  id="alternativa${iteracao.index }" class="alternativa" type="text" size="100" name="questao.alternativas[].alternativa" disabled="disabled" />
+						
+<div id="peso${iteracao.index}" class="peso">
+Peso:
+<input id="peso${iteracao.index}" class="peso" type="text" 
+								size="3" name="questao.alternativas[].peso" value="" /> 
+</div>						
 						
 						<c:set var="valorResposta" value="${valorResposta*2 }"/>
 					</c:forEach>

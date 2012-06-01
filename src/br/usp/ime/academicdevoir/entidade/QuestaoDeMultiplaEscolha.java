@@ -34,7 +34,7 @@ public class QuestaoDeMultiplaEscolha extends Questao {
 	/**
 	 * @uml.property name="resposta"
 	 */
-	@NotNull
+	//@NotNull
 	private Integer resposta;
 
 	public Boolean getRespostaUnica() {
