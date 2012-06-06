@@ -7,14 +7,26 @@
 	<session-factory>
 		<property name="hibernate.connection.driver_class">com.mysql.jdbc.Driver</property>
 		<property name="hibernate.connection.url">jdbc:mysql://localhost/lista</property>
-		<property name="hibernate.connection.username">root</property>
-		<property name="hibernate.connection.password"></property>
+		<property name="hibernate.connection.username">listaexercicio</property>
+		<property name="hibernate.connection.password">@oicicrexe973atsil#373</property>
 		<property name="hibernate.connection.CharSet">utf8</property>  
 		<property name="hibernate.connection.characterEncoding">utf8</property>
 		<property name="show_sql">true</property>
         <property name="hibernate.dialect">org.hibernate.dialect.MySQL5InnoDBDialect</property>		
         <property name="hibernate.hbm2ddl.auto">update</property>
+        
+        
+		<property name="hibernate.connection.provider_class">org.hibernate.connection.C3P0ConnectionProvider</property>
+		<property name="maxPoolSize">20</property>
+		<property name="minPoolSize">3</property>
+		<property name="initialPoolSize">3</property>
+		<property name="timeout">25200</property>
+		<property name="acquireIncrement">5</property>
+		<property name="preferredTestQuery">select 1</property>
+		<property name="idleConnectionTestPeriod">200</property>
+        
 		<!-- Mapping files -->
+		<mapping class="br.usp.ime.academicdevoir.entidade.AlternativasMultiplaEscolha" />
 		<mapping class="br.usp.ime.academicdevoir.entidade.Aluno" />
 		<mapping class="br.usp.ime.academicdevoir.entidade.Disciplina" />
 		<mapping class="br.usp.ime.academicdevoir.entidade.Professor" />
