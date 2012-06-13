@@ -155,6 +155,7 @@ import="java.sql.*" errorPage="" %>
 		</fieldset>
 	</form>
 	
+	<c:if test="${!listaDeExercicios.propriedades.geracaoAutomatica}">
 	<h3>Questões</h3>
 	
 	<div>
@@ -175,9 +176,9 @@ import="java.sql.*" errorPage="" %>
 					</td>
 				</tr>
 			</c:forEach>
-				<tr><td><button id="salvar" type="button">Salvar Alterações</button></td></tr>
 		</table>
 		<a href="<c:url value='${listaDeExercicios.id }/inclusaoQuestoes?proxPagina=1&filtro='/>">Incluir nova Questão</a>
+		</c:if>
 	</div>
 	</div>
 	</div>

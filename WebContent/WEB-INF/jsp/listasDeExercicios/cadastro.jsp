@@ -226,6 +226,9 @@ function block(data, obj, div)
 								
 				<br />
 				
+				<label for="geracaoAutomatica">Gerar lista automatica:</label>
+					<input id="automatica" type="checkbox" name="propriedades.geracaoAutomatica" value="true" checked />
+					<br/>
 				<button type="submit">Enviar</button>
 			</fieldset>
 			

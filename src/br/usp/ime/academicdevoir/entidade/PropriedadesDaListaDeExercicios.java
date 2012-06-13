@@ -34,6 +34,8 @@ public class PropriedadesDaListaDeExercicios {
 	 * @uml.property name="visivel"
 	 */
 	private Boolean visivel;
+	
+	private Boolean geracaoAutomatica;
 
 	/**
 	 * @uml.property name="prazoDeEntrega"
@@ -139,5 +141,13 @@ public class PropriedadesDaListaDeExercicios {
 
 	public void setAutoCorrecao(AutoCorrecao autoCorrecao) {
 		this.autoCorrecao = autoCorrecao;
+	}
+
+	public Boolean getGeracaoAutomatica() {
+		return geracaoAutomatica;
+	}
+
+	public void setGeracaoAutomatica(Boolean geracaoAutomatica) {
+		this.geracaoAutomatica = geracaoAutomatica;
 	}
 }
