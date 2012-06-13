@@ -30,6 +30,8 @@
 		<!-- Mapping files -->
 		<mapping class="br.usp.ime.academicdevoir.entidade.AlternativasMultiplaEscolha" />
 		<mapping class="br.usp.ime.academicdevoir.entidade.Aluno" />
+		<mapping class="br.usp.ime.academicdevoir.entidade.ListaGerada" />
+		<mapping class="br.usp.ime.academicdevoir.entidade.ListaQuestao" />
 		<mapping class="br.usp.ime.academicdevoir.entidade.Disciplina" />
 		<mapping class="br.usp.ime.academicdevoir.entidade.Professor" />
 		<mapping class="br.usp.ime.academicdevoir.entidade.Administrador" />

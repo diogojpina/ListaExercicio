@@ -1,6 +1,7 @@
 package br.usp.ime.academicdevoir.controller;
 
-import static org.hamcrest.Matchers.*;
+import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.notNullValue;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,6 +15,7 @@ import br.com.caelum.vraptor.Resource;
 import br.com.caelum.vraptor.Result;
 import br.com.caelum.vraptor.Validator;
 import br.com.caelum.vraptor.validator.Validations;
+import br.usp.ime.academicdevoir.componete.Lista;
 import br.usp.ime.academicdevoir.dao.ListaDeExerciciosDao;
 import br.usp.ime.academicdevoir.dao.ListaDeRespostasDao;
 import br.usp.ime.academicdevoir.dao.ProfessorDao;
@@ -24,6 +26,7 @@ import br.usp.ime.academicdevoir.entidade.AutoCorrecao;
 import br.usp.ime.academicdevoir.entidade.EstadoDaListaDeRespostas;
 import br.usp.ime.academicdevoir.entidade.ListaDeExercicios;
 import br.usp.ime.academicdevoir.entidade.ListaDeRespostas;
+import br.usp.ime.academicdevoir.entidade.ListaGerada;
 import br.usp.ime.academicdevoir.entidade.Professor;
 import br.usp.ime.academicdevoir.entidade.PropriedadesDaListaDeExercicios;
 import br.usp.ime.academicdevoir.entidade.PropriedadesDaListaDeRespostas;
@@ -44,59 +47,29 @@ import br.usp.ime.academicdevoir.infra.VerificadorDePrazos;
  */
 public class ListasDeExerciciosController {
 
-	/**
-	 * @uml.property name="result"
-	 * @uml.associationEnd multiplicity="(1 1)"
-	 */
 	private final Result result;
-	/**
-	 * @uml.property name="dao"
-	 * @uml.associationEnd multiplicity="(1 1)"
-	 */
-	private final ListaDeExerciciosDao dao;
-	/**
-	 * @uml.property name="listaDeRespostasDao"
-	 * @uml.associationEnd multiplicity="(1 1)"
-	 */
-	private final ListaDeRespostasDao listaDeRespostasDao;
-	/**
-	 * @uml.property name="questaoDao"
-	 * @uml.associationEnd multiplicity="(1 1)"
-	 */
-	private final QuestaoDao questaoDao;
-	/**
-	 * @uml.property name="professorDao"
-	 * @uml.associationEnd multiplicity="(1 1)"
-	 */
-	private final ProfessorDao professorDao;
-	/**
-	 * @uml.property name="turmaDao"
-	 * @uml.associationEnd multiplicity="(1 1)"
-	 */
-	private final TurmaDao turmaDao;
-	/**
-	 * @uml.property name="validator"
-	 * @uml.associationEnd multiplicity="(1 1)"
-	 */
-	private final Validator validator;
-	/**
-	 * @uml.property name="usuarioSession"
-	 * @uml.associationEnd multiplicity="(1 1)"
-	 */
-	private final UsuarioSession usuarioSession;
 
-	/**
-	 * @param result
-	 *            para interação com o jsp da lista de exercicio.
-	 * @param turmaDao
-	 *            para interação com o banco de dados
-	 * @param validator
-	 */
+	private final ListaDeExerciciosDao dao;
+
+	private final ListaDeRespostasDao listaDeRespostasDao;
+
+	private final QuestaoDao questaoDao;
+
+	private final ProfessorDao professorDao;
+
+	private final TurmaDao turmaDao;
+
+	private final Validator validator;
+
+	private final UsuarioSession usuarioSession;
+	
+	private final Lista lista;
+	
 	public ListasDeExerciciosController(Result result,
 			ListaDeExerciciosDao dao, ListaDeRespostasDao listaDeRespostasDao,
 			QuestaoDao questaoDao, ProfessorDao professorDao,
 			TurmaDao turmaDao, Validator validator,
-			UsuarioSession usuarioSession) {
+			UsuarioSession usuarioSession, Lista lista) {
 
 		this.result = result;
 		this.dao = dao;
@@ -106,6 +79,7 @@ public class ListasDeExerciciosController {
 		this.turmaDao = turmaDao;
 		this.validator = validator;
 		this.usuarioSession = usuarioSession;
+		this.lista = lista;
 	}
 
 	@Post
@@ -189,6 +163,11 @@ public class ListasDeExerciciosController {
 		ListaDeExercicios listaDeExercicios = dao.carrega(id);
 
 		Aluno aluno = (Aluno) usuarioSession.getUsuario();
+		
+		ListaGerada listaGerada = null;
+		if(listaDeExercicios.getPropriedades().getGeracaoAutomatica())
+			listaGerada = lista.gerar(listaDeExercicios, aluno);
+		
 		ListaDeRespostas listaDeRespostas = listaDeRespostasDao
 				.getRespostasDoAluno(id, aluno);
 

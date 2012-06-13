@@ -118,4 +118,8 @@ public class QuestaoDao {
 	public void recarrega(Questao questao) {
 		session.refresh(questao);
 	}
+
+	public List<Questao> listaFiltradas() {
+		return listaTudo();
+	}
 }

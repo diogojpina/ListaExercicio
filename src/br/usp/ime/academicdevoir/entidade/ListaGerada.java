@@ -6,31 +6,43 @@ import java.util.List;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
 
 @Entity
+@Table(name="listagerada")
 public class ListaGerada {
 	
 	@Id
-	@GeneratedValue(strategy=GenerationType.AUTO)
+	@GeneratedValue
 	private Long id;
-	
 	
 	private double nota;
 	
 	@ManyToOne
 	private ListaDeExercicios lista;
 	
-	@ManyToMany
-	private List<Aluno> alunos;
+	@ManyToOne
+	private Aluno aluno;
 	
-	private Date dataGeracao;
+	@OneToMany
+	private List<ListaQuestao> listaQuestoes;
+	
+	private Date dataGeracao = new Date();
+	
 	private Date dataFinalizacao;
 	
 	private String codigoIndentificador;
+
+	public ListaGerada() {
+	}
+
+	public ListaGerada(ListaDeExercicios lista, Aluno aluno) {
+		this.lista = lista;
+		this.aluno = aluno;
+	}
 
 	public Long getId() {
 		return id;
@@ -80,6 +92,20 @@ public class ListaGerada {
 		this.codigoIndentificador = codigoIndentificador;
 	}
 
-	
+	public Aluno getAluno() {
+		return aluno;
+	}
+
+	public void setAluno(Aluno aluno) {
+		this.aluno = aluno;
+	}
+
+	public List<ListaQuestao> getListaQuestoes() {
+		return listaQuestoes;
+	}
+
+	public void setListaQuestoes(List<ListaQuestao> listaQuestoes) {
+		this.listaQuestoes = listaQuestoes;
+	}
 
 }
