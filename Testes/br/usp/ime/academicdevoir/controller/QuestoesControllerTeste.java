@@ -16,6 +16,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import br.com.caelum.vraptor.util.test.MockResult;
+import br.usp.ime.academicdevoir.dao.DisciplinaDao;
 import br.usp.ime.academicdevoir.dao.ListaDeExerciciosDao;
 import br.usp.ime.academicdevoir.dao.ListaDeRespostasDao;
 import br.usp.ime.academicdevoir.dao.QuestaoDao;
@@ -78,6 +79,9 @@ public class QuestoesControllerTeste {
 	
 	private ListaDeRespostasDao listaDeRespostasDao;
 	
+	private DisciplinaDao disciplinaDao;
+
+	
 	@Before
 	public void SetUp() {		
 		Professor professor = new Professor();
@@ -88,10 +92,11 @@ public class QuestoesControllerTeste {
 
 		result = spy(new MockResult());
 		dao = mock(QuestaoDao.class);
+		disciplinaDao = mock(DisciplinaDao.class);
 		listaDeExerciciosDao = mock(ListaDeExerciciosDao.class);
 
 		questoesController = new QuestoesController(dao, tagDao, 
-		        listaDeExerciciosDao, listaDeRespostasDao, result, usuarioSession);
+		        listaDeExerciciosDao, listaDeRespostasDao, result, disciplinaDao, usuarioSession);
 
 		questaoDeMultiplaEscolha = new QuestaoDeMultiplaEscolha();
 		questaoDeSubmissaoDeArquivo = new QuestaoDeSubmissaoDeArquivo();

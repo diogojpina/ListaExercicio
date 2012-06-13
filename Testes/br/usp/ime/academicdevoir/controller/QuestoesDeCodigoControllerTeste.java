@@ -52,6 +52,8 @@ public class QuestoesDeCodigoControllerTeste {
     @Test
     public void testeAdiciona() {
         QuestaoDeCodigo questao = new QuestaoDeCodigo();
+        questao.setCodigoDeTeste("Codigo de teste");
+        questao.setEnunciado("Enuciado");
         questoesC.cadastra(questao, new String("tagQualquer"));
     
         verify(validator).validate(questao);
@@ -63,6 +65,9 @@ public class QuestoesDeCodigoControllerTeste {
     @Test
     public void testeAtualiza() {
         QuestaoDeCodigo questao = new QuestaoDeCodigo();
+        questao.setCodigoDeTeste("Codigo de teste");
+        questao.setEnunciado("Enuciado");
+
         questoesC.altera(questao, new String("tagQualquer"));
         
         verify(validator).validate(questao);

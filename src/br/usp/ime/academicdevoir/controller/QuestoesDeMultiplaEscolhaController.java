@@ -11,11 +11,9 @@ import br.com.caelum.vraptor.Resource;
 import br.com.caelum.vraptor.Result;
 import br.com.caelum.vraptor.Validator;
 import br.com.caelum.vraptor.validator.Validations;
-import br.usp.ime.academicdevoir.dao.AlternativasMultiplaEscolhaDao;
 import br.usp.ime.academicdevoir.dao.DisciplinaDao;
 import br.usp.ime.academicdevoir.dao.QuestaoDeMultiplaEscolhaDao;
 import br.usp.ime.academicdevoir.dao.TagDao;
-import br.usp.ime.academicdevoir.entidade.AlternativasMultiplaEscolha;
 import br.usp.ime.academicdevoir.entidade.Disciplina;
 import br.usp.ime.academicdevoir.entidade.QuestaoDeMultiplaEscolha;
 import br.usp.ime.academicdevoir.infra.Permission;
@@ -35,8 +33,6 @@ public class QuestoesDeMultiplaEscolhaController {
 	 * @uml.associationEnd multiplicity="(1 1)"
 	 */
 	private QuestaoDeMultiplaEscolhaDao dao;
-	
-	private AlternativasMultiplaEscolhaDao alternativasDao;
 	
 	/**
 	 * @uml.property name="result"
@@ -62,11 +58,10 @@ public class QuestoesDeMultiplaEscolhaController {
 	 *            para interação com o banco de dados
 	 */
 	public QuestoesDeMultiplaEscolhaController(QuestaoDeMultiplaEscolhaDao dao,
-			TagDao tagDao, AlternativasMultiplaEscolhaDao alternativasDao, Result result, Validator validator,
+			TagDao tagDao, Result result, Validator validator,
 			UsuarioSession usuarioSession, DisciplinaDao disciplinaDao) {
 		this.dao = dao;
 		this.tagDao = tagDao;
-		this.alternativasDao = alternativasDao;
 		this.disciplinaDao = disciplinaDao;
 		this.result = result;
 		this.validator = validator;

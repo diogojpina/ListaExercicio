@@ -2,11 +2,11 @@ package br.usp.ime.academicdevoir.controller;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.spy;
-import static org.mockito.Mockito.when;
 import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.any;
+import static org.mockito.Mockito.when;
 
 import java.sql.Date;
 import java.util.ArrayList;
@@ -14,14 +14,13 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.Random;
 
-import br.com.caelum.vraptor.validator.ValidationException;
-
 import org.junit.Before;
 import org.junit.Test;
-import org.mockito.internal.matchers.Not;
 
 import br.com.caelum.vraptor.util.test.JSR303MockValidator;
 import br.com.caelum.vraptor.util.test.MockResult;
+import br.com.caelum.vraptor.validator.ValidationException;
+import br.usp.ime.academicdevoir.componete.Lista;
 import br.usp.ime.academicdevoir.dao.ListaDeExerciciosDao;
 import br.usp.ime.academicdevoir.dao.ListaDeRespostasDao;
 import br.usp.ime.academicdevoir.dao.ProfessorDao;
@@ -114,6 +113,10 @@ public class ListasDeExerciciosControllerTeste {
 	private UsuarioSession usuarioSession;
 	private ArrayList<Turma> turmas;
 	
+	private Lista lista;
+
+	
+	
 	@Before
 	public void SetUp() {		
 		Professor professor = new Professor();
@@ -130,10 +133,11 @@ public class ListasDeExerciciosControllerTeste {
 		professorDao = mock(ProfessorDao.class);
 		turmaDao = mock(TurmaDao.class);
 		validator = spy(new JSR303MockValidator());
+		lista = mock(Lista.class);
 
 		listasDeExerciciosController = new ListasDeExerciciosController(result,
 				dao, respostasDao, questaoDao, professorDao, turmaDao, validator,
-				usuarioSession);
+				usuarioSession, lista);
 		
 		listaDeExercicios = new ListaDeExercicios();
 		listaDeExercicios.setId(0L);
@@ -189,7 +193,7 @@ public class ListasDeExerciciosControllerTeste {
 		prazoFuturo(prazoDeEntrega);
 
 		listasDeExerciciosController.cadastra(propriedadesDaListaDeExercicios,
-				prazoDeEntrega, turma.getId());
+				prazoDeEntrega, turma.getId(), "10/10/2012");
 
 		verify(validator).validate(propriedadesDaListaDeExercicios);
 		verify(validator).onErrorForwardTo(listasDeExerciciosController);
@@ -202,7 +206,7 @@ public class ListasDeExerciciosControllerTeste {
 		prazoFuturo(prazoDeEntrega);
 		propriedadesDaListaDeExercicios.setNome("");
 		listasDeExerciciosController.cadastra(propriedadesDaListaDeExercicios,
-				prazoDeEntrega, turma.getId());
+				prazoDeEntrega, turma.getId(), "10/10/2012");
 
 		verify(validator).validate(propriedadesDaListaDeExercicios);
 		verify(validator).onErrorRedirectTo(listasDeExerciciosController);
@@ -216,21 +220,10 @@ public class ListasDeExerciciosControllerTeste {
 		propriedadesDaListaDeExercicios.setEnunciado("Lista que deve falhar");
 		propriedadesDaListaDeExercicios.setPeso(1);
 		
-		listasDeExerciciosController.cadastra(propriedadesDaListaDeExercicios, prazoDeEntrega, null);
+		listasDeExerciciosController.cadastra(propriedadesDaListaDeExercicios, prazoDeEntrega, null, "10/10/2012");
 		
 	}
 	
-
-	@Test(expected = ValidationException.class)
-	public void testeNaoDeveCadastrarQuestaoComPrazoPassado() {
-		prazoPassado(prazoDeEntrega);
-
-		listasDeExerciciosController.cadastra(propriedadesDaListaDeExercicios,
-				prazoDeEntrega, turma.getId());
-
-		verify(validator).validate(propriedadesDaListaDeExercicios);
-		verify(validator).onErrorUsePageOf(listasDeExerciciosController);
-	}
 
 	@Test
 	public void testeVerListaIncluiListaEDataEmResult() {

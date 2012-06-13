@@ -12,6 +12,7 @@ import org.junit.Test;
 import br.com.caelum.vraptor.util.test.JSR303MockValidator;
 import br.com.caelum.vraptor.util.test.MockResult;
 import br.usp.ime.academicdevoir.controller.QuestoesDeTextoController;
+import br.usp.ime.academicdevoir.dao.DisciplinaDao;
 import br.usp.ime.academicdevoir.dao.QuestaoDeTextoDao;
 import br.usp.ime.academicdevoir.dao.TagDao;
 import br.usp.ime.academicdevoir.entidade.Professor;
@@ -19,6 +20,7 @@ import br.usp.ime.academicdevoir.entidade.QuestaoDeTexto;
 import br.usp.ime.academicdevoir.entidade.Tag;
 import br.usp.ime.academicdevoir.infra.Privilegio;
 import br.usp.ime.academicdevoir.infra.UsuarioSession;
+import br.usp.ime.academicdevoir.util.Given;
 
 public class QuestoesDeTextoControllerTeste {
     /**
@@ -47,6 +49,8 @@ public class QuestoesDeTextoControllerTeste {
 	 */
 	private UsuarioSession usuarioSession;
 	private TagDao tagDao;
+	private DisciplinaDao disciplinaDao;
+
 
     @Before
     public void SetUp() {		
@@ -58,9 +62,11 @@ public class QuestoesDeTextoControllerTeste {
 
         dao = mock(QuestaoDeTextoDao.class);
 		tagDao = mock(TagDao.class);
+		disciplinaDao = mock(DisciplinaDao.class);
+
         result = spy(new MockResult());
         validator = spy(new JSR303MockValidator());
-        questoesC = new QuestoesDeTextoController(dao, tagDao, result,
+        questoesC = new QuestoesDeTextoController(dao, tagDao, disciplinaDao, result,
                 validator, usuarioSession);
         
 		when(tagDao.buscaPeloNome(any(String.class))).thenReturn(new Tag("tagQualquer"));
@@ -68,18 +74,19 @@ public class QuestoesDeTextoControllerTeste {
 
     @Test
     public void testeAdiciona() {
-        QuestaoDeTexto questao = new QuestaoDeTexto();
+        QuestaoDeTexto questao = Given.novaQuestaoDeTexto();
+        when(disciplinaDao.carrega(questao.getDisciplina().getId())).thenReturn(questao.getDisciplina());
         questoesC.cadastra(questao, new String("tagQualquer"));
 
         verify(validator).validate(questao);
-        verify(validator).onErrorUsePageOf(QuestoesController.class);
+        verify(validator).onErrorRedirectTo(QuestoesController.class);
         verify(dao).salva(questao);
         verify(result).redirectTo(questoesC);
     }
     
     @Test
     public void testeAtualiza() {
-        QuestaoDeTexto questao = new QuestaoDeTexto();
+        QuestaoDeTexto questao = Given.novaQuestaoDeTexto();
         questoesC.altera(questao, new String("tagQualquer"));
         
         verify(validator).validate(questao);

@@ -9,6 +9,7 @@ import br.com.caelum.vraptor.util.test.JSR303MockValidator;
 import br.com.caelum.vraptor.util.test.MockResult;
 
 import br.usp.ime.academicdevoir.controller.QuestoesDeMultiplaEscolhaController;
+import br.usp.ime.academicdevoir.dao.DisciplinaDao;
 import br.usp.ime.academicdevoir.dao.QuestaoDeMultiplaEscolhaDao;
 import br.usp.ime.academicdevoir.dao.TagDao;
 import br.usp.ime.academicdevoir.entidade.Professor;
@@ -44,6 +45,9 @@ public class QuestoesDeMultiplaEscolhaControllerTeste {
 	 */
 	private UsuarioSession usuarioSession;
 	private TagDao tagDao;
+	
+	private DisciplinaDao disciplinaDao;
+	
 
 	@Before
 	public void SetUp() {		
@@ -55,10 +59,11 @@ public class QuestoesDeMultiplaEscolhaControllerTeste {
 
 		dao = mock(QuestaoDeMultiplaEscolhaDao.class);
 		tagDao = mock(TagDao.class);
+		disciplinaDao = mock(DisciplinaDao.class);
 		result = spy(new MockResult());
 		validator = spy(new JSR303MockValidator());
 		questoesC = new QuestoesDeMultiplaEscolhaController(dao, tagDao, result,
-				validator, usuarioSession);
+				validator, usuarioSession, disciplinaDao);
 		
 		when(tagDao.buscaPeloNome(any(String.class))).thenReturn(new Tag("tagQualquer"));
 	}
@@ -68,7 +73,7 @@ public class QuestoesDeMultiplaEscolhaControllerTeste {
 		QuestaoDeMultiplaEscolha questao = new QuestaoDeMultiplaEscolha();
 		questao.setId(0L);
 		questao.setRespostaUnica(true);
-		questoesC.cadastra(questao, null, new String("tagQualquer"));
+		questoesC.cadastra(questao, null, new String("tagQualquer"), 5);
 
 		verify(validator).validate(questao);
 		verify(validator).onErrorUsePageOf(QuestoesController.class);
@@ -81,7 +86,7 @@ public class QuestoesDeMultiplaEscolhaControllerTeste {
 		QuestaoDeMultiplaEscolha questao = new QuestaoDeMultiplaEscolha();
 		questao.setRespostaUnica(true);
 
-		questoesC.altera(questao, null, new String("tagQualquer"));
+		questoesC.altera(questao, null, new String("tagQualquer"), 5);
 
 		verify(validator).validate(questao);
 		verify(validator).onErrorUsePageOf(questoesC);

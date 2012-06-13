@@ -2,15 +2,16 @@ package br.usp.ime.academicdevoir.controller;
 
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import static org.mockito.Mockito.spy;
 
 import org.junit.Before;
 import org.junit.Test;
 
 import br.com.caelum.vraptor.util.test.JSR303MockValidator;
 import br.com.caelum.vraptor.util.test.MockResult;
+import br.usp.ime.academicdevoir.dao.DisciplinaDao;
 import br.usp.ime.academicdevoir.dao.QuestaoDeSubmissaoDeArquivoDao;
 import br.usp.ime.academicdevoir.dao.TagDao;
 import br.usp.ime.academicdevoir.entidade.Professor;
@@ -18,7 +19,7 @@ import br.usp.ime.academicdevoir.entidade.QuestaoDeSubmissaoDeArquivo;
 import br.usp.ime.academicdevoir.entidade.Tag;
 import br.usp.ime.academicdevoir.infra.Privilegio;
 import br.usp.ime.academicdevoir.infra.UsuarioSession;
-import br.usp.ime.academicdevoir.controller.QuestoesDeSubmissaoDeArquivoController;
+import br.usp.ime.academicdevoir.util.Given;
 
 public class QuestoesDeSubmissaoDeArquivoControllerTeste {
     /**
@@ -47,6 +48,9 @@ public class QuestoesDeSubmissaoDeArquivoControllerTeste {
 	 */
 	private UsuarioSession usuarioSession;
 	private TagDao tagDao;
+	
+	private DisciplinaDao disciplinaDao;
+
     
     @Before
     public void SetUp() {		
@@ -58,9 +62,11 @@ public class QuestoesDeSubmissaoDeArquivoControllerTeste {
 
         dao = mock(QuestaoDeSubmissaoDeArquivoDao.class);
 		tagDao = mock(TagDao.class);
+		disciplinaDao = mock(DisciplinaDao.class);
+
         result = spy(new MockResult());
         validator = spy(new JSR303MockValidator());
-        questoesC = new QuestoesDeSubmissaoDeArquivoController(dao, tagDao, result,
+        questoesC = new QuestoesDeSubmissaoDeArquivoController(dao, tagDao, disciplinaDao, result,
                 validator, usuarioSession);
         
 		when(tagDao.buscaPeloNome(any(String.class))).thenReturn(new Tag("tagQualquer"));
@@ -68,11 +74,12 @@ public class QuestoesDeSubmissaoDeArquivoControllerTeste {
     
     @Test
     public void testeAdiciona() {
-        QuestaoDeSubmissaoDeArquivo questao = new QuestaoDeSubmissaoDeArquivo();
+        QuestaoDeSubmissaoDeArquivo questao = Given.novaQuestaoDeSubmissaoDeArquivo();
+        when(disciplinaDao.carrega(questao.getDisciplina().getId())).thenReturn(questao.getDisciplina());
         questoesC.cadastra(questao, new String("tagQualquer"));
 
         verify(validator).validate(questao);
-        verify(validator).onErrorUsePageOf(QuestoesController.class);
+        verify(validator).onErrorRedirectTo(QuestoesController.class);
         verify(dao).salva(questao);
         verify(result).redirectTo(questoesC);
     }
@@ -80,6 +87,7 @@ public class QuestoesDeSubmissaoDeArquivoControllerTeste {
     @Test
     public void testeAtualiza() {
         QuestaoDeSubmissaoDeArquivo questao = new QuestaoDeSubmissaoDeArquivo();
+        questao.setEnunciado("Enuciado");
         questoesC.altera(questao, new String("tagQualquer"));
         
         verify(validator).validate(questao);

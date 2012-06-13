@@ -151,20 +151,19 @@ public class TurmasControllerTeste {
 	
 
 	@Test
-	public void deveRedirecionarParaPaginaDeCadastroComUmaListaDeDisciplinas() {
-		turmasController.cadastro();
-		verify(disciplinaDao).listaTudo();
-	}
-	
-	@Test
 	public void deveCadastrar() {
+		turma = Given.novaTurma();
+		turma.setProfessor(Given.novoProfessor());
 		turmasController.cadastra(turma, Given.prazoDeMatricula());		
 		verify(result).redirectTo(ProfessoresController.class);
 	}
 	
 	@Test(expected=ValidationException.class)
 	public void naoDeveCadastrarTurmaSemDisciplina() {
-		turma.setDisciplina(null);
+		turma = Given.novaTurma();
+		turma.setDisciplina(new Disciplina());
+		turma.setProfessor(Given.novoProfessor());
+
 		turmasController.cadastra(turma, Given.prazoDeMatricula());		
 
 	}

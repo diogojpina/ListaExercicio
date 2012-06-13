@@ -11,6 +11,7 @@ import org.junit.Test;
 
 import br.com.caelum.vraptor.util.test.JSR303MockValidator;
 import br.com.caelum.vraptor.util.test.MockResult;
+import br.usp.ime.academicdevoir.dao.DisciplinaDao;
 import br.usp.ime.academicdevoir.dao.QuestaoDeVouFDao;
 import br.usp.ime.academicdevoir.dao.TagDao;
 import br.usp.ime.academicdevoir.entidade.Professor;
@@ -18,6 +19,7 @@ import br.usp.ime.academicdevoir.entidade.QuestaoDeVouF;
 import br.usp.ime.academicdevoir.entidade.Tag;
 import br.usp.ime.academicdevoir.infra.Privilegio;
 import br.usp.ime.academicdevoir.infra.UsuarioSession;
+import br.usp.ime.academicdevoir.util.Given;
 
 public class QuestoesDeVouFControllerTeste {
 	/**
@@ -45,6 +47,8 @@ public class QuestoesDeVouFControllerTeste {
 	 */
 	private UsuarioSession usuarioSession;
 	private TagDao tagDao;
+	private DisciplinaDao disciplinaDao;
+
 
 	@Before
 	public void SetUp() {		
@@ -57,8 +61,10 @@ public class QuestoesDeVouFControllerTeste {
 		dao = mock(QuestaoDeVouFDao.class);
 		tagDao = mock(TagDao.class);
 		result = spy(new MockResult());
+		disciplinaDao = mock(DisciplinaDao.class);
+
 		validator = spy(new JSR303MockValidator());
-		questoesDeVouFController = new QuestoesDeVouFController(dao, tagDao, result,
+		questoesDeVouFController = new QuestoesDeVouFController(dao, tagDao, disciplinaDao, result,
 				validator, usuarioSession);
         
 		when(tagDao.buscaPeloNome(any(String.class))).thenReturn(new Tag("tagQualquer"));
@@ -66,19 +72,20 @@ public class QuestoesDeVouFControllerTeste {
 
 	@Test
 	public void testeAdiciona() {
-		QuestaoDeVouF questao = new QuestaoDeVouF();
-		questao.setId(0L);
+		QuestaoDeVouF questao = Given.novaQuestaoDeVouF();
+        when(disciplinaDao.carrega(questao.getDisciplina().getId())).thenReturn(questao.getDisciplina());
+
 		questoesDeVouFController.cadastra(questao, new String("tagQualquer"));
 
 		verify(validator).validate(questao);
-		verify(validator).onErrorUsePageOf(QuestoesController.class);
+		verify(validator).onErrorRedirectTo(QuestoesController.class);
 		verify(dao).salva(questao);
 		verify(result).redirectTo(questoesDeVouFController);
 	}
 
 	@Test
 	public void testeAtualiza() {
-		QuestaoDeVouF questao = new QuestaoDeVouF();
+		QuestaoDeVouF questao = Given.novaQuestaoDeVouF();
 
 		questoesDeVouFController.altera(questao, new String("tagQualquer"));
 
