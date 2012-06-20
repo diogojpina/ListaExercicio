@@ -1,0 +1,99 @@
+label
+{
+float: left;
+text-align: left;
+margin-right: 0.5em;
+display: block
+}
+form {
+margin: 2em auto;
+width: 14em;
+}
+#link
+{
+margin-left: 4.5em;
+}
+a:link {
+color:#000000;
+text-decoration:none;
+}
+a:active {
+color:#00aa22;
+text-decoration:underline;
+background-color:#000000;
+}
+a:hover {
+color:#00aa22;
+text-decoration:underline;
+}
+a:visited {
+color:#999999;
+text-decoration:none;
+}
+#menu 
+{
+font-family: Helvetica, Arial, Sans-serif;
+font-size: 16px;
+color:#ffffff;
+align:left;
+background: #88e356;
+padding-left: 5px;
+}
+#left
+{
+width:200px;
+float: left;
+}
+#right
+{
+width:800px;
+align:left top;
+margin-left: 220px;
+}
+#wrapper
+{
+width: 1000px;
+margin: 0px auto;
+}
+#header
+{
+background: #D6FFC1;
+height:180px;
+width:1020px;
+margin: 0 auto;
+color:#ffffff;
+}
+fieldset
+{
+border: 1px solid #00aa22;
+}
+input
+{
+color: #781351;
+border: 1px solid #00aa22
+}
+.submit input
+{
+color: #000;
+background: #D6FFC1;
+margin-left: 5.5em;
+} 
+body
+{
+font-family: Helvetica, Arial, Sans-serif;
+font-size: 12px;
+}
+.sobe{
+background: #D6FFC1 url('../css/up.png') no-repeat center;
+background-size:75% 75%;
+width: 24px;
+height: 24px;
+color: #000;
+}
+.desce{
+background: #D6FFC1 url('../css/down.png') no-repeat center;
+background-size:75% 75%;
+width: 24px;
+height: 24px;
+color: #000;
+}
