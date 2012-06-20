@@ -1,10 +1,23 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<!-- Website template by freewebsitetemplates.com -->
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ page contentType="text/html; charset=utf-8" pageEncoding="utf-8" language="java"
 import="java.sql.*" errorPage="" %>
 
 <html>
 <head>
+	<title>Academic Devoir - IME USP</title>
+	<link rel="stylesheet" type="text/css" charset="utf-8" media="screen" href="<c:url value="/css/style.css"/>"/>
+	<link rel="stylesheet" type="text/css" charset="utf-8" media="screen" href="<c:url value="/css/menu.css"/>"/>
+	<!--[if IE 9]>
+		<link rel="stylesheet" type="text/css" charset="utf-8" media="screen" href="<c:url value="/css/ie9.css"/>"/>
+	<![endif]-->
+	<!--[if IE 8]>
+		<link rel="stylesheet" type="text/css" charset="utf-8" media="screen" href="<c:url value="/css/ie8.css"/>"/>
+	<![endif]-->
+	<!--[if IE 7]>
+		<link rel="stylesheet" type="text/css" charset="utf-8" media="screen" href="<c:url value="/css/ie7.css"/>"/>
+	<![endif]-->
 
 <script type="text/javascript" charset="utf-8" src="<c:url value="/javascript/jquery-1.7.1.min.js"/>"></script>
 <script type="text/javascript" charset="utf-8" src="<c:url value="/javascript/jquery.validate.min.js"/>"></script>
@@ -64,24 +77,30 @@ $().ready(function() {
 });
 
 </script>
-
-<style type="text/css">
-<%@ include file="/css/form2.css" %>
-</style>
-<title>Cadastro de Aluno</title>
 </head>
 
 <body>
-	<div id="wrapper">
-	<div id="header"> <%@ include file="/css/header.jsp" %></div> <br/>
-	<div id="right">
+<%@ include file="/layout/header.jsp" %>
+<div id="content">
+	<div id="body">
+  	<table border="0">
+    	<tr>
+      		<td width="200" align="center">	
+				<%@ include file="/layout/menu.jsp" %>
+			</td>
+			<td width="750" align="left" valign="top">    
+
+
+				<div class="welcome">Você acessou como ${usuarioSession.usuario.nome } (<a href="/academic-devoir/logout">Sair</a>)</div>
+				<h1><a href="index.html">Cadastro de Aluno</a></h1>
+				
 	<form style="width:800px;" class="cmxform" action='cadastra' id="cadastro" method="post" accept-charset="utf-8">
 	<fieldset style="width:600px;">
 	<legend>N&atilde;o &eacute; um aluno cadastrado? </legend><br/>
 		Preencha o formul&aacute;rio abaixo e clique no bot&atilde;o "Enviar".<br/><br/>
 		<p> 
 		    <label style="display:block;float:left;width:100px;text-align:right;margin:0px 5px 0px 0px;" for="novo.nome">Nome:</label>
-		    <input    name="novo.nome"  type="text"     size="50" value="${novo.nome }" />
+		    <input    name="novo.nome"  type="text"     size="30" value="${novo.nome }" />
 		</p>
 		<p> 
 		    <label style="display:block;float:left;width:100px;text-align:right;margin:0px 5px 0px 0px;" for="novo.login">Login:</label>
@@ -108,9 +127,18 @@ $().ready(function() {
 	<div id="link"><a href="<c:url value='/login'/>">Voltar</a></div>
 	
 	<c:if test ="${usuarioSession.usuario.id != null}">
-        <div id="link"><a href="<c:url value='/alunos/lista'/>">Voltar</a><br/></div>              
+        <div id="link"><a href="<c:url value='/alunos/lista'/>">Voltar</a><br/></div>             
     </c:if>
-    </div>
-    </div>
+    
+
+
+			</td>
+		</tr>
+	</table>    			
+	<!-- body -->
+	</div>
+<!-- content -->
+</div>
+<%@ include file="/layout/footer.jsp" %>
 </body>
 </html>
