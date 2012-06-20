@@ -100,6 +100,9 @@ public class ListasDeExerciciosController {
 		prazoDeEntrega.add(0, Integer.parseInt(dias[0]));
 		prazoDeEntrega.add(1, Integer.parseInt(dias[1]));
 		prazoDeEntrega.add(2, Integer.parseInt(dias[2]));
+		if (propriedades.getGeracaoAutomatica() == null) {
+			propriedades.setGeracaoAutomatica(false);
+		}
 			
 		validator.checking(new Validations() {
 			{

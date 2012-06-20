@@ -148,14 +148,20 @@ public class TurmasController {
     @Permission({ Privilegio.ADMINISTRADOR, Privilegio.PROFESSOR })
     public void cadastra(final Turma nova, final List<Integer> prazoDeMatricula) {	
     	
+    	
     	validator.checking(new Validations() {{
     		that(nova.getDisciplina().getId(), is(notNullValue()), "disciplina", "disciplina.notNull");
     	}});
     	validator.onErrorRedirectTo(this).cadastro(nova.getDisciplina());
-    	
 		
 		nova.setPrazoDeMatricula(prazoDeMatricula);
+		
+		
+		try{
         turmaDao.salvaTurma(nova);
+		}catch(Exception e){
+			e.printStackTrace();
+		}
         result.redirectTo(ProfessoresController.class).listaTurmas(nova.getProfessor().getId());
     }
 

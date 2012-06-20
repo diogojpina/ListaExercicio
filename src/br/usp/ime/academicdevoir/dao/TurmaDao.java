@@ -33,7 +33,10 @@ public class TurmaDao {
 	 * @param turma
 	 */
 	public void salvaTurma(Turma turma) {
+		Transaction tx = session.beginTransaction();
 		session.save(turma);
+		tx.commit();
+		
 	}
 	
 	/**
