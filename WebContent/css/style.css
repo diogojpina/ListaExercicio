@@ -24,6 +24,14 @@ p a {
 }
 
 
+h3 {
+	font-family: 'CarterOneRegular';
+	font-size: 12px;
+	margin: 0;
+	padding: 10px 0;
+}
+
+
 input.inputlogin {
 	background: url(../images/sprites-inputs.gif) no-repeat 0 -82px;
 	border: 0;
