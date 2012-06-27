@@ -18,6 +18,42 @@ import="java.sql.*" errorPage="" %>
 	<!--[if IE 7]>
 		<link rel="stylesheet" type="text/css" charset="utf-8" media="screen" href="<c:url value="/css/ie7.css"/>"/>
 	<![endif]-->
+	
+<link rel="stylesheet" href="http://code.jquery.com/ui/1.8.21/themes/base/jquery-ui.css" type="text/css" media="all" />
+
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js" type="text/javascript"></script>
+<script src="http://code.jquery.com/ui/1.8.21/jquery-ui.min.js" type="text/javascript"></script>
+	
+
+<script language='javascript'>
+
+$(function(){
+	$("#data").datepicker({
+	dateFormat: 'dd/mm/yy',
+	dayNames: [
+	'Domingo','Segunda','Terça','Quarta','Quinta','Sexta','Sábado','Domingo'
+	],
+	dayNamesMin: [
+	'D','S','T','Q','Q','S','S','D'
+	],
+	dayNamesShort: [
+	'Dom','Seg','Ter','Qua','Qui','Sex','Sáb','Dom'
+	],
+	monthNames: [
+	'Janeiro','Fevereiro','Março','Abril','Maio','Junho','Julho','Agosto','Setembro',
+	'Outubro','Novembro','Dezembro'
+	],
+	monthNamesShort: [
+	'Jan','Fev','Mar','Abr','Mai','Jun','Jul','Ago','Set',
+	'Out','Nov','Dez'
+	],
+	nextText: 'Próximo',
+	prevText: 'Anterior'
+
+	});
+});
+
+</script>	
 </head>
 
 <body>
@@ -59,12 +95,7 @@ import="java.sql.*" errorPage="" %>
 					<br/>
 				<label for="prazoDeEntrega">Prazo de entrega:</label>
 				<br/>
-				<label for="dia">Dia:</label>
-					<input id="dia" type="text" size="2" maxlength="2" name="prazoDeEntrega[0]" value="${prazo[0] }"/>
-				<label for="mes">Mês:</label>
-					<input id="mes" type="text" size="2" maxlength="2" name="prazoDeEntrega[1]" value="${prazo[1] }"/>
-				<label for="ano">Ano:</label>
-					<input id="ano" type="text" size="2" maxlength="4" name="prazoDeEntrega[2]" value="${prazo[2] }"/>
+				<input id="data" type="text"  maxlength="10" name="data1" value="" size="10"/>
 					<br/>
 				<label for="hora">Hora:</label>
 					<input id="hora" type="text" size="2" maxlength="2" name="prazoDeEntrega[3]" value="${prazo[3] }"/>:
