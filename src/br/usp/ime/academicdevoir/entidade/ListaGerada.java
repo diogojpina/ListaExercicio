@@ -1,6 +1,7 @@
 package br.usp.ime.academicdevoir.entidade;
 
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -27,7 +28,7 @@ public class ListaGerada {
 	@ManyToOne
 	private Aluno aluno;
 	
-	@OneToMany
+	@OneToMany(mappedBy="listaGerada")
 	private List<ListaQuestao> listaQuestoes;
 	
 	private Date dataGeracao = new Date();
@@ -102,6 +103,14 @@ public class ListaGerada {
 
 	public List<ListaQuestao> getListaQuestoes() {
 		return listaQuestoes;
+	}
+	
+	public List<Questao> getQuestoes() {
+		List<Questao> questoes = new ArrayList<Questao>();
+		for (ListaQuestao listaQuestao : listaQuestoes) {
+			questoes.add(listaQuestao.getQuestao());
+		}
+		return questoes;
 	}
 
 	public void setListaQuestoes(List<ListaQuestao> listaQuestoes) {

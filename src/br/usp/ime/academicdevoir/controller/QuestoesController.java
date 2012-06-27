@@ -123,7 +123,7 @@ public class QuestoesController {
 		// Remove a questão na lista de exercícios e nas listas de respostas
 		for (BigInteger idDaLista : idsDasListas) {
 			lista = listaDeExerciciosDao.carrega(idDaLista.longValue());
-			questoes = lista.getQuestoes();
+			questoes = lista.getQuestoesDaLista();
 			
 			for (QuestaoDaLista questao : questoes) {
 				if (questao.getQuestao().getId() == id) {

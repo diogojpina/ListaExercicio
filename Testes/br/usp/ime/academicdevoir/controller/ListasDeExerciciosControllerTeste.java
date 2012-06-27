@@ -291,7 +291,7 @@ public class ListasDeExerciciosControllerTeste {
 		listasDeExerciciosController.incluiQuestao(listaDeExercicios,
 				questao.getId(), 1);
 
-		assertEquals(questao, listaDeExercicios.getQuestoes().get(0)
+		assertEquals(questao, listaDeExercicios.getQuestoesDaLista().get(0)
 				.getQuestao());
 		verify(dao).atualiza(listaDeExercicios);
 		verify(result).redirectTo(listasDeExerciciosController);
@@ -322,11 +322,11 @@ public class ListasDeExerciciosControllerTeste {
 		questoesDaLista.add(questao1);
 		
 		listaDeExercicios.setQuestoes(questoesDaLista);
-		int numeroInicialDeQuestoes = listaDeExercicios.getQuestoes().size();
+		int numeroInicialDeQuestoes = listaDeExercicios.getQuestoesDaLista().size();
 		listasDeExerciciosController.removeQuestao(listaDeExercicios.getId(), 0);
 		
-		assertEquals(questao1, listaDeExercicios.getQuestoes().get(0));
-		listaDeExercicios.getQuestoes().get(numeroInicialDeQuestoes);
+		assertEquals(questao1, listaDeExercicios.getQuestoesDaLista().get(0));
+		listaDeExercicios.getQuestoesDaLista().get(numeroInicialDeQuestoes);
 		
 		verify(dao).atualiza(listaDeExercicios);
 		verify(result).redirectTo(listasDeExerciciosController);
