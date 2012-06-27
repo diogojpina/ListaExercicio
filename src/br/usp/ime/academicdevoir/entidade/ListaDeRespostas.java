@@ -150,7 +150,7 @@ public class ListaDeRespostas {
             //Obtendo a Questao relacionada com a lista para obter as propriedades
             //QuestaoDaLista questaoDaLista = questaoDaListaDao.getQuestaoDaListaPorIds(id, questao.getId());
         
-            for (QuestaoDaLista i : listaDeExercicios.getQuestoes())
+            for (QuestaoDaLista i : listaDeExercicios.getQuestoesDaLista())
                 if (i.getQuestao().equals(questao)) {
                 questaoDaLista = i;
                 break;

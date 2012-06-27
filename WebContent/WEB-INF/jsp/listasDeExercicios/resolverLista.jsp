@@ -87,13 +87,13 @@ import="java.sql.*" errorPage="" %>
 	<h1>Questões</h1>
 	
 	<div>
-		<c:forEach items="${listaDeExercicios.questoes}" var="questaoDaLista" varStatus="iteracao">
+		<c:forEach items="${questoes}" var="questao" varStatus="iteracao">
 			<form id="questao${iteracao.index }" class="respostaForm" action="<c:url value="/respostas/${listaDeRespostas.id }/cadastra"/>" method="post" accept-charset="utf-8" enctype="multipart/form-data">
 				<input type="hidden" name="acao" id="acao${iteracao.index}" />
 				<fieldset>
 						<p>${iteracao.index + 1} )
-								${questaoDaLista.questao.enunciado}</p>
-						${questaoDaLista.questao.renderizacao}
+								${questao.enunciado}</p>
+						${questao.renderizacao}
 				</fieldset>
 			</form>
 		</c:forEach>

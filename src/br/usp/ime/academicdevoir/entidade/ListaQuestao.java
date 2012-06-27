@@ -18,6 +18,9 @@ public class ListaQuestao {
 	@ManyToOne
 	private Questao questao;
 	
+	public ListaQuestao() {
+	}
+
 	public ListaQuestao(ListaGerada listaGerada, Questao questao) {
 		this.listaGerada = listaGerada;
 		this.questao = questao;

@@ -150,7 +150,7 @@ public class ListasDeExerciciosController {
 		result.include("prazo", listaDeExercicios.getPropriedades()
 				.getPrazoDeEntregaFormatado());
 		result.include("turmasDoProfessor", professor.getTurmas());
-		result.include("numeroDeQuestoes", listaDeExercicios.getQuestoes()
+		result.include("numeroDeQuestoes", listaDeExercicios.getQuestoesDaLista()
 				.size());
 	}
 
@@ -168,8 +168,9 @@ public class ListasDeExerciciosController {
 		Aluno aluno = (Aluno) usuarioSession.getUsuario();
 		
 		ListaGerada listaGerada = null;
-		if(listaDeExercicios.getPropriedades().getGeracaoAutomatica())
+		if(listaDeExercicios.getPropriedades().getGeracaoAutomatica()){
 			listaGerada = lista.gerar(listaDeExercicios, aluno);
+		}
 		
 		ListaDeRespostas listaDeRespostas = listaDeRespostasDao
 				.getRespostasDoAluno(id, aluno);
@@ -209,9 +210,12 @@ public class ListasDeExerciciosController {
 		if (listaDeExercicios.getPropriedades() != null)
 			result.include("prazo", listaDeExercicios.getPropriedades()
 					.getPrazoDeEntregaFormatado());
-		result.include("listaDeExercicios", listaDeExercicios);
-		if (listaDeExercicios.getQuestoes() != null)
-			result.include("numeroDeQuestoes", listaDeExercicios.getQuestoes()
+		if(listaDeExercicios.getPropriedades().getGeracaoAutomatica())
+			result.include("questoes", listaGerada.getQuestoes());
+		else
+			result.include("questoes", listaDeExercicios.getQuestoesDaLista());
+		if (listaDeExercicios.getQuestoesDaLista() != null)
+			result.include("numeroDeQuestoes", listaDeExercicios.getQuestoesDaLista()
 					.size());
 		result.include("listaDeRespostas", listaDeRespostas);
 	}
@@ -223,6 +227,10 @@ public class ListasDeExerciciosController {
 		listaDeRespostas = listaDeRespostasDao
 				.carrega(listaDeRespostas.getId());
 
+		Aluno aluno = (Aluno) usuarioSession.getUsuario();
+		List<Questao> questoes;
+		ListaGerada listaGerada;
+		
 		ListaDeExercicios listaDeExercicios = listaDeRespostas
 				.getListaDeExercicios();
 
@@ -247,16 +255,23 @@ public class ListasDeExerciciosController {
 
 		List<String> renders = new ArrayList<String>();
 
-		List<QuestaoDaLista> questoes = listaDeExercicios.getQuestoes();
+		if(listaDeExercicios.getPropriedades().getGeracaoAutomatica()){
+			listaGerada = lista.gerar(listaDeExercicios, aluno);
+			questoes = listaGerada.getQuestoes();
+		}
+		else{
+			questoes = listaDeExercicios.getQuestoes();
+		}
+		
+		
 		List<Resposta> respostas = listaDeRespostas.getRespostas();
 		boolean achouResposta;
 
-		for (QuestaoDaLista questaoDaLista : questoes) {
+		for (Questao questao : questoes) {
 
 			achouResposta = false;
 			for (Resposta resposta : respostas) {
-				if (resposta.getQuestao().getId() == questaoDaLista
-						.getQuestao().getId()) {
+				if (resposta.getQuestao().getId() == questao.getId()) {
 					renders.add(resposta.getQuestao().getRenderAlteracao(
 							resposta));
 					respostas.remove(resposta);
@@ -266,11 +281,12 @@ public class ListasDeExerciciosController {
 			}
 			if (achouResposta)
 				continue;
-			renders.add(questaoDaLista.getQuestao().getRenderizacao());
+			renders.add(questao.getRenderizacao());
 		}
 
 		result.include("renderizacao", renders);
 		result.include("listaDeRespostas", listaDeRespostas);
+		result.include("questoes", questoes);
 		result.include("listaDeExercicios", listaDeExercicios);
 		result.include("numeroDeQuestoes", questoes.size());
 		result.include("VerificadorDePrazos", VerificadorDePrazos.class);
@@ -287,7 +303,7 @@ public class ListasDeExerciciosController {
 				.getListaDeExercicios();
 		List<String> renders = new ArrayList<String>();
 
-		List<QuestaoDaLista> questoes = listaDeExercicios.getQuestoes();
+		List<QuestaoDaLista> questoes = listaDeExercicios.getQuestoesDaLista();
 		List<Resposta> respostas = listaDeRespostas.getRespostas();
 		boolean achouResposta;
 
@@ -423,7 +439,7 @@ public class ListasDeExerciciosController {
 		novaQuestao.setQuestao(questao);
 
 		dao.recarrega(listaDeExercicios);
-		List<QuestaoDaLista> questoes = listaDeExercicios.getQuestoes();
+		List<QuestaoDaLista> questoes = listaDeExercicios.getQuestoesDaLista();
 
 		novaQuestao.setOrdem(questoes.size());
 		questoes.add(novaQuestao);
@@ -475,7 +491,7 @@ public class ListasDeExerciciosController {
 	 */
 	public void removeQuestao(Long id, Integer indice) {
 		ListaDeExercicios listaDeExercicios = dao.carrega(id);
-		List<QuestaoDaLista> questoes = listaDeExercicios.getQuestoes();
+		List<QuestaoDaLista> questoes = listaDeExercicios.getQuestoesDaLista();
 
 		questoes.remove(indice.intValue());
 		listaDeExercicios.setQuestoes(questoes);
@@ -631,7 +647,7 @@ public class ListasDeExerciciosController {
 	@Path("/listasDeExercicios/trocaOrdem/{id}")
 	public void trocaOrdem(Long id, List<Integer> novaOrdem) {
 		ListaDeExercicios lista = dao.carrega(id);
-		List<QuestaoDaLista> questoes = lista.getQuestoes();
+		List<QuestaoDaLista> questoes = lista.getQuestoesDaLista();
 		Integer ordem;
 		QuestaoDaLista questao;
 

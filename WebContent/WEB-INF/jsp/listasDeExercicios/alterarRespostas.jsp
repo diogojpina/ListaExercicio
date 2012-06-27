@@ -100,12 +100,12 @@ import="java.sql.*" errorPage="" %>
 	<h3>Questões</h3>
 	
 	<div>
-		<c:forEach items="${listaDeExercicios.questoes}" var="questaoDaLista" varStatus="iteracao">
+		<c:forEach items="${questoes}" var="questao" varStatus="iteracao">
 			<form id="questao${iteracao.index }" class="respostaForm" action="<c:url value="/respostas/${listaDeRespostas.id }/cadastra"/>" method="post" accept-charset="utf-8" enctype="multipart/form-data">
 				<input type="hidden" name="acao" id="acao${iteracao.index}" />
 				<fieldset>
 						<p>${iteracao.index + 1} )
-								${questaoDaLista.questao.enunciado}</p>
+								${questao.enunciado}</p>
 						${renderizacao[iteracao.index]}
 				</fieldset>
 			</form>

@@ -78,7 +78,7 @@ public class ListaDeExercicios {
 		this.turma = turma;
 	}
 
-	public List<QuestaoDaLista> getQuestoes() {
+	public List<QuestaoDaLista> getQuestoesDaLista() {
 		Collections.sort(questoes, new Comparator<QuestaoDaLista>() {  
             public int compare(QuestaoDaLista q1, QuestaoDaLista q2) {  
                 return q1.getOrdem() < q2.getOrdem() ? -1 : (q1.getOrdem() > q2.getOrdem() ? +1 : 0);  
@@ -87,6 +87,16 @@ public class ListaDeExercicios {
 		return questoes;
 	}
 
+	public List<Questao> getQuestoes() {
+		List<QuestaoDaLista> questoesDaLista = getQuestoesDaLista();
+		List<Questao> questoes = new ArrayList<Questao>();
+		
+		for (QuestaoDaLista questaoDaLista : questoesDaLista) {
+			questoes.add(questaoDaLista.getQuestao());
+		}
+		return questoes;
+	}
+	
 	public void setQuestoes(List<QuestaoDaLista> questoes) {
 		this.questoes = questoes;
 	}
