@@ -68,7 +68,7 @@ import="java.sql.*" errorPage="" %>
 	<div id="body">
   	<table border="0">
     	<tr>
-      		<td width="200" align="center">	
+      		<td width="200" align="center" valign="top">	
 				<%@ include file="/layout/menu.jsp" %>
 			</td>
 			<td width="750" align="left" valign="top">    
@@ -97,8 +97,8 @@ import="java.sql.*" errorPage="" %>
 				</fieldset>
 			</form>
 		</c:forEach>
-		<button id="enviaRespostas" type="button">Salvar, mas não finalizar</button><br></br>
-		<button id="finalizaRespostas" type="button">Finalizar</button>
+		<button id="salvaRespostas" type="button">Salvar</button>
+		<button id="enviaRespostas" type="button">Salvar e Enviar</button>
 	</div>
 
 

@@ -1,4 +1,26 @@
 --------------------------------------------------------------------------------
+ Instituto de Matemática e Estatística da USP -  1o semestre 2012 
+ Laboratório de Programação Extrema
+ Cliente Marco Aurélio Gerosa 
+--------------------------------------------------------------------------------
+
+- Diogo Pina
+- Gabriel Pato
+- Graziela Tonin
+- Laecio Freitas
+- Rafael Mathias
+- Renato Avila
+
+--------------------------------------------------------------------------------
+ Sobre o projeto
+--------------------------------------------------------------------------------
+
+    Desenvolvimeto de um sistema de gerenciamento de listas de exercícios com foco
+em correção de exercícios em java.
+
+
+Projeto Base
+--------------------------------------------------------------------------------
  Instituto de Matemática e Estatística da USP -  2o semestre 2011 
  MAC0332 - Engenharia de Software
  Prof. Marco Aurélio Gerosa 
@@ -16,11 +38,3 @@
     Wallace Faveron de Almeida
     
 --------------------------------------------------------------------------------
-
-
---------------------------------------------------------------------------------
- Sobre o projeto
---------------------------------------------------------------------------------
-
-    Desenvolvimeto de um sistema de gerenciamento de listas de exercícios para a 
-disciplina de Engenharia de Software do IME-USP.

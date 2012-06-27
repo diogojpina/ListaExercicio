@@ -1,5 +1,18 @@
 /* Website template by freewebsitetemplates.com */
 
+a {
+	color: #816221;
+	font-family: 'CarterOneRegular';
+	font-size: 14px;
+	text-decoration: underline;
+	text-shadow: 1px 1px 0 #efd9c4;	
+}
+
+a:hover{
+	color: #2e5306;
+}
+
+
 body {
 	background: url(../images/bg-body.gif) repeat center;
 	color: #80662b;
@@ -183,6 +196,7 @@ input.loginbuttom {
 	display: block;
 	text-decoration: none;
 	text-shadow: 1px 1px 0 #c8b57d;
+	font-size: 18px;
 }
 
 #content div#body h1 a:hover {

@@ -80,7 +80,7 @@ import="java.sql.*" errorPage="" %>
 	<div id="body">
   	<table border="0">
     	<tr>
-      		<td width="200" align="center">	
+      		<td width="200" align="center" valign="top">	
 				<%@ include file="/layout/menu.jsp" %>
 			</td>
 			<td width="750" align="left" valign="top">    
